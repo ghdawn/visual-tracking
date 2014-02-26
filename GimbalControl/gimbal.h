@@ -1,14 +1,12 @@
-#ifndef CRADLECONTROL_H_INCLUDED
-#define CRADLECONTROL_H_INCLUDED
-#include "itrbase.h"
-#include "itrvision.h"
-using itr_math::Vector;
+#ifndef GIMBAL_H
+#define GIMBAL_H
+
 
 /**
 * \brief 提供云台控制的功能
 * \note 需要串口支持
 */
-class Cradle
+class Gimbal
 {
         /**
         * \brief 初始化控制参数
@@ -36,4 +34,5 @@ class Cradle
         */
         void Control(F32 omegax,F32 omegay);
 };
-#endif // CRADLECONTROL_H_INCLUDED
+
+#endif // GIMBAL_H
