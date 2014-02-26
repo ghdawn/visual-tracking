@@ -61,19 +61,6 @@ int main()
         }
         rect.X=X[0];
         rect.Y=X[1];
-
-//        if(detection.Go(current,rect))
-//        {
-//            z[0]=rect.X;
-//            z[1]=rect.Y;
-//            X=kf.UpdateMeasure(Hx,R,z);
-//        }
-//        else
-//        {
-//            itr_vision::Draw::Circle(current,100,100,10,255);
-//        }
-//        rect.X=X[0];
-//        rect.Y=X[1];
         Draw::Rectangle(current,rect,255);
         sprintf(file,"bin/Debug/output/%05d.pgm",k);
         IOpnm::WritePGMFile(file,current);

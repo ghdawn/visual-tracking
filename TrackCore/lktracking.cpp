@@ -11,7 +11,7 @@ lktracking::lktracking():
     debugcount=1;
 }
 
-void lktracking::Init(const Matrix &current,RectangleS &rect)
+void lktracking::Init(const Matrix &current,RectangleF &rect)
 {
     tracker.Init(current);
     SelectKLTFeature select(current);
@@ -126,7 +126,7 @@ int lktracking::fb_filter()
     }
     return drop;
 }
-bool lktracking::Go(const Matrix &current,RectangleS &rect,F32 &Vx,F32 &Vy)
+bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
 {
     TimeClock clock;
     int i;
