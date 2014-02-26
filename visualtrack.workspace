@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="TrackGUI/TrackGUI.cbp" />
+		<Project filename="TrackCore/TrackCore.cbp" />
+		<Project filename="PostProcess/PostProcess.cbp" />
+		<Project filename="ImageAquaire/ImageAquaire.cbp" />
+		<Project filename="CradleControl/CradleControl.cbp" />
+		<Project filename="JoyStick/JoyStick.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

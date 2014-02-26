@@ -11,3 +11,10 @@
 *.lai
 *.la
 *.a
+bin/
+obj/
+*.cbp.*
+*.cbp~
+*.layout*
+*.depend
+*.save
