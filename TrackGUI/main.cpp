@@ -1,24 +1,12 @@
-#include <QApplication>
-#include <QFont>
-#include <QPushButton>
+#include <QtGui>
+#include "processImage.h"
 
-QPushButton *p;
-
-void a()
+int main(int argc,char *argv[])
 {
-    p->setText("AA");
-}
-int main(int argc, char* argv[])
-{
-    QApplication app(argc, argv);
-    QPushButton quitb("Quit");
-    p=&quitb;
-    quitb.resize(75, 30);
-    quitb.setFont(QFont("Times", 18, QFont::Bold));
-
-    QObject::connect(&quitb, SIGNAL(clicked()), &app, SLOT(quit()));
-
-    quitb.show();
+    QApplication app(argc,argv);
+    ProcessImage process;
+    process.resize(380,250);
+    process.show();
 
     return app.exec();
 }
