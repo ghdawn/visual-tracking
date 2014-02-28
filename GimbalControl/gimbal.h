@@ -1,7 +1,7 @@
 #ifndef GIMBAL_H
 #define GIMBAL_H
-
-
+#include "itrbase.h"
+using itr_math::Vector;
 /**
 * \brief 提供云台控制的功能
 * \note 需要串口支持

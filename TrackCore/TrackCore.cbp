@@ -19,11 +19,13 @@
 					<Add directory="../../iTRLib/itrbase" />
 					<Add directory="../../iTRLib/itrvision" />
 					<Add directory="../../iTRLib/itralgorithm" />
+					<Add directory="../../iTRLib/3rdparty/alglib" />
 				</Compiler>
 				<Linker>
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
 					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
 					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
+					<Add library="../../iTRLib/3rdparty/alglib/bin/debug/libalglib.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -48,9 +50,11 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="lktracking.cpp" />
+		<Unit filename="lktracking.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="trackcore.cpp" />
+		<Unit filename="trackcore.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
