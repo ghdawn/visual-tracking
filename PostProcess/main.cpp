@@ -1,10 +1,10 @@
 #include <QtGui>
-#include "processimage.h"
+#include "sendimage.h"
 
 int main(int argc,char *argv[])
 {
     QApplication app(argc,argv);
-    ProcessImage process;
+    SendImage process;
     int width;
     int height;
     width = 320;
