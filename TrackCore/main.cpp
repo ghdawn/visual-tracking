@@ -8,15 +8,15 @@ int main()
     itr_math::MathObjStandInit();
     char path[50]="bin/Debug/01_david/pgm/%05d.pgm";
     char file[50]="bin/Debug/01_david/pgm/00001.pgm";
-    FILE* fout=fopen("bin/Debug/result.txt","w");
+    FILE *fout=fopen("bin/Debug/result.txt","w");
     Matrix current,last;
     IOpnm::ReadPGMFile(file, current);
     IOpnm::ReadPGMFile(file, last);
 
     ///读取初始位置
-    RectangleS rect(0, 0, 0, 0);
+    RectangleF rect(0, 0, 0, 0);
     FILE *InitInfo=fopen("bin/Debug/01_david/init.txt","r");
-    fscanf(InitInfo,"%d,%d,%d,%d",&rect.X,&rect.Y,&rect.Width,&rect.Height);
+    fscanf(InitInfo,"%f,%f,%f,%f",&rect.X,&rect.Y,&rect.Width,&rect.Height);
     fclose(InitInfo);
     rect.Width-=rect.X;
     rect.Height-=rect.Y;
@@ -28,7 +28,8 @@ int main()
                    0,0,1,0,
                    0,0,0,1,
                    1,0,0,0,
-                   0,1,0,0};
+                   0,1,0,0
+                  };
     kf.F_x.CopyFrom(data);
     Matrix Hx(2,4),Hv(2,4),R(2,2);
     R.SetDiag(30.012306);
@@ -61,7 +62,7 @@ int main()
         }
         rect.X=X[0];
         rect.Y=X[1];
-        Draw::Rectangle(current,rect,255);
+//        Draw::Rectangle(current,rect,255);
         sprintf(file,"bin/Debug/output/%05d.pgm",k);
         IOpnm::WritePGMFile(file,current);
 

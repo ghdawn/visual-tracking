@@ -21,39 +21,39 @@ class lktracking
         S32 debugcount;
     protected:
     private:
-    F32 getScale(S32 count);
-    int fb_filter();
-    void pairdistance(const vector<Point2D>& feature,vector<F32>& dist);
-    int ncc_filter(const Matrix  &input1,const Matrix  &input2);
+        F32 getScale(S32 count);
+        int fb_filter();
+        void pairdistance(const vector<Point2D> &feature,vector<F32> &dist);
+        int ncc_filter(const Matrix  &input1,const Matrix  &input2);
 
-template <class T>
-class DataOper:public Ransac<T,T>::Operator
-{
-    public:
-        F32 GetError(T a, T b)
+        template <class T>
+        class DataOper:public Ransac<T,T>::Operator
         {
-            return fabs(a-b);
-        }
-        T GetValue(T *data, S32 N)
-        {
-            std::sort(data,data+N);
-            return data[N/2];
-        }
-        bool Remain(T a,T b)
-        {
-            return (fabs(a-b)<1.5);
-        }
-};
-    S32 FeatureNum;
-    vector<CommFeaturePoint> frame1Feature;
-    vector<CommFeaturePoint> frame2Feature;
-    vector<CommFeaturePoint> fbFeature;
-    DataOper<F32> oper;
-    Ransac<F32,F32> ransac;
-    ConvoluteSquare conv;
+            public:
+                F32 GetError(T a, T b)
+                {
+                    return fabs(a-b);
+                }
+                T GetValue(T *data, S32 N)
+                {
+                    std::sort(data,data+N);
+                    return data[N/2];
+                }
+                bool Remain(T a,T b)
+                {
+                    return (fabs(a-b)<10);
+                }
+        };
+        S32 FeatureNum;
+        vector<CommFeaturePoint> frame1Feature;
+        vector<CommFeaturePoint> frame2Feature;
+        vector<CommFeaturePoint> fbFeature;
+        DataOper<F32> oper;
+        Ransac<F32,F32> ransac;
+        ConvoluteSquare conv;
 
-    F32 *x,*y,*dist;
-    LKTracker tracker;
+        F32 *x,*y,*dist;
+        LKTracker tracker;
 };
 
 #endif // LKTRACKING_H
