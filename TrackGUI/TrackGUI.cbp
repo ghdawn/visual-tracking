@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add directory="/usr/myqt4/include" />
 			<Add directory="/usr/myqt4/include/QtGui" />
+			<Add directory="/usr/myqt4/include/QtCore" />
 		</Compiler>
 		<Linker>
 			<Add library="QtCore" />
@@ -39,6 +40,14 @@
 			<Add directory="/usr/myqt4/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="mainwindow.cpp" />
+		<Unit filename="mainwindow.h" />
+		<Unit filename="moc_processimage.cpp" />
+		<Unit filename="processimage.cpp" />
+		<Unit filename="processimage.h" />
+		<Unit filename="thread.cpp" />
+		<Unit filename="thread.h" />
+		<Unit filename="ui_mainwindow.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

@@ -48,9 +48,19 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="/usr/myqt4/include" />
+			<Add directory="/usr/myqt4/include/QtGui" />
+		</Compiler>
+		<Linker>
+			<Add library="QtCore" />
+			<Add library="QtGui" />
+			<Add directory="/usr/myqt4/lib" />
+		</Linker>
+		<Unit filename="main.cpp" />
+		<Unit filename="sendimage.cpp" />
+		<Unit filename="sendimage.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
