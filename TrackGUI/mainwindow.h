@@ -7,16 +7,16 @@
 
 class MainWindow:public QMainWindow,public Ui::MainWindow  //多继承
 {
-  Q_OBJECT
- public:
-  MainWindow(QWidget *parent=0);
- public slots:
-  void writeThread();
-  void readThread();
-  void closeThread();
-  void display();
+    Q_OBJECT
+public:
+    MainWindow(QWidget *parent=0);
+public slots:
+    void writeThread();
+    void readThread();
+    void closeThread();
+    void display();
 
- private:
-  Thread *yy;
+private:
+    Thread *yy;
 };
 #endif
