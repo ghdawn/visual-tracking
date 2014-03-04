@@ -178,7 +178,9 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
     }
     cout << "Points: "<<amount << endl;
     if(amount==0)
+    {
         Tracked=false;
+    }
     if(amount>0)
     {
         F32 median;

@@ -52,7 +52,6 @@
 		</Build>
 		<Unit filename="lktracking.cpp" />
 		<Unit filename="lktracking.h" />
-		<Unit filename="main.cpp" />
 		<Unit filename="trackcore.cpp" />
 		<Unit filename="trackcore.h" />
 		<Extensions>

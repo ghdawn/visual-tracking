@@ -1,5 +1,9 @@
 #include "gimbal.h"
 
+
+namespace itr_tracker
+{
+
 void Gimbal::Control(Vector X)
 {
     float k1 = 1;
@@ -12,5 +16,4 @@ void Gimbal::Control(Vector X)
     float omegay;
     omegax = (X[0]-U0)*k1 + X[2]*k2;
     omegay = (X[1]-V0)*k3 + X[3]*k4;
-
 }
