@@ -21,7 +21,7 @@ void MainWindow::display()
 dis_label->setText(yy->buf);     //读到的在dis_label显示，dis_label就是我们前面designer放的标签，显示buf中的内容
 }
 
-void MainWindow::writeThread()  //前面线程都是根据stopped、write_rs、read_rs的状态来工作的^_^
+void MainWindow::writeThread()  //前面线程都是根据stopped、write_rs、read_rs的状态来工作的
 {
   yy->write_rs=1;
 }

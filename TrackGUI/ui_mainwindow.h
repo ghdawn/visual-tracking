@@ -38,16 +38,16 @@
             centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
             writeButton = new QPushButton(centralWidget);
             writeButton->setObjectName(QString::fromUtf8("writeButton"));
-            writeButton->setGeometry(QRect(100, 210, 75, 23));
+            writeButton->setGeometry(QRect(100, 210, 100, 25));
             readButton = new QPushButton(centralWidget);
             readButton->setObjectName(QString::fromUtf8("readButton"));
-            readButton->setGeometry(QRect(240, 210, 75, 23));
+            readButton->setGeometry(QRect(240, 210, 100, 25));
             closeButton = new QPushButton(centralWidget);
             closeButton->setObjectName(QString::fromUtf8("closeButton"));
-            closeButton->setGeometry(QRect(390, 210, 75, 23));
+            closeButton->setGeometry(QRect(390, 210, 100, 25));
             dis_label = new QLabel(centralWidget);
             dis_label->setObjectName(QString::fromUtf8("dis_label"));
-            dis_label->setGeometry(QRect(200, 90, 191, 16));
+            dis_label->setGeometry(QRect(255, 90, 150, 25));
             MainWindow->setCentralWidget(centralWidget);
             menuBar = new QMenuBar(MainWindow);
             menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -68,9 +68,9 @@
         void retranslateUi(QMainWindow *MainWindow)
         {
             MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
-            writeButton->setText(QApplication::translate("MainWindow", "PushButton", 0, QApplication::UnicodeUTF8));
-            readButton->setText(QApplication::translate("MainWindow", "PushButton", 0, QApplication::UnicodeUTF8));
-            closeButton->setText(QApplication::translate("MainWindow", "PushButton", 0, QApplication::UnicodeUTF8));
+            writeButton->setText(QApplication::translate("MainWindow", "WriteButton", 0, QApplication::UnicodeUTF8));
+            readButton->setText(QApplication::translate("MainWindow", "ReadButton", 0, QApplication::UnicodeUTF8));
+            closeButton->setText(QApplication::translate("MainWindow", "CloseButton", 0, QApplication::UnicodeUTF8));
             dis_label->setText(QApplication::translate("MainWindow", "TextLabel", 0, QApplication::UnicodeUTF8));
         } // retranslateUi
 
