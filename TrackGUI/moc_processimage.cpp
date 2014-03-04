@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'processimage.h'
 **
-** Created: Mon Mar 3 09:39:29 2014
+** Created: Tue Mar 4 14:51:45 2014
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
 **
 ** WARNING! All changes made in this file will be lost!
