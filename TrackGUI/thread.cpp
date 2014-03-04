@@ -49,7 +49,7 @@ while(stopped)                          //stopped为0时将退出线程
  if(write_rs)                           //write_rs为1时把字符串从串口中输出
 {
 write_rs=0;
-write(fd,"wan shang song ta hui qu zai da",16);  //向串口中写入字符，通过串口调试助手可看到QtEmbedded-4.5.1这个字符
+write(fd,"wan shang song ta hui qu zai da",16);  //向串口中写入字符，通过串口调试助手可看到wan shang song ta hui qu zai da这个字符
 }
 
  if(read_rs)                           //read_rs为1时读取，并存在buf
