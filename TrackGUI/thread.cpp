@@ -9,7 +9,7 @@
 #include <strings.h>
 
 #define BAUDRATE B9600
-#define RS_DEVICE "/dev/ttyS0"       //串口0
+#define RS_DEVICE "/dev/ttyACM0"       //串口0
 //#define RS_DEVICE "/dev/ttySAC1"       //串口1
 
 Thread::Thread()
