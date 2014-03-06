@@ -59,8 +59,8 @@
 			<Add directory="/usr/myqt4/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
-		<Unit filename="sendimage.cpp" />
-		<Unit filename="sendimage.h" />
+		<Unit filename="processimage.cpp" />
+		<Unit filename="processimage.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
