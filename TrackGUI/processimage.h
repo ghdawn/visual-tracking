@@ -1,7 +1,10 @@
 #ifndef PROCESSIMAGE_H
 #define PROCESSIMAGE_H
-
+#include "itrbase.h"
 #include <QtGui>
+#include <string>
+using std::string;
+using itr_math::RectangleF;
 
 class ProcessImage : public QWidget
 {
@@ -9,11 +12,13 @@ class ProcessImage : public QWidget
 public:
     ProcessImage(QWidget *parent=0);
     ~ProcessImage();
-
+    void Init(int Width,int Height);
+    void Process(U8* inputimg,RectangleF rect,string Info,U8* outputimg);
 private:
-
-private slots:
-    void paintEvent(QPaintEvent *);
+    int width;
+    int height;
+//private slots:
+//    void paintEvent(QPaintEvent *);
 
 };
 #endif

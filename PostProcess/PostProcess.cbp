@@ -52,6 +52,7 @@
 			<Add option="-Wall" />
 			<Add directory="/usr/myqt4/include" />
 			<Add directory="/usr/myqt4/include/QtGui" />
+			<Add directory="/usr/myqt4/include/QtCore" />
 		</Compiler>
 		<Linker>
 			<Add library="QtCore" />
@@ -61,6 +62,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="processimage.cpp" />
 		<Unit filename="processimage.h" />
+		<Unit filename="serialport.cpp" />
+		<Unit filename="serialport.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
