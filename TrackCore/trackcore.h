@@ -17,6 +17,7 @@ namespace itr_tracker
             ~TrackCore();
             void Init(int ImageSize);
             void BeginTrack();
+            void Manual();
             KalmanFilter kf;
             U8* preImg;
             U8* postImg;
