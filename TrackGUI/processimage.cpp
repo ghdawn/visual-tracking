@@ -3,7 +3,7 @@
 #include <QPainter>
 #include "processimage.h"
 
-ProcessImage::ProcessImage(QWidget *parent):QWidget(parent)
+ProcessImage::ProcessImage()
 {
 
 }
@@ -19,7 +19,7 @@ void ProcessImage::Init(int Width,int Height)
 }
 void ProcessImage::Process(U8* inputimg,RectangleF rect,string Info,U8* outputimg)
 {
-    QPainter paint(this);
+   // QPainter paint(this);
     int i;
     int ViewX = 10;
     int ViewY = 10;
@@ -28,8 +28,8 @@ void ProcessImage::Process(U8* inputimg,RectangleF rect,string Info,U8* outputim
     QPainter p(&pix);
     p.drawImage(QPoint(0, 0), image);
     p.drawRect(rect.X,rect.Y,rect.Width,rect.Height);
-    p.drawText(QPoint(ViewX, ViewY), tr("ProcessImage Succeed!"));
-    paint.end();
+    p.drawText(QPoint(ViewX, ViewY), "ProcessImage Succeed!");
+    //paint.end();
     pix.save("lm.png");
     QImage img = QImage("lm.png");
     unsigned char * p_bits=img.bits();
