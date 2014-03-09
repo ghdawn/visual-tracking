@@ -5,7 +5,8 @@
 #include "itrvision.h"
 #include "lktracking.h"
 #include "gimbal.h""
-
+using itr_math::RectangleF;
+using itr_math::RectangleS;
 namespace itr_tracker
 {
     class TrackCore
@@ -15,6 +16,7 @@ namespace itr_tracker
             TrackCore();
             ~TrackCore();
             void Init(int ImageSize);
+            void BeginTrack();
             KalmanFilter kf;
             U8* preImg;
             U8* postImg;
@@ -22,6 +24,8 @@ namespace itr_tracker
 //            CycleQueue<U8*> postImageQueue;
             Gimbal gimbalControl;
             bool Tracking;
+            RectangleS posInit;
+            RectangleF posTrack;
         protected:
         private:
     };
