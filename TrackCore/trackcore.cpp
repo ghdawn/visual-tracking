@@ -11,8 +11,17 @@ namespace itr_tracker
                        0,0,0,1,
                       };
         kf.F_x.CopyFrom(data);
+        preImg=NULL;
+        postImg=NULL;
     }
 
+    TrackCore()::~TrackCore()
+    {
+        if(preImg!=NULL)
+            delete []preImg;
+        if(postImg!=NULL)
+            delete []postImg;
+    }
     void TrackCore::Init(int ImageSize)
     {
         preImg=new U8[ImageSize];

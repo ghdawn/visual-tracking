@@ -21,6 +21,7 @@ namespace itr_tracker
 //            CycleQueue<U8*> preImgQueue;
 //            CycleQueue<U8*> postImageQueue;
             Gimbal gimbalControl;
+            bool Tracking;
         protected:
         private:
     };
