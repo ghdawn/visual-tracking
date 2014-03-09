@@ -4,7 +4,7 @@
 #include "itrbase.h"
 #include "itrvision.h"
 #include "lktracking.h"
-#include "gimbal.h""
+#include "gimbal.h"
 using itr_math::RectangleF;
 using itr_math::RectangleS;
 namespace itr_tracker
