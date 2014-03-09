@@ -4,8 +4,6 @@
 		<Project filename="TrackGUI/TrackGUI.cbp" />
 		<Project filename="TrackCore/TrackCore.cbp" />
 		<Project filename="PostProcess/PostProcess.cbp" />
-		<Project filename="ImageAquaire/ImageAquaire.cbp" />
-		<Project filename="JoyStick/JoyStick.cbp" />
 		<Project filename="GimbalControl/GimbalControl.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

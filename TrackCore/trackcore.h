@@ -4,8 +4,8 @@
 #include "itrbase.h"
 #include "itrvision.h"
 #include "lktracking.h"
-using namespace itr_math;
-using itr_container::CycleQueue;
+#include "gimbal.h""
+
 namespace itr_tracker
 {
     class TrackCore
@@ -23,9 +23,6 @@ namespace itr_tracker
             Gimbal gimbalControl;
         protected:
         private:
-
-        Matrix Hx,Hv,R;
-        Vector z,X,v;
     };
 }
 #endif // TRACKCORE_H
