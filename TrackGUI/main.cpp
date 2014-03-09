@@ -1,10 +1,27 @@
 #include <QApplication>
+#include <QtGui>
+#include <cstdio>
+#include <QPainter>
 #include "serialport.h"
 #include "processimage.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-
+    QApplication a(argc, argv);
+    RectangleF rect;
+    RectangleF(10,10,100,100);
+    U8 outputimg[320*240];
+    string Info;
+    Info = "Succeed";
+    ProcessImage process;
+    process.Init(320,240);
+    QImage Img = QImage("a.png");
+    unsigned char * p_bits=Img.bits();
+    process.Process(p_bits,rect,Info,outputimg);
+    QImage img = QImage(outputimg, 320, 240, QImage::Format_RGB32);
+    QPainter paint;
+    paint.drawImage(QPoint(0, 0), img);
+    return a.exec();
 }
 /*#include <QtGui/QApplication>
 #include <QTextCodec>

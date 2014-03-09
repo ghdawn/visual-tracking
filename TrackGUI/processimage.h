@@ -6,11 +6,11 @@
 using std::string;
 using itr_math::RectangleF;
 
-class ProcessImage : public QWidget
+class ProcessImage
 {
-    Q_OBJECT
+    //Q_OBJECT
 public:
-    ProcessImage(QWidget *parent=0);
+    ProcessImage();
     ~ProcessImage();
     void Init(int Width,int Height);
     void Process(U8* inputimg,RectangleF rect,string Info,U8* outputimg);

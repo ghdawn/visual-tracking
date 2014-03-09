@@ -17,7 +17,6 @@
 				</Compiler>
 				<Linker>
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
-
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -39,7 +38,7 @@
 			<Add directory="/usr/myqt4/include/QtGui" />
 			<Add directory="/usr/myqt4/include/QtCore" />
 			<Add directory="/usr/myqt4/include/QtNetwork" />
-			<Add directory="/home/buaa/iTRLib/itrbase"/>
+			<Add directory="/home/buaa/iTRLib/itrbase" />
 		</Compiler>
 		<Linker>
 			<Add library="QtCore" />
@@ -48,9 +47,10 @@
 			<Add directory="/usr/myqt4/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="moc_processimage.cpp" />
+		<Unit filename="moc_serialport.cpp" />
 		<Unit filename="processimage.cpp" />
 		<Unit filename="processimage.h" />
-		<Unit filename="serialport.cpp" />
 		<Unit filename="serialport.h" />
 		<Extensions>
 			<code_completion />
