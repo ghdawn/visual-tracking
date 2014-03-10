@@ -17,4 +17,8 @@ void Gimbal::Control(Vector X)
     omegax = (X[0]-U0)*k1 + X[2]*k2;
     omegay = (X[1]-V0)*k3 + X[3]*k4;
 }
+void Gimbal::Control(F32 omegax,F32 omegay)
+{
+
+}
 }

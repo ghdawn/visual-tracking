@@ -5,6 +5,7 @@
 #include "trackcore.h"
 #include "itrdevice.h"
 #include "stdjoystick.h"
+#include "gimbal.h"
 #include <QMutex>
 using namespace itr_tracker;
 using namespace itr_device;
@@ -23,4 +24,5 @@ public:
 private:
     QString name;
     StdJoyStick joystick;
+    Gimbal gimbal;
 };

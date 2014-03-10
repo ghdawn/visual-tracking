@@ -22,12 +22,14 @@
 					<Add directory="../../iTRLib/itrdevice" />
 					<Add directory="../TrackGUI" />
 					<Add directory="../../iTRLib/itrdevice/joystick" />
+					<Add directory="../GimbalControl/obj" />
 				</Compiler>
 				<Linker>
 					<Add library="../TrackCore/obj/Debug/libTrackCore.a" />
 					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
 					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
+					<Add library="../GimbalControl/libGimbalControl.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
