@@ -21,12 +21,15 @@ namespace itr_tracker
             KalmanFilter kf;
             U8* preImg;
             U8* postImg;
+            int Width,Height;
 //            CycleQueue<U8*> preImgQueue;
 //            CycleQueue<U8*> postImageQueue;
             Gimbal gimbalControl;
             bool Tracking;
+            bool TrackInit;
             RectangleS posInit;
             RectangleF posTrack;
+            int missedImg;
         protected:
         private:
     };

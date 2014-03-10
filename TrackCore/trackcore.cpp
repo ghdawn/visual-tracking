@@ -14,6 +14,7 @@ namespace itr_tracker
         preImg=NULL;
         postImg=NULL;
         posInit.Init(144,108,32,24);
+        int missedImg=0;
     }
 
     TrackCore::~TrackCore()
@@ -32,7 +33,7 @@ namespace itr_tracker
     void TrackCore::BeginTrack()
     {
         Tracking=true;
-
+        TrackInit=true;
         kf.x[0]=posInit.X;
         kf.x[1]=posInit.Y;
         kf.x[2]=kf.x[3]=0;
@@ -46,5 +47,6 @@ namespace itr_tracker
     void TrackCore::Manual()
     {
         Tracking=false;
+        TrackInit=false;
     }
 }

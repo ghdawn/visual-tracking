@@ -13,9 +13,14 @@ public:
     void run();
     void stop();
     ~TrackThread();
-    QMutex* mutex;
+    QMutex* mutextrack;
+    QMutex* mutexPreImg;
 private:
     volatile bool stopped;
     QString name;
     TrackCore *core;
+    Matrix current;
+    lktracking *tracking;
+    Matrix Hv,R;
+    Vector z;
 };
