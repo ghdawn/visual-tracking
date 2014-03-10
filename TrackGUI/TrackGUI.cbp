@@ -14,9 +14,18 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="../../iTRLib/itrbase" />
+					<Add directory="../TrackCore" />
+					<Add directory="../../iTRLib/itrvision" />
+					<Add directory="../../iTRLib/itralgorithm" />
+					<Add directory="../../iTRLib/3rdparty/alglib" />
+					<Add directory="../GimbalControl" />
+					<Add directory="../../iTRLib/itrdevice" />
 				</Compiler>
 				<Linker>
+					<Add library="../TrackCore/obj/Debug/libTrackCore.a" />
+					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
+					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -46,12 +55,13 @@
 			<Add library="QtNetwork" />
 			<Add directory="/usr/myqt4/lib" />
 		</Linker>
+		<Unit filename="camerathread.cpp" />
+		<Unit filename="camerathread.h" />
+		<Unit filename="joystickthread.cpp" />
+		<Unit filename="joystickthread.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="moc_processimage.cpp" />
-		<Unit filename="moc_serialport.cpp" />
-		<Unit filename="processimage.cpp" />
-		<Unit filename="processimage.h" />
-		<Unit filename="serialport.h" />
+		<Unit filename="trackthread.cpp" />
+		<Unit filename="trackthread.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

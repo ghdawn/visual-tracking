@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    /*QApplication a(argc, argv);
     RectangleF rect;
     RectangleF(10,10,100,100);
     U8 outputimg[320*240];
@@ -21,9 +21,10 @@ int main(int argc, char *argv[])
     QImage img = QImage(outputimg, 320, 240, QImage::Format_RGB32);
     QPainter paint;
     paint.drawImage(QPoint(0, 0), img);
-    return a.exec();
+    return a.exec();*/
 }
-/*#include <QtGui/QApplication>
+
+/*include <QtGui/QApplication>
 #include <QTextCodec>
 #include "widget.h"
 
@@ -49,26 +50,30 @@ int main(int argc, char *argv[])
     server->show();
     client->show();
     return app.exec();
-}
+}*/
 
-#include <QtGui/QApplication>
+/*#include <QtGui/QApplication>
 #include "mainwindow.h"
+#include "trackcore.h"
+using namespace itr_tracker;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     QMutex mutex;
-    //Thread thread;
-
-    //thread.start();
-    Thread thread1("Thread1");
-    thread1.mutex=&mutex;
-    thread1.start();
-    Thread thread2("Thread2");
-    thread2.mutex=&mutex;
-    thread2.start();
-
+   // Thread thread;
+    TrackCore core;
+   // thread.start();
+    CameraThread CameraThread("Camera");
+    CameraThread.Init(&core);
+   // CameraThread.start();
+    TrackThread TrackThread("Track");
+    TrackThread.Init(&core);
+    JoyStickThread JoyStickThread("JoyStick");
+    JoyStickThread.Init(&core);
+    JoyStickThread.start();
     return app.exec();
 }
+
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 
