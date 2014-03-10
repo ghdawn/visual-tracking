@@ -12,6 +12,7 @@ class JoyStickThread : public QThread
 {
 public:
     JoyStickThread(QString name = "");
+    ~JoyStickThread();
     void Init(TrackCore* core);
     void run();
     void stop();

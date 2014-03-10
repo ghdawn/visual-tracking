@@ -8,6 +8,10 @@ JoyStickThread::JoyStickThread(QString name )
     stopped = false;
     this->name = name;
 }
+JoyStickThread::~JoyStickThread()
+{
+
+}
 void JoyStickThread::Init(TrackCore* core)
 {
 
@@ -19,9 +23,11 @@ void JoyStickThread::run()
     while (!stopped)
     {
         joystick.Update();
-        if(joystick.GetButtonStatus(0) == 1)
+        if(joystick.GetButtonStatus(0))
             core->Manual();
-        if(joystick.GetButtonStatus(1) == 1)
+            joystick.GetAxisValue(0);
+            joystick.GetAxisValue(1);
+        if(joystick.GetButtonStatus(1))
             core->BeginTrack();
     }
 }

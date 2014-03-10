@@ -8,32 +8,11 @@ using namespace itr_tracker;
 class CameraThread : public QThread
 {
 public:
-    CameraThread(QString name = "")
-    {
-        stopped = false;
-        this->name = name;
-    }
-    void Init(TrackCore* core)
-    {
-
-        this->core = core;
-    }
-
-    void run()
-    {
-        while (!stopped)
-        {
-
-        }
-        qDebug("end!");
-    }
-
-    void stop()
-    {
-        mutex->lock();
-        stopped = true;
-        mutex->unlock();
-    }
+    CameraThread(QString name = "");
+    void Init(TrackCore* core);
+    void run();
+    void stop();
+    ~CameraThread();
     QMutex* mutex;
 private:
     volatile bool stopped;
