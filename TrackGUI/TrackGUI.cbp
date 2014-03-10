@@ -20,11 +20,14 @@
 					<Add directory="../../iTRLib/3rdparty/alglib" />
 					<Add directory="../GimbalControl" />
 					<Add directory="../../iTRLib/itrdevice" />
+					<Add directory="../TrackGUI" />
+					<Add directory="../../iTRLib/itrdevice/joystick" />
 				</Compiler>
 				<Linker>
 					<Add library="../TrackCore/obj/Debug/libTrackCore.a" />
 					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
+					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
 					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
 				</Linker>
 			</Target>
@@ -55,13 +58,9 @@
 			<Add library="QtNetwork" />
 			<Add directory="/usr/myqt4/lib" />
 		</Linker>
-		<Unit filename="camerathread.cpp" />
-		<Unit filename="camerathread.h" />
 		<Unit filename="joystickthread.cpp" />
 		<Unit filename="joystickthread.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="trackthread.cpp" />
-		<Unit filename="trackthread.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
