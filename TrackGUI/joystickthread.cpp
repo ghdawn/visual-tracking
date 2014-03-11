@@ -25,10 +25,11 @@ void JoyStickThread::run()
         joystick.Update();
         if(joystick.GetButtonStatus(0))
             core->Manual();
-
+        if(core->Tracking==true)
+            gimbal.Control(joystick.GetAxisValue(0),joystick.GetAxisValue(1));
         if(joystick.GetButtonStatus(1))
             core->BeginTrack();
-        gimbal.Control(joystick.GetAxisValue(0),joystick.GetAxisValue(1));
+
     }
 }
 void JoyStickThread::stop()
