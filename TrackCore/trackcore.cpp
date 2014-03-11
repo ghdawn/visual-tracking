@@ -11,7 +11,6 @@ namespace itr_tracker
                        0,0,0,1,
                       };
         kf.F_x.CopyFrom(data);
-        preImg=NULL;
         postImg=NULL;
         posInit.Init(144,108,32,24);
         int missedImg=0;
@@ -24,16 +23,18 @@ namespace itr_tracker
         if(postImg!=NULL)
             delete []postImg;
     }
-    void TrackCore::Init(int ImageSize)
+    void TrackCore::Init(int Width,int Height)
     {
-        preImg=new U8[ImageSize];
-        postImg=new U8[ImageSize];
+        current.Init(Width,Height);
+        this->Width=Width;
+        this->Height=Height;
+        postImg=new U8[Width*Height];
     }
 
     void TrackCore::BeginTrack()
     {
         Tracking=true;
-        TrackInit=true;
+        TrackStatusChanged=true;
         kf.x[0]=posInit.X;
         kf.x[1]=posInit.Y;
         kf.x[2]=kf.x[3]=0;
@@ -47,6 +48,6 @@ namespace itr_tracker
     void TrackCore::Manual()
     {
         Tracking=false;
-        TrackInit=false;
+        TrackStatusChanged=true;
     }
 }

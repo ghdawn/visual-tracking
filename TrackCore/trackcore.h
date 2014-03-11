@@ -19,14 +19,15 @@ namespace itr_tracker
             void BeginTrack();
             void Manual();
             KalmanFilter kf;
-            U8* preImg;
+            Matrix current;
             U8* postImg;
             int Width,Height;
 //            CycleQueue<U8*> preImgQueue;
 //            CycleQueue<U8*> postImageQueue;
             Gimbal gimbalControl;
             bool Tracking;
-            bool TrackInit;
+            bool TrackStatusChanged;
+            bool NewPostImg;
             RectangleS posInit;
             RectangleF posTrack;
             int missedImg;

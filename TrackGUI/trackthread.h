@@ -19,7 +19,6 @@ private:
     volatile bool stopped;
     QString name;
     TrackCore *core;
-    Matrix current;
     lktracking *tracking;
     Matrix Hv,R;
     Vector z;

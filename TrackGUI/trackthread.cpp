@@ -10,40 +10,46 @@ TrackThread::TrackThread(QString name)
     Hv.Init(2,4);
     R.Init(2,2);
     z.Init(2);
+    tracking=new lktracking();
 }
 void TrackThread::Init(TrackCore *core)
 {
     this->core=core;
-    current.Init(core.Height,core.Width);
+    current.Init(core->Height,core->Width);
 }
 void TrackThread::run()
 {
     int i;
     int length=current.GetCol()*current.GetRow();
-    F32 *imgptr;
-    while(!stop)
+    while(!stopped)
     {
+    ///TODO: lock
         if(core->Tracking)
         {
-            mutexPreImg.lock();
-            imgptr=current.GetData();
-            for(i=0;i<length;++i)
-                imgptr[i]=core->preImg[i];
-            mutexPreImg.unlock();
-            if(core->TrackInit)
+            if(core->TrackStatusChanged)
             {
-                lktracking->Init(current,core->posTrack);
+                tracking->Init(core->current,core->posTrack);
+                core->TrackStatusChanged=false;
             }
             else
             {
-                lktracking->Go(current,core->posTrack,)
+                tracking->Go(core->current,core->posTrack,z[0],z[1]);
+            }
+        }
+        else
+        {
+            if(core->TrackStatusChanged)
+            {
+                delete tracking;
+                tracking=new lktracking();
+                core->TrackStatusChanged=false;
             }
         }
     }
 }
 void TrackThread::stop()
 {
-    stop=true;
+    stopped=true;
 }
 TrackThread::~TrackThread()
 {}
