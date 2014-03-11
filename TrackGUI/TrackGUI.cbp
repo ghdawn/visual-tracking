@@ -30,6 +30,7 @@
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
 					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
 					<Add library="../GimbalControl/libGimbalControl.a" />
+					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
