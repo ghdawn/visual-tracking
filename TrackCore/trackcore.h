@@ -15,7 +15,7 @@ namespace itr_tracker
             /** Default constructor */
             TrackCore();
             ~TrackCore();
-            void Init(int ImageSize);
+            void Init(int Width,int Height);
             void BeginTrack();
             void Manual();
             KalmanFilter kf;
