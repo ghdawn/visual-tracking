@@ -3,7 +3,9 @@
 #include "itrbase.h"
 #include <QtGui>
 #include <string>
+#include "trackcore.h"
 using std::string;
+using namespace itr_tracker;
 using itr_math::RectangleF;
 
 class ProcessImage : public QWidget
@@ -17,6 +19,7 @@ public:
 private:
     int width;
     int height;
+    TrackCore *core;
 //private slots:
 //    void paintEvent(QPaintEvent *);
 

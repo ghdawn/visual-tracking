@@ -19,11 +19,17 @@
 					<Add directory="../../iTRLib/itrbase" />
 					<Add directory="../../iTRLib/itrvision" />
 					<Add directory="../../iTRLib/itralgorithm" />
+					<Add directory="../TrackCore" />
+					<Add directory="../../iTRLib/3rdparty/alglib" />
+					<Add directory="../GimbalControl" />
 				</Compiler>
 				<Linker>
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
 					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
 					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
+					<Add library="/home/buaa/visual-tracking/TrackCore/obj/Debug/libTrackCore.a" />
+					<Add library="../../iTRLib/3rdparty/alglib/bin/debug/libalglib.a" />
+					<Add library="../GimbalControl/libGimbalControl.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
