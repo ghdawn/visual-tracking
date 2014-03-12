@@ -18,8 +18,6 @@ namespace itr_tracker
 
     TrackCore::~TrackCore()
     {
-        if(preImg!=NULL)
-            delete []preImg;
         if(postImg!=NULL)
             delete []postImg;
     }
