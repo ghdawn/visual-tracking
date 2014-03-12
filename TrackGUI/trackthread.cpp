@@ -15,12 +15,10 @@ TrackThread::TrackThread(QString name)
 void TrackThread::Init(TrackCore *core)
 {
     this->core=core;
-    current.Init(core->Height,core->Width);
 }
 void TrackThread::run()
 {
     int i;
-    int length=current.GetCol()*current.GetRow();
     while(!stopped)
     {
     ///TODO: lock

@@ -1,7 +1,19 @@
 #include <QApplication>
 #include <QtGui>
 #include <cstdio>
-#include <QPainter>
+#include "trackcore.h"
+using namespace itr_tracker;
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    TrackCore core;
+
+    return a.exec();
+}
+
+
+
+/*#include <QPainter>
 #include "serialport.h"
 #include "processimage.h"
 
@@ -21,10 +33,10 @@ int main(int argc, char *argv[])
     QImage img = QImage(outputimg, 320, 240, QImage::Format_RGB32);
     QPainter paint;
     paint.drawImage(QPoint(0, 0), img);
-    return a.exec();*/
+    return a.exec();
 }
 
-/*include <QtGui/QApplication>
+include <QtGui/QApplication>
 #include <QTextCodec>
 #include "widget.h"
 
