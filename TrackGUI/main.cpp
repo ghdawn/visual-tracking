@@ -2,11 +2,24 @@
 #include <QtGui>
 #include <cstdio>
 #include "trackcore.h"
+#include "processimage.h"
 using namespace itr_tracker;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     TrackCore core;
+    QPainter paint;
+    QImage Mimg;
+    core.Init(320,240);
+    while(1)
+    {
+
+        if(core.NewPostImg==true)
+            Mimg=QImage(core.postImg, 320, 240, QImage::Format_RGB32);
+            paint.drawImage(QPoint(0, 0), Mimg);
+            core.NewPostImg=false;
+
+    }
 
     return a.exec();
 }
@@ -19,7 +32,7 @@ int main(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-    /*QApplication a(argc, argv);
+    QApplication a(argc, argv);
     RectangleF rect;
     RectangleF(10,10,100,100);
     U8 outputimg[320*240];
