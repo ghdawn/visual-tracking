@@ -36,11 +36,12 @@ void ProcessImage::Process(U8* inputimg,RectangleF rect,string Info,U8* outputim
     paint.end();
     pix.save("lm.png");
     QImage img = QImage("lm.png");
-    unsigned char * p_bits=img.bits();
-    for(i=0; i < width*height; i++)
-    {
-        outputimg[i] = p_bits[i];
-    }
+    outputimg = img.bits();
+    /* unsigned char * p_bits=img.bits();
+     for(i=0; i < width*height; i++)
+     {
+         outputimg[i] = p_bits[i];
+     }*/
     for(i=0; i < width*height; i++)
     {
         core->postImg[i] = outputimg[i];

@@ -17,7 +17,6 @@ public:
     void Init(TrackCore* core);
     void run();
     void stop();
-
     QMutex* mutex;
     TrackCore *core;
     volatile bool stopped;
@@ -25,4 +24,5 @@ private:
     QString name;
     StdJoyStick joystick;
     Gimbal gimbal;
+    AsiCamera camera;
 };

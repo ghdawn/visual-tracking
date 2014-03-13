@@ -2,7 +2,6 @@
 #include "trackcore.h"
 #include "joystickthread.h"
 using namespace itr_tracker;
-using namespace itr_device;
 JoyStickThread::JoyStickThread(QString name )
 {
     stopped = false;
