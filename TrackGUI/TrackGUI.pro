@@ -10,7 +10,6 @@ INCLUDEPATH += .
 # Input
 HEADERS += mainwindow.h \
            mythread.h \
-           processimage.h \
            serialport.h \
            thread.h \
            ui_mainwindow.h \
@@ -18,6 +17,48 @@ HEADERS += mainwindow.h \
 SOURCES += main.cpp \
            mainwindow.cpp \
            mythread.cpp \
-           processimage.cpp \
            serialport.cpp \
            thread.cpp
+
+
+unix:!macx: LIBS += -L$$PWD/../TrackCore/obj/Debug/ -lTrackCore
+
+INCLUDEPATH += $$PWD/../TrackCore
+DEPENDPATH += $$PWD/../TrackCore
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../TrackCore/obj/Debug/libTrackCore.a
+
+unix:!macx: LIBS += -L$$PWD/../../iTRLib/itrbase/bin/debug/ -litrbase
+
+INCLUDEPATH += $$PWD/../../iTRLib/itrbase
+DEPENDPATH += $$PWD/../../iTRLib/itrbase
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../iTRLib/itrbase/bin/debug/libitrbase.a
+
+unix:!macx: LIBS += -L$$PWD/../../iTRLib/itralgorithm/bin/debug/ -litralgorithm
+
+INCLUDEPATH += $$PWD/../../iTRLib/itralgorithm
+DEPENDPATH += $$PWD/../../iTRLib/itralgorithm
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a
+
+unix:!macx: LIBS += -L$$PWD/../../iTRLib/itrvision/bin/debug/ -litrvision
+
+INCLUDEPATH += $$PWD/../../iTRLib/itrvision
+DEPENDPATH += $$PWD/../../iTRLib/itrvision
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../iTRLib/itrvision/bin/debug/libitrvision.a
+
+unix:!macx: LIBS += -L$$PWD/../../iTRLib/3rdparty/alglib/bin/debug/ -lalglib
+
+INCLUDEPATH += $$PWD/../../iTRLib/3rdparty/alglib
+DEPENDPATH += $$PWD/../../iTRLib/3rdparty/alglib
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../iTRLib/3rdparty/alglib/bin/debug/libalglib.a
+
+unix:!macx: LIBS += -L$$PWD/../GimbalControl/ -lGimbalControl
+
+INCLUDEPATH += $$PWD/../GimbalControl
+DEPENDPATH += $$PWD/../GimbalControl
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../GimbalControl/libGimbalControl.a

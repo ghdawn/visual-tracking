@@ -4,13 +4,17 @@
 #include "trackcore.h"
 #include "processimage.h"
 using namespace itr_tracker;
+using namespace std;
 int main(int argc, char *argv[])
 {
+    itr_math::MathObjStandInit();
+    printf("Hello\n");
     QApplication a(argc, argv);
     TrackCore core;
     QPainter paint;
     QImage Mimg;
     core.Init(320,240);
+
     while(1)
     {
 

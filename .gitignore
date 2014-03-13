@@ -17,4 +17,6 @@ obj/
 *.cbp~
 *.layout*
 *.depend
-*.save
+*.save/TrackGUI/.qdevelop
+/"TrackGUI/TrackGUI (\345\244\215\344\273\266).pro"
+/TrackGUI/TrackGUI.pro.user
