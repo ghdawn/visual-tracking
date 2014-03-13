@@ -15,7 +15,7 @@ public:
     ProcessImage(QWidget *parent=0);
     ~ProcessImage();
     void Init(int Width,int Height);
-    void Process(U8* inputimg,RectangleF rect,string Info,U8* outputimg);
+    void Process(U8* inputimg,RectangleS rect,string Info,U8* outputimg);
 private:
     int width;
     int height;

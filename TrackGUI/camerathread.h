@@ -12,6 +12,7 @@
 using namespace itr_tracker;
 using namespace itr_device;
 using itr_math::RectangleF;
+using itr_math::RectangleS;
 using std::string;
 class CameraThread : public QThread
 {
@@ -22,10 +23,10 @@ public:
     void run();
     void stop();
     QMutex* mutex;
-    U8 *inputimg;
     RectangleF rect;
     string info;
     unsigned char *exinfo;
+    RectangleS rectangle;
 private:
     volatile bool stopped;
     QString name;

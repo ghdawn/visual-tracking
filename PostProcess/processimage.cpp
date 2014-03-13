@@ -17,7 +17,7 @@ void ProcessImage::Init(int Width,int Height)
     this->width = width;
     this->height = height;
 }
-void ProcessImage::Process(U8* inputimg,RectangleF rect,string Info,U8* outputimg)
+void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputimg)
 {
     int i;
     QPainter paint(this);

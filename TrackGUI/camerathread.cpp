@@ -18,6 +18,8 @@ void CameraThread::Init(TrackCore* core)
 }
 void CameraThread::run()
 {
+    U8 *inputimg=new U8[core->Width*core->Height];
+    process.Init(core->Width,core->Height);
     while (!stopped)
     {
         camera.FetchFrame(inputimg,core->Width*core->Height,exinfo);
@@ -26,8 +28,26 @@ void CameraThread::run()
         {
             core->current[i] = inputimg[i];
         }
-        process.Init(core->Width,core->Height);
-        process.ProcessImage(inputimg,rect,info,core->postImg);
+        if(core->Tracking==false)
+        {
+            rectangle.X=core->posInit.X;
+            rectangle.Y=core->posInit.Y;
+            rectangle.Width=core->posInit.Width;
+            rectangle.Height=core->posInit.Height;
+            info="No tracker!!";
+        }
+        else
+        {
+            rectangle.X=core->posTrack.X;
+            rectangle.Y=core->posTrack.Y;
+            rectangle.Width=core->posTrack.Width;
+            rectangle.Height=core->posTrack.Height;
+            info="X:";
+            info+=core->posTrack.X+core->posTrack.Width/2;
+            info+="Y:";
+            info+=core->posTrack.Y+core->posTrack.Height/2;
+        }
+        process.Process(inputimg,rectangle,info,core->postImg);
         core->NewPostImg=true;
     }
 }

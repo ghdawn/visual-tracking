@@ -23,6 +23,7 @@
 					<Add directory="../TrackGUI" />
 					<Add directory="../../iTRLib/itrdevice/joystick" />
 					<Add directory="../GimbalControl/obj" />
+					<Add directory="../../iTRLib/itrdevice/camera" />
 				</Compiler>
 				<Linker>
 					<Add library="../TrackCore/obj/Debug/libTrackCore.a" />
