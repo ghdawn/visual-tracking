@@ -24,6 +24,7 @@
 					<Add directory="../../iTRLib/itrdevice/joystick" />
 					<Add directory="../GimbalControl/obj" />
 					<Add directory="../../iTRLib/itrdevice/camera" />
+					<Add directory="../PostProcess" />
 				</Compiler>
 				<Linker>
 					<Add library="../TrackCore/obj/Debug/libTrackCore.a" />
@@ -32,6 +33,8 @@
 					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
 					<Add library="../GimbalControl/libGimbalControl.a" />
 					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
+					<Add library="../PostProcess/obj/Debug/libPostProcess.a" />
+					<Add library="../../iTRLib/itrdevice/camera/libASICamera.so" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -54,6 +57,7 @@
 			<Add directory="/usr/myqt4/include/QtCore" />
 			<Add directory="/usr/myqt4/include/QtNetwork" />
 			<Add directory="/home/buaa/iTRLib/itrbase" />
+			<Add directory="/home/buaa/visual-tracking/TrackGUI" />
 		</Compiler>
 		<Linker>
 			<Add library="QtCore" />

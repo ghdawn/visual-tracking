@@ -62,3 +62,14 @@ INCLUDEPATH += $$PWD/../GimbalControl
 DEPENDPATH += $$PWD/../GimbalControl
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../GimbalControl/libGimbalControl.a
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../PostProcess/obj/Debug/release/ -lPostProcess
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../PostProcess/obj/Debug/debug/ -lPostProcess
+else:unix: LIBS += -L$$PWD/../PostProcess/obj/Debug/ -lPostProcess
+
+INCLUDEPATH += $$PWD/../PostProcess
+DEPENDPATH += $$PWD/../PostProcess
+
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../PostProcess/obj/Debug/release/PostProcess.lib
+else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../PostProcess/obj/Debug/debug/PostProcess.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../PostProcess/obj/Debug/libPostProcess.a
