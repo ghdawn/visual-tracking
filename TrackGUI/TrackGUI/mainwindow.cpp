@@ -8,18 +8,25 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
+    ui->setupUi(this);
+
+}
+
+void MainWindow::paintEvent(QPaintEvent *)
+{
     int i;
     int width = 320;
     int height =240;
-    ui->setupUi(this);
     unsigned char *pSrc=new unsigned char[width*height*4];
-    for(i=0; i<width*height*3; i++)
+    for(i=0; i<width*height; i++)
     {
-        pSrc[i] = i%255;
+        pSrc[i] = i;
     }
-    QPainter painter;
+    QPainter painter(this);
     QImage image = QImage(pSrc, width, height, QImage::Format_RGB32);
     painter.drawImage(QPoint(0, 0), image);
+    painter.end();
 }
 
 MainWindow::~MainWindow()
