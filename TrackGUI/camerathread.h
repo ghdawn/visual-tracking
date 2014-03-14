@@ -4,8 +4,8 @@
 #include <QString>
 #include "trackcore.h"
 #include "itrdevice.h"
-#include "asicameraapi.h"
-#include "icamera.h"
+//#include "asicameraapi.h"
+//#include "icamera.h"
 #include "itrbase.h"
 #include "processimage.h"
 #include <QMutex>

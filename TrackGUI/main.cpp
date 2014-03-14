@@ -11,14 +11,15 @@ using namespace itr_tracker;
 using namespace std;
 int main(int argc, char *argv[])
 {
+    QApplication app(argc,argv);
     itr_math::MathObjStandInit();
     printf("Hello\n");
-    QApplication a(argc, argv);
     TrackCore core;
     QPainter paint;
     QImage Mimg;
     core.Init(320,240);
-    QMutex mutexCurrent;
+    S32 i;
+   /* QMutex mutexCurrent;
     QMutex mutexPost;
 
     CameraThread camera;
@@ -26,20 +27,28 @@ int main(int argc, char *argv[])
     camera.mutexCurrent=&mutexCurrent;
     camera.mutexPost=&mutexPost;
 
-    TrackThread track;
-    track.Init(&core);
-    track.mutexCurrent=&mutexCurrent;
-    while(1)
-    {
+    TrackThread track;*/
 
+    core.Init(320,240);
+    for(i=0; i < core.Width*core.Height; i++)
+    {
+        core.postImg[i] = 128;
+    }
+    //track.mutexCurrent=&mutexCurrent;
+    Mimg=QImage(core.postImg, 320, 240, QImage::Format_RGB32);
+    paint.drawImage(QPoint(0, 0), Mimg);
+   /* while(1)
+    {
         if(core.NewPostImg==true)
+        {
             Mimg=QImage(core.postImg, 320, 240, QImage::Format_RGB32);
             paint.drawImage(QPoint(0, 0), Mimg);
             core.NewPostImg=false;
+        }
+    }*/
 
-    }
 
-    return a.exec();
+    return app.exec();
 }
 
 

@@ -8,17 +8,13 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += mainwindow.h \
-           mythread.h \
-           serialport.h \
-           thread.h \
-           ui_mainwindow.h \
-           ui_widget.h
+HEADERS +=  trackthread.h \
+    joystickthread.h \
+    camerathread.h
 SOURCES += main.cpp \
-           mainwindow.cpp \
-           mythread.cpp \
-           serialport.cpp \
-           thread.cpp
+    trackthread.cpp \
+    joystickthread.cpp \
+    camerathread.cpp
 
 
 unix:!macx: LIBS += -L$$PWD/../TrackCore/obj/Debug/ -lTrackCore
@@ -73,3 +69,17 @@ DEPENDPATH += $$PWD/../PostProcess
 win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../PostProcess/obj/Debug/release/PostProcess.lib
 else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../PostProcess/obj/Debug/debug/PostProcess.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../PostProcess/obj/Debug/libPostProcess.a
+
+unix:!macx: LIBS += -L$$PWD/../../iTRLib/itrdevice/bin/debug/ -litrdevice
+
+INCLUDEPATH += $$PWD/../../iTRLib/itrdevice
+DEPENDPATH += $$PWD/../../iTRLib/itrdevice
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../iTRLib/itrdevice/bin/debug/libitrdevice.a
+
+unix:!macx: LIBS += -L$$PWD/../../iTRLib/itrdevice/camera/ -lASICamera
+
+INCLUDEPATH += $$PWD/../../iTRLib/itrdevice
+DEPENDPATH += $$PWD/../../iTRLib/itrdevice
+
+unix:!macx: LIBS += -lusb-1.0

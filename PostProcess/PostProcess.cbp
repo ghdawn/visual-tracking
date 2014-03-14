@@ -59,17 +59,19 @@
 			<Add directory="/usr/myqt4/include" />
 			<Add directory="/usr/myqt4/include/QtGui" />
 			<Add directory="/usr/myqt4/include/QtCore" />
+			<Add directory="/usr/myqt4/include/QtNetwork" />
+			<Add directory="/home/buaa/iTRLib/itrbase" />
+			<Add directory="/home/buaa/visual-tracking/TrackGUI" />
 		</Compiler>
 		<Linker>
 			<Add library="QtCore" />
 			<Add library="QtGui" />
+			<Add library="QtNetwork" />
 			<Add directory="/usr/myqt4/lib" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Unit filename="processimage.cpp" />
 		<Unit filename="processimage.h" />
-		<Unit filename="serialport.cpp" />
-		<Unit filename="serialport.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
