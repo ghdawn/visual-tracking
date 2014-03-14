@@ -1,6 +1,7 @@
 #include <QtGui/QApplication>
 #include "camerathread.h"
 #include "trackcore.h"
+#include <QtGui>
 #include <string>
 CameraThread::CameraThread(QString name )
 {

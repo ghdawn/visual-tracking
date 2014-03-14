@@ -2,6 +2,7 @@
 #define PROCESSIMAGE_H
 #include <string>
 #include <QWidget>
+#include <QtGui>
 #include "itrbase.h"
 using itr_math::RectangleS;
 using std::string;

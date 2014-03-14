@@ -20,22 +20,20 @@ void ProcessImage::Init(int Width,int Height)
 void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputimg)
 {
     int i;
-    QPainter paint(this);
     int ViewX = 10;
     int ViewY = 10;
     QImage image = QImage(inputimg, width, height, QImage::Format_RGB32);
-    QPixmap pix(width,height);
-    QPainter p(&pix);
-    p.drawImage(QPoint(0, 0), image);
+    QPainter p;
+    p.begin(&image);
+    p.setBrush(Qt::NoBrush);
+    p.setPen(Qt::red);
     p.drawRect(rect.X,rect.Y,rect.Width,rect.Height);
-    p.drawText(QPoint(ViewX, ViewY), tr("ProcessImage Succeed!"));
-    paint.end();
-    pix.save("lm.png");
-    QImage img = QImage("lm.png");
-    outputimg = img.bits();
-     unsigned char * p_bits=img.bits();
-     for(i=0; i < width*height; i++)
-     {
-         outputimg[i] = p_bits[i];
-     }
+    p.drawText(QPoint(ViewX, ViewY), Info.c_str());
+    p.end();
+    image.save("lm2.png");
+    unsigned char * p_bits=image.bits();
+    for(i=0; i < width*height; i++)
+    {
+        outputimg[i] = p_bits[i];
+    }
 }
