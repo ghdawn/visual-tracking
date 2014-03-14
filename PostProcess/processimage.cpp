@@ -21,10 +21,6 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputim
 {
     int i;
     QPainter paint(this);
-    for(i=0; i < width*height; i++)
-    {
-        core->current[i] = inputimg[i];
-    }
     int ViewX = 10;
     int ViewY = 10;
     QImage image = QImage(inputimg, width, height, QImage::Format_RGB32);
@@ -37,13 +33,9 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputim
     pix.save("lm.png");
     QImage img = QImage("lm.png");
     outputimg = img.bits();
-    /* unsigned char * p_bits=img.bits();
+     unsigned char * p_bits=img.bits();
      for(i=0; i < width*height; i++)
      {
          outputimg[i] = p_bits[i];
-     }*/
-    for(i=0; i < width*height; i++)
-    {
-        core->postImg[i] = outputimg[i];
-    }
+     }
 }
