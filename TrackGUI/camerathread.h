@@ -18,20 +18,25 @@ class CameraThread : public QThread
 {
 public:
     CameraThread(QString name = "");
+
     void Init(TrackCore* core);
     ~CameraThread();
+
     void run();
     void stop();
-    QMutex* mutex;
-    RectangleF rect;
-    string info;
+
+    QMutex* mutexCurrent;
+    QMutex* mutexPost;
+
     unsigned char *exinfo;
     RectangleS rectangle;
 private:
     volatile bool stopped;
     QString name;
+    string info;
     TrackCore *core;
     AsiCamera camera;
     ProcessImage process;
-
+    int length;
+    U8* inputimg;
 };

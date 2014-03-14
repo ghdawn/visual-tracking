@@ -14,7 +14,7 @@ public:
     void stop();
     ~TrackThread();
     QMutex* mutextrack;
-    QMutex* mutexPreImg;
+    QMutex* mutexCurrent;
 private:
     volatile bool stopped;
     QString name;

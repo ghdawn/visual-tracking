@@ -1,8 +1,12 @@
 #include <QApplication>
 #include <QtGui>
+#include <QMutex>
 #include <cstdio>
 #include "trackcore.h"
 #include "processimage.h"
+#include "camerathread.h"
+#include "joystickthread.h"
+#include "trackthread.h"
 using namespace itr_tracker;
 using namespace std;
 int main(int argc, char *argv[])
@@ -14,7 +18,17 @@ int main(int argc, char *argv[])
     QPainter paint;
     QImage Mimg;
     core.Init(320,240);
+    QMutex mutexCurrent;
+    QMutex mutexPost;
 
+    CameraThread camera;
+    camera.Init(&core);
+    camera.mutexCurrent=&mutexCurrent;
+    camera.mutexPost=&mutexPost;
+
+    TrackThread track;
+    track.Init(&core);
+    track.mutexCurrent=&mutexCurrent;
     while(1)
     {
 

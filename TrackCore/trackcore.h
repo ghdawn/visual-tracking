@@ -15,8 +15,25 @@ public:
     /** Default constructor */
     TrackCore();
     ~TrackCore();
+    /** \brief
+     *
+     * \param Width int
+     * \param Height int
+     * \return void
+     *
+     */
     void Init(int Width,int Height);
+    /** \brief
+     *
+     * \return void
+     *
+     */
     void BeginTrack();
+    /** \brief
+     *
+     * \return void
+     *
+     */
     void Manual();
     KalmanFilter kf;
     Matrix current;

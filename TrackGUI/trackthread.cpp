@@ -24,6 +24,7 @@ void TrackThread::run()
     ///TODO: lock
         if(core->Tracking)
         {
+            mutexCurrent->lock();
             if(core->TrackStatusChanged)
             {
                 tracking->Init(core->current,core->posTrack);
@@ -33,6 +34,7 @@ void TrackThread::run()
             {
                 tracking->Go(core->current,core->posTrack,z[0],z[1]);
             }
+            mutexCurrent->unlock();
         }
         else
         {

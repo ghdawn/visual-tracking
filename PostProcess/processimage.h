@@ -14,7 +14,23 @@ class ProcessImage : public QWidget
 public:
     ProcessImage(QWidget *parent=0);
     ~ProcessImage();
+    /** \brief
+     *
+     * \param Width int
+     * \param Height int
+     * \return void
+     *
+     */
     void Init(int Width,int Height);
+    /** \brief
+     *
+     * \param inputimg U8*
+     * \param rect RectangleS
+     * \param Info string
+     * \param outputimg U8*
+     * \return void
+     *
+     */
     void Process(U8* inputimg,RectangleS rect,string Info,U8* outputimg);
 private:
     int width;

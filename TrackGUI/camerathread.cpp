@@ -11,22 +11,25 @@ CameraThread::~CameraThread()
 {
 
 }
-void CameraThread::Init(TrackCore* core)
+void CameraThread::Init(TrackCore *core)
 {
-
     this->core = core;
+    length=core->Width*core->Height;
+    inputimg=new U8[length];
+    process.Init(core->Width,core->Height);
 }
 void CameraThread::run()
 {
-    U8 *inputimg=new U8[core->Width*core->Height];
-    process.Init(core->Width,core->Height);
     while (!stopped)
     {
         camera.FetchFrame(inputimg,core->Width*core->Height,exinfo);
-        int i;
-        for(i=0; i < core->Width*core->Height; i++)
+        if(mutexCurrent->tryLock())
         {
-            core->current[i] = inputimg[i];
+            for(int i=0; i < core->Width*core->Height; i++)
+            {
+                core->current[i] = inputimg[i];
+            }
+            mutexCurrent->unlock();
         }
         if(core->Tracking==false)
         {
@@ -47,8 +50,12 @@ void CameraThread::run()
             info+="Y:";
             info+=core->posTrack.Y+core->posTrack.Height/2;
         }
-        process.Process(inputimg,rectangle,info,core->postImg);
-        core->NewPostImg=true;
+        if(mutexPost->tryLock())
+        {
+            process.Process(inputimg,rectangle,info,core->postImg);
+            core->NewPostImg=true;
+            mutexPost->unlock();
+        }
     }
 }
 void CameraThread::stop()
