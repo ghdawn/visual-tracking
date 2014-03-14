@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+#include "trackcore.h"
 #include <QMainWindow>
-
+using namespace itr_tracker;
 namespace Ui {
 class MainWindow;
 }
@@ -14,9 +14,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void paintEvent(QPaintEvent *);
+    TrackCore *core;
 private:
     Ui::MainWindow *ui;
+private slots:
+    void paintEvent(QPaintEvent *);
 };
 
 #endif // MAINWINDOW_H
