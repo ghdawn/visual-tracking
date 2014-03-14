@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <QPainter>
 #include "processimage.h"
-using namespace itr_tracker;
+
 ProcessImage::ProcessImage(QWidget *parent):QWidget(parent)
 {
 
@@ -14,8 +14,8 @@ ProcessImage::~ProcessImage()
 }
 void ProcessImage::Init(int Width,int Height)
 {
-    this->width = width;
-    this->height = height;
+    this->width = Width;
+    this->height = Height;
 }
 void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputimg)
 {

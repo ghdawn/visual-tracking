@@ -81,5 +81,7 @@ DEPENDPATH += $$PWD/../../PostProcess/PostProcess
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../../PostProcess/bin/debug/libPostProcess.a
 
-unix:!macx: LIBS += -lASICamera
-unix:!macx: LIBS += -lusb-1.0
+unix:!macx: LIBS += -L/usr/lib/ -lASICamera
+
+INCLUDEPATH += /usr/include
+DEPENDPATH += /usr/include

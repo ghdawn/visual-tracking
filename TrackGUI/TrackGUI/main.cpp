@@ -10,8 +10,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
+    w.resize(320,240);
     w.show();
-    itr_math::MathObjStandInit();
+    /*itr_math::MathObjStandInit();
     printf("Hello\n");
     TrackCore core;
     QPainter paint;
@@ -21,7 +22,7 @@ int main(int argc, char *argv[])
     ProcessImage process;
     process.Init(320,240);
 
-    /* QMutex mutexCurrent;
+     QMutex mutexCurrent;
         QMutex mutexPost;
 
         CameraThread camera;
@@ -29,16 +30,16 @@ int main(int argc, char *argv[])
         camera.mutexCurrent=&mutexCurrent;
         camera.mutexPost=&mutexPost;
 
-        TrackThread track;*/
+        TrackThread track;
 
     for(i=0; i < core.Width*core.Height; i++)
     {
         core.postImg[i] = 128;
     }
-    //track.mutexCurrent=&mutexCurrent;
+    track.mutexCurrent=&mutexCurrent;
     Mimg=QImage(core.postImg, 320, 240, QImage::Format_RGB32);
     paint.drawImage(QPoint(0, 0), Mimg);
-    /* while(1)
+     while(1)
         {
             if(core.NewPostImg==true)
             {
