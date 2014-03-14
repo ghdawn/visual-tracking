@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     unsigned char *pSrc=new unsigned char[width*height*4];
     for(i=0; i<width*height*3; i++)
     {
-        pSrc[i] = 0;
+        pSrc[i] = i%255;
     }
     QPainter painter;
     QImage image = QImage(pSrc, width, height, QImage::Format_RGB32);
