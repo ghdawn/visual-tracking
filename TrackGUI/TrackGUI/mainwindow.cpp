@@ -24,7 +24,7 @@ void MainWindow::paintEvent(QPaintEvent *)
         pSrc[i] = i;
     }
     QPainter painter(this);
-    QImage image = QImage(pSrc, width, height, QImage::Format_RGB32);
+    QImage image = QImage(pSrc, width, height, QImage::Format_RGB16);
     painter.drawImage(QPoint(0, 0), image);
     painter.end();
 }
