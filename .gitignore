@@ -20,3 +20,6 @@ obj/
 *.save/TrackGUI/.qdevelop
 /"TrackGUI/TrackGUI (\345\244\215\344\273\266).pro"
 /TrackGUI/TrackGUI.pro.user
+/PostProcess/PostProcess/PostProcess.pro.user.8b5af3d
+/TrackGUI/TrackGUI/TrackGUI.pro.user.8b5af3d
+*.user*
