@@ -9,10 +9,10 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 SOURCES += \
-    ../processimage.cpp
+    processimage.cpp
 
 HEADERS += \
-    ../processimage.h
+    processimage.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
@@ -22,3 +22,9 @@ unix:!symbian {
     INSTALLS += target
 }
 
+unix:!macx: LIBS += -L$$PWD/../../../iTRLib/itrbase/bin/debug/ -litrbase
+
+INCLUDEPATH += $$PWD/../../../iTRLib/itrbase
+DEPENDPATH += $$PWD/../../../iTRLib/itrbase
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../../iTRLib/itrbase/bin/debug/libitrbase.a

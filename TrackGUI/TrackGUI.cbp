@@ -33,8 +33,8 @@
 					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
 					<Add library="../GimbalControl/libGimbalControl.a" />
 					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
+					<Add library="../../iTRLib/itrdevice/ASICamera.so" />
 					<Add library="../PostProcess/obj/Debug/libPostProcess.a" />
-					<Add library="../../iTRLib/itrdevice/camera/libASICamera.so" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -75,6 +75,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
