@@ -44,6 +44,7 @@ public:
     Gimbal gimbalControl;
     bool Tracking;
     bool TrackStatusChanged;
+    bool NewTrackImg;
     bool NewPostImg;
     RectangleS posInit;
     RectangleF posTrack;

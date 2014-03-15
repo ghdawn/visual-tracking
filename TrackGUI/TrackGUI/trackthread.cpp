@@ -21,20 +21,22 @@ void TrackThread::run()
     int i;
     while(!stopped)
     {
-    ///TODO: lock
+        ///TODO: lock
         if(core->Tracking)
         {
-            mutexCurrent->lock();
-            if(core->TrackStatusChanged)
+            if(core->NewTrackImg)
             {
-                tracking->Init(core->current,core->posTrack);
-                core->TrackStatusChanged=false;
+                if(core->TrackStatusChanged)
+                {
+                    tracking->Init(core->current,core->posTrack);
+                    core->TrackStatusChanged=false;
+                }
+                else
+                {
+                    tracking->Go(core->current,core->posTrack,z[0],z[1]);
+                }
+                core->NewTrackImg=false;
             }
-            else
-            {
-                tracking->Go(core->current,core->posTrack,z[0],z[1]);
-            }
-            mutexCurrent->unlock();
         }
         else
         {
@@ -44,7 +46,9 @@ void TrackThread::run()
                 tracking=new lktracking();
                 core->TrackStatusChanged=false;
             }
+            // sleep(1000);
         }
+
     }
 }
 void TrackThread::stop()

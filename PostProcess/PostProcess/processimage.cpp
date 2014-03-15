@@ -30,9 +30,9 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputim
     p.drawRect(rect.X,rect.Y,rect.Width,rect.Height);
     p.drawText(QPoint(ViewX, ViewY), Info.c_str());
     p.end();
-    image.save("lm2.png");
+    //image.save("lm2.png");
     unsigned char * p_bits=image.bits();
-    for(i=0; i < width*height; i++)
+    for(i=0; i < width*height*4; i++)
     {
         outputimg[i] = p_bits[i];
     }

@@ -10,7 +10,7 @@
 #include "processimage.h"
 #include <QMutex>
 using namespace itr_tracker;
-using namespace itr_device;
+
 using itr_math::RectangleF;
 using itr_math::RectangleS;
 using std::string;
@@ -35,8 +35,9 @@ private:
     QString name;
     string info;
     TrackCore *core;
-    AsiCamera camera;
+    itr_device::v4linux camera;
     ProcessImage process;
     int length;
     U8* inputimg;
+    U8* rawImg;
 };

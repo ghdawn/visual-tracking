@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 #include "trackcore.h"
 #include <QMainWindow>
+#include <QMutex>
 using namespace itr_tracker;
 namespace Ui {
 class MainWindow;
@@ -15,6 +16,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     TrackCore *core;
+    QMutex* mutexPost;
 private:
     Ui::MainWindow *ui;
 private slots:

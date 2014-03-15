@@ -142,7 +142,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         printf("FBFilter: %d  \n",fb_filter());
         printf("NCCFilter: %d  \n",ncc_filter(tracker.last->img[0],tracker.current->img[0]));
     }
-    if(true)
+    if(false)
     {
         ///特征点匹配关系输出
         Matrix cor;
@@ -159,7 +159,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         }
         Draw::Correspond(tracker.last->img[0],tracker.current->img[0],outU,outV,count,cor);
         char file[20];
-        sprintf(file,"bin/Debug/corr%d",debugcount++);
+        sprintf(file,"corr%d",debugcount++);
         IOpnm::WritePGMFile(file,cor);
     }
     ///计算矩形框速度
@@ -208,7 +208,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         if(median>10)
         {
             Tracked=false;
-            getchar();
+            //getchar();
             printf("Failure!!\n");
         }
 
@@ -237,4 +237,5 @@ lktracking::~lktracking()
 {
     delete[] x;
     delete[] y;
+    delete[] dist;
 }

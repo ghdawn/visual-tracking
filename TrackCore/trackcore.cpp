@@ -14,6 +14,8 @@ namespace itr_tracker
         postImg=NULL;
         posInit.Init(144,108,32,24);
         int missedImg=0;
+        NewTrackImg=false;
+        NewPostImg=false;
     }
 
     TrackCore::~TrackCore()
@@ -23,10 +25,10 @@ namespace itr_tracker
     }
     void TrackCore::Init(int Width,int Height)
     {
-        current.Init(Width,Height);
+        current.Init(Height,Width);
         this->Width=Width;
         this->Height=Height;
-        postImg=new U8[Width*Height];
+        postImg=new U8[Width*Height*4];
     }
 
     void TrackCore::BeginTrack()
