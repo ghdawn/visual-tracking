@@ -186,11 +186,11 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         F32 median;
         //RANSAC
         ransac.Process(x,amount, drop);
-        printf("%d ",drop);
+        //printf("%d ",drop);
         std::sort(x, x + amount);
         Vx=x[(amount - drop) / 2];
 
-        printf("\n");
+        //printf("\n");
         itr_math::StatisticsObj->Median(x,amount-drop,median);
         if(median>10)
         {
@@ -199,11 +199,11 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
             getchar();
         }
         ransac.Process(y,amount, drop);
-        printf("%d \n",drop);
+        //printf("%d \n",drop);
         std::sort(y, y + amount);
         Vy=y[(amount - drop) / 2];
 
-        printf("\n");
+        //printf("\n");
         itr_math::StatisticsObj->Median(y,amount-drop,median);
         if(median>10)
         {

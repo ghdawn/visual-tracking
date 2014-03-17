@@ -4,6 +4,8 @@
 #include "itrvision.h"
 #include <QtGui>
 #include <string>
+#include <sstream>
+using std::stringstream;
 CameraThread::CameraThread(QString name )
 {
     stopped = false;
@@ -37,7 +39,7 @@ void CameraThread::run()
             core->NewTrackImg=true;
             mutexCurrent->unlock();
         }
-        if(core->Tracking==false)
+        if(!core->Tracking)
         {
             rectangle.X=core->posInit.X;
             rectangle.Y=core->posInit.Y;
@@ -47,14 +49,16 @@ void CameraThread::run()
         }
         else
         {
-            rectangle.X=core->posTrack.X;
-            rectangle.Y=core->posTrack.Y;
+
+            printf("X:%f %f\n",core->kf.x[0],core->kf.x[1]);
+            printf("P:%f %f\n",core->posTrack.X,core->posTrack.Y);
+            rectangle.X=core->kf.x[0];
+            rectangle.Y=core->kf.x[1];
             rectangle.Width=core->posTrack.Width;
             rectangle.Height=core->posTrack.Height;
-            info="X:";
-            info+=core->posTrack.X+core->posTrack.Width/2;
-            info+="Y:";
-            info+=core->posTrack.Y+core->posTrack.Height/2;
+            stringstream ss;
+            ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2<<"Y:"<<core->posTrack.Y+core->posTrack.Height/2;
+            ss>>info;
         }
         if(mutexPost->tryLock())
         {

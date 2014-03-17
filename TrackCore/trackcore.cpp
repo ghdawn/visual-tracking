@@ -5,7 +5,7 @@ namespace itr_tracker
     TrackCore::TrackCore()
     {
         kf.Init(4);
-        F32 data[24]= {1,0,1,0,
+        F32 data[16]= {1,0,1,0,
                        0,1,0,1,
                        0,0,1,0,
                        0,0,0,1,
@@ -33,8 +33,8 @@ namespace itr_tracker
 
     void TrackCore::BeginTrack()
     {
-        Tracking=true;
         TrackStatusChanged=true;
+        Tracking=true;
         kf.x[0]=posInit.X;
         kf.x[1]=posInit.Y;
         kf.x[2]=kf.x[3]=0;
@@ -47,7 +47,7 @@ namespace itr_tracker
 
     void TrackCore::Manual()
     {
-        Tracking=false;
         TrackStatusChanged=true;
+        Tracking=false;
     }
 }

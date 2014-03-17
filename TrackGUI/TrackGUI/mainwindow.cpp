@@ -27,7 +27,6 @@ void MainWindow::paintEvent(QPaintEvent *)
            mutexPost->lock();
            Mimg=QImage(core->postImg, 320, 240, QImage::Format_RGB32);
            paint.drawImage(QPoint(0, 0), Mimg);
-           printf("Haha\n");
            paint.end();
            mutexPost->unlock();
            core->NewPostImg=false;

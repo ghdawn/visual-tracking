@@ -12,12 +12,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     itr_math::MathObjStandInit();
-    printf("Hello\n");
+
     TrackCore core;
     core.Init(320,240);
     core.Tracking=false;
     core.TrackStatusChanged=false;
-    S32 i;
 
     QMutex mutexCurrent;
     QMutex mutexPost;
@@ -26,8 +25,8 @@ int main(int argc, char *argv[])
     camera.Init(&core);
     camera.mutexCurrent=&mutexCurrent;
     camera.mutexPost=&mutexPost;
-
     camera.start();
+
     TrackThread track;
     track.Init(&core);
     track.mutexCurrent =&mutexCurrent;
