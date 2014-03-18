@@ -9,12 +9,12 @@ TrackThread::TrackThread(QString name)
     stopped = false;
     this->name = name;
     F32 data[8]= {0,0,1,0,
-                   0,0,0,1,
+                   0,0,0,1
                    };
     Hv.Init(2,4);
     Hv.CopyFrom(data);
     R.Init(2,2);
-    R.SetDiag(30.012306);
+    R.SetDiag(15.012306);
     z.Init(2);
     tracking=new lktracking();
 }

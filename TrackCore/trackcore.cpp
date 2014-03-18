@@ -8,7 +8,7 @@ namespace itr_tracker
         F32 data[16]= {1,0,1,0,
                        0,1,0,1,
                        0,0,1,0,
-                       0,0,0,1,
+                       0,0,0,1
                       };
         kf.F_x.CopyFrom(data);
         postImg=NULL;

@@ -15,7 +15,7 @@ void JoyStickThread::Init(TrackCore* core)
 {
 
     this->core = core;
-    joystick.Open("/dev/input/js1");
+    joystick.Open("/dev/input/js0");
 }
 void JoyStickThread::run()
 {

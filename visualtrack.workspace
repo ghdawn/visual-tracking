@@ -5,5 +5,6 @@
 		<Project filename="TrackCore/TrackCore.cbp" />
 		<Project filename="PostProcess/PostProcess.cbp" />
 		<Project filename="GimbalControl/GimbalControl.cbp" />
+		<Project filename="SurfDetection/SurfDetection.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
