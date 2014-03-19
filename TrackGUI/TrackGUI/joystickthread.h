@@ -12,9 +12,22 @@ class JoyStickThread : public QThread
 {
 public:
     JoyStickThread(QString name = "");
+    /**
+      * \brief 析构函数
+      */
     ~JoyStickThread();
+    /**
+      * \brief 初始化摇杆线程
+      * \param core Trackcore类
+      */
     void Init(TrackCore* core);
+    /**
+      * \brief 运行线程
+      */
     void run();
+    /**
+      * \brief 终止线程
+      */
     void stop();
     QMutex* mutex;
     TrackCore *core;

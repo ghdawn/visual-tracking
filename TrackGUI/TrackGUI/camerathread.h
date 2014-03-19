@@ -18,11 +18,22 @@ class CameraThread : public QThread
 {
 public:
     CameraThread(QString name = "");
-
+    /**
+      * \brief 初始化camera线程
+      * \param core Trackcore类
+      */
     void Init(TrackCore* core);
+    /**
+      * \brief 析构函数
+      */
     ~CameraThread();
-
+    /**
+      * \brief 运行线程
+      */
     void run();
+    /**
+      * \brief 终止线程
+      */
     void stop();
 
     QMutex* mutexCurrent;
