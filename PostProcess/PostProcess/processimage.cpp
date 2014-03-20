@@ -17,7 +17,7 @@ void ProcessImage::Init(int Width,int Height)
     this->width = Width;
     this->height = Height;
 }
-void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputimg)
+void ProcessImage::Process(U8* inputimg,RectangleS rect,std::vector<string> InfoList,U8* outputimg)
 {
     int i;
     int ViewX = 10;
@@ -28,7 +28,12 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,string Info,U8* outputim
     p.setBrush(Qt::NoBrush);
     p.setPen(Qt::red);
     p.drawRect(rect.X,rect.Y,rect.Width,rect.Height);
-    p.drawText(QPoint(ViewX, ViewY), Info.c_str());
+    for(i=0;i<InfoList.size();i++)
+    {
+         p.drawText(QPoint(ViewX, ViewY), InfoList[i].c_str());
+         ViewY = ViewY+i*20;
+    }
+  // p.drawText(QPoint(ViewX, ViewY), Info.c_str());
     p.end();
     //image.save("lm2.png");
     unsigned char * p_bits=image.bits();

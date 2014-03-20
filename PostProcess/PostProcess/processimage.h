@@ -1,10 +1,12 @@
 #ifndef PROCESSIMAGE_H
 #define PROCESSIMAGE_H
 #include <string>
+#include <vector>
 #include <QWidget>
 #include <QtGui>
 #include "itrbase.h"
 using itr_math::RectangleS;
+using std::vector;
 using std::string;
 class ProcessImage:public QWidget
 {
@@ -27,7 +29,7 @@ public:
      * \param Info 输入的文本信息
      * \param outputimg 输出图片的指针
      */
-    void Process(U8* inputimg,RectangleS rect,string Info,U8* outputimg);
+    void Process(U8* inputimg,RectangleS rect,std::vector<string> InfoList,U8* outputimg);
 private:
     int width,height;
 };
