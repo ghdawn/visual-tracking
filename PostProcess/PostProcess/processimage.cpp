@@ -33,7 +33,7 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,std::vector<string> Info
          if(i==2)
          {
              ViewY=10;
-             ViewX=250;
+             ViewX=310-InfoList[i].length();
              p.drawText(QPoint(ViewX, ViewY), InfoList[i].c_str());
          }
          else
