@@ -51,7 +51,7 @@ void CameraThread::run()
         printf("End Prepare Matrix!\n");
         printf("Begin Draw Post!\n");
         
-        //,
+
         if(!core->Tracking)
         {
             rectangle.X=core->posInit.X;
@@ -73,14 +73,14 @@ void CameraThread::run()
             rectangle.Height=core->posTrack.Height;
             stringstream ss;
             ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2<<"\nY:"<<core->posTrack.Y+core->posTrack.Height/2;
-            ss<<"\nCamera;"<<1000.0/delta<<"Hz";
+            ss<<"\nCamera;"<<1000/delta<<"Hz";
             for(int i=0;i<3;i++)
             {
                 ss>>info;
                 infolist.push_back(info);
             }
         }
-        //RGB32
+
         if(mutexPost->tryLock())
         {
             for(int i=0;i<length;++i)

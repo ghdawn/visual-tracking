@@ -14,7 +14,7 @@ TrackThread::TrackThread(QString name)
     Hv.Init(2,4);
     Hv.CopyFrom(data);
     R.Init(2,2);
-    R.SetDiag(1.012306);
+    R.SetDiag(15.012306);
     z.Init(2);
     tracking=new lktracking();
 }
