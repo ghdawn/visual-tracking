@@ -29,8 +29,17 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,std::vector<string> Info
     p.setPen(Qt::red);
     p.drawRect(rect.X,rect.Y,rect.Width,rect.Height);
     for(i=0;i<InfoList.size();i++)
-    {
-         p.drawText(QPoint(ViewX, ViewY), InfoList[i].c_str());
+    {         
+         if(i==2)
+         {
+             ViewY=10;
+             ViewX=250;
+             p.drawText(QPoint(ViewX, ViewY), InfoList[i].c_str());
+         }
+         else
+         {
+             p.drawText(QPoint(ViewX, ViewY), InfoList[i].c_str());
+         }
          ViewY = ViewY+20;
     }
   // p.drawText(QPoint(ViewX, ViewY), Info.c_str());
