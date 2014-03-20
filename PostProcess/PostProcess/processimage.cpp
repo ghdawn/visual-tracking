@@ -31,7 +31,7 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,std::vector<string> Info
     for(i=0;i<InfoList.size();i++)
     {
          p.drawText(QPoint(ViewX, ViewY), InfoList[i].c_str());
-         ViewY = ViewY+i*20;
+         ViewY = ViewY+20;
     }
   // p.drawText(QPoint(ViewX, ViewY), Info.c_str());
     p.end();

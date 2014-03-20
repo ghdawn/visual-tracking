@@ -31,9 +31,12 @@ void CameraThread::run()
     while (!stopped)
     {
         printf("Begin Fetch Frame!\n");
+        infolist.clear();
+
         camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
         printf("End Fetch Frame!\n");
         delta=clock.Tick();
+
         core->deltaT+=delta;
         printf("Begin Prepare Matrix!\n");
         if(mutexCurrent->tryLock())
@@ -42,12 +45,13 @@ void CameraThread::run()
             {
                 core->current[i] = rawImg[i];
             }
-           // itr_vision::IOpnm::WritePGMFile("cur.pgm",core->current);
             core->NewTrackImg=true;
             mutexCurrent->unlock();
         }
         printf("End Prepare Matrix!\n");
         printf("Begin Draw Post!\n");
+        
+        //,
         if(!core->Tracking)
         {
             rectangle.X=core->posInit.X;
@@ -55,6 +59,7 @@ void CameraThread::run()
             rectangle.Width=core->posInit.Width;
             rectangle.Height=core->posInit.Height;
             info="No tracker!!";
+            infolist.push_back(info);
         }
         else
         {
@@ -67,9 +72,15 @@ void CameraThread::run()
             rectangle.Width=core->posTrack.Width;
             rectangle.Height=core->posTrack.Height;
             stringstream ss;
-            ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2<<"Y:"<<core->posTrack.Y+core->posTrack.Height/2;
-            ss>>info;
+            ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2<<"\nY:"<<core->posTrack.Y+core->posTrack.Height/2;
+            ss<<"\nCamera;"<<1000.0/delta<<"Hz";
+            for(int i=0;i<3;i++)
+            {
+                ss>>info;
+                infolist.push_back(info);
+            }
         }
+        //RGB32
         if(mutexPost->tryLock())
         {
             for(int i=0;i<length;++i)
@@ -79,7 +90,7 @@ void CameraThread::run()
                 inputimg[4*i+2]=rawImg[i];
                 inputimg[4*i+3]=rawImg[i];
             }
-            process.Process(inputimg,rectangle,info,core->postImg);
+            process.Process(inputimg,rectangle,infolist,core->postImg);
             core->NewPostImg=true;
             mutexPost->unlock();
         }
@@ -89,5 +100,7 @@ void CameraThread::run()
 void CameraThread::stop()
 {
     stopped = true;
+    delete[] inputimg;
+    delete[] rawImg;
 }
 

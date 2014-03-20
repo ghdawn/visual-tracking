@@ -7,13 +7,14 @@
 //#include "asicameraapi.h"
 //#include "icamera.h"
 #include "itrbase.h"
+#include <vector>
 #include "processimage.h"
 #include <QMutex>
 using namespace itr_tracker;
-
 using itr_math::RectangleF;
 using itr_math::RectangleS;
 using std::string;
+using std::vector;
 class CameraThread : public QThread
 {
 public:
@@ -45,6 +46,7 @@ private:
     volatile bool stopped;
     QString name;
     string info;
+    vector<string> infolist;
     TrackCore *core;
     itr_device::v4linux camera;
     ProcessImage process;
