@@ -51,4 +51,5 @@ private:
     int length;
     U8* inputimg;
     U8* rawImg;
+    TimeClock clock;
 };

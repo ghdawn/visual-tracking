@@ -3,11 +3,8 @@
 using namespace std;
 using itr_math::Vector;
 lktracking::lktracking():
-    FeatureNum(100),frame1Feature(FeatureNum),frame2Feature(FeatureNum),fbFeature(FeatureNum)
+    FeatureNum(MaxFeatureNum),frame1Feature(FeatureNum),frame2Feature(FeatureNum),fbFeature(FeatureNum)
 {
-    x=new F32[FeatureNum];
-    y=new F32[FeatureNum];
-    dist=new F32[FeatureNum];
     debugcount=1;
 }
 
@@ -235,7 +232,5 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
 
 lktracking::~lktracking()
 {
-    delete[] x;
-    delete[] y;
-    delete[] dist;
+
 }

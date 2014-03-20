@@ -19,6 +19,7 @@ class lktracking
         /** Default destructor */
         virtual ~lktracking();
         S32 debugcount;
+        static const S32 MaxFeatureNum=100;
     protected:
     private:
         F32 getScale(S32 count);
@@ -52,7 +53,7 @@ class lktracking
         Ransac<F32,F32> ransac;
         ConvoluteSquare conv;
 
-        F32 *x,*y,*dist;
+        F32 x[MaxFeatureNum],y[MaxFeatureNum],dist[MaxFeatureNum];
         LKTracker tracker;
 };
 

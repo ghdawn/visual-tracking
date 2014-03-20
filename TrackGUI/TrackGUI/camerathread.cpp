@@ -10,7 +10,7 @@ CameraThread::CameraThread(QString name )
 {
     stopped = false;
     this->name = name;
-    camera.Open(0,320,240,2);
+    camera.Open(1,320,240,2);
 }
 CameraThread::~CameraThread()
 {
@@ -23,12 +23,19 @@ void CameraThread::Init(TrackCore *core)
     inputimg=new U8[length*4];
     rawImg=new U8[length];
     process.Init(core->Width,core->Height);
+    clock.Tick();
 }
 void CameraThread::run()
 {
+    int delta;
     while (!stopped)
     {
+        printf("Begin Fetch Frame!\n");
         camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
+        printf("End Fetch Frame!\n");
+        delta=clock.Tick();
+        core->deltaT+=delta;
+        printf("Begin Prepare Matrix!\n");
         if(mutexCurrent->tryLock())
         {
             for(int i=0; i < core->Width*core->Height; i++)
@@ -39,6 +46,8 @@ void CameraThread::run()
             core->NewTrackImg=true;
             mutexCurrent->unlock();
         }
+        printf("End Prepare Matrix!\n");
+        printf("Begin Draw Post!\n");
         if(!core->Tracking)
         {
             rectangle.X=core->posInit.X;
@@ -49,9 +58,10 @@ void CameraThread::run()
         }
         else
         {
-
-            printf("X:%f %f\n",core->kf.x[0],core->kf.x[1]);
-            printf("P:%f %f\n",core->posTrack.X,core->posTrack.Y);
+            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
+            core->kf.UpdateModel();
+            core->posTrack.X=core->kf.x[0];
+            core->posTrack.Y=core->kf.x[1];
             rectangle.X=core->kf.x[0];
             rectangle.Y=core->kf.x[1];
             rectangle.Width=core->posTrack.Width;
@@ -73,6 +83,7 @@ void CameraThread::run()
             core->NewPostImg=true;
             mutexPost->unlock();
         }
+        printf("End Draw Post!\n");
     }
 }
 void CameraThread::stop()

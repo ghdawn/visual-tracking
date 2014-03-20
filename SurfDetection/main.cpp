@@ -114,7 +114,7 @@ int main()
     IOpnm::ReadPGMFile("img2.pgm", gray_matrix_in2);
 
 
-    RectangleS rect(100,100,100,100);
+    RectangleS rect(150,90,50,30);
     RectangleS rect_result(100,100,300,300);
 
     if(track_surf(gray_matrix_in,  rect, gray_matrix_in2,rect_result))
