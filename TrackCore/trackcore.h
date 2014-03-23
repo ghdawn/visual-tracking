@@ -5,6 +5,8 @@
 #include "itrvision.h"
 #include "lktracking.h"
 #include "gimbal.h"
+#include "asyncbuffer.h"
+
 using itr_math::RectangleF;
 using itr_math::RectangleS;
 namespace itr_tracker
@@ -49,6 +51,7 @@ public:
     RectangleS posInit;
     RectangleF posTrack;
     int missedImg;
+    int deltaT;
 protected:
 private:
 };

@@ -164,7 +164,7 @@ int main()
     /// 读取原始感兴趣区域
     RectangleS rect(0, 0, 0, 0);
     FILE *InitInfo=fopen("bin/Debug/01_david/init.txt","r");
-    fscanf(InitInfo,"%d %d %d %d",&rect.X,&rect.Y,&rect.Width,&rect.Height);
+    fscanf(InitInfo,"%d,%d,%d,%d",&rect.X,&rect.Y,&rect.Width,&rect.Height);
     fclose(InitInfo);
     rect.Width-=rect.X;
     rect.Height-=rect.Y;

@@ -9,8 +9,8 @@ TrackThread::TrackThread(QString name)
     stopped = false;
     this->name = name;
     F32 data[8]= {0,0,1,0,
-                   0,0,0,1
-                   };
+                  0,0,0,1
+                 };
     Hv.Init(2,4);
     Hv.CopyFrom(data);
     R.Init(2,2);
@@ -24,15 +24,17 @@ void TrackThread::Init(TrackCore *core)
 }
 void TrackThread::run()
 {
-    int i;
+    FILE* fkf=fopen("kf.txt","w");
     while(!stopped)
     {
         ///TODO: lock
+
         if(core->Tracking)
         {
             if(core->NewTrackImg)
             {
                 //mutexCurrent->lock();
+                printf("Begin Track!\n");
                 if(core->TrackStatusChanged)
                 {
                     tracking->Init(core->current,core->posTrack);
@@ -42,28 +44,45 @@ void TrackThread::run()
                 else
                 {
                     tracking->Go(core->current,core->posTrack,z[0],z[1]);\
-                    printf("Go:%d\n",core->missedImg);
+                    //printf("Go:%d\n",core->missedImg);
                     //Hv(0,2)=Hv(1,3)=core->missedImg;
                     core->missedImg=0;
-                    core->kf.UpdateModel();
+
+                    Hv(0,2)=Hv(1,3)=core->deltaT;
+                    core->deltaT=0;
                     core->kf.UpdateMeasure(Hv,R,z);
+                    if(false)
+                    {
+                        printf("Delta T:%d\n",core->deltaT);
+                        printf("X:%f %f\n",core->kf.x[0],core->kf.x[1]);
+                        printf("P:%f %f\n",core->posTrack.X,core->posTrack.Y);
+                    }
+                    if(true)
+                    {
+                        fprintf(fkf,"%f %f %f %f\n",core->kf.x[0],core->kf.x[1],core->posTrack.X,core->posTrack.Y);
+                    }
+                    core->posTrack.X=core->kf.x[0];
+                    core->posTrack.Y=core->kf.x[1];
                 }
                 core->NewTrackImg=false;
                 //mutexCurrent->unlock();
+                printf("End Track!\n");
             }
+
         }
         else
         {
             if(core->TrackStatusChanged)
             {
+                //fclose(fkf);
                 delete tracking;
                 tracking=new lktracking();
                 core->TrackStatusChanged=false;
             }
-            usleep(200);
+            usleep(500);
         }
-
     }
+
 }
 void TrackThread::stop()
 {

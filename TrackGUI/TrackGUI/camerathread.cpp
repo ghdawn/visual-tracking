@@ -10,7 +10,7 @@ CameraThread::CameraThread(QString name )
 {
     stopped = false;
     this->name = name;
-    camera.Open(0,320,240,2);
+    camera.Open(1,320,240,2);
 }
 CameraThread::~CameraThread()
 {
@@ -23,22 +23,35 @@ void CameraThread::Init(TrackCore *core)
     inputimg=new U8[length*4];
     rawImg=new U8[length];
     process.Init(core->Width,core->Height);
+    clock.Tick();
 }
 void CameraThread::run()
 {
+    int delta;
     while (!stopped)
     {
+        printf("Begin Fetch Frame!\n");
+        infolist.clear();
+
         camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
+        printf("End Fetch Frame!\n");
+        delta=clock.Tick();
+
+        core->deltaT+=delta;
+        printf("Begin Prepare Matrix!\n");
         if(mutexCurrent->tryLock())
         {
             for(int i=0; i < core->Width*core->Height; i++)
             {
                 core->current[i] = rawImg[i];
             }
-           // itr_vision::IOpnm::WritePGMFile("cur.pgm",core->current);
             core->NewTrackImg=true;
             mutexCurrent->unlock();
         }
+        printf("End Prepare Matrix!\n");
+        printf("Begin Draw Post!\n");
+        
+
         if(!core->Tracking)
         {
             rectangle.X=core->posInit.X;
@@ -46,20 +59,28 @@ void CameraThread::run()
             rectangle.Width=core->posInit.Width;
             rectangle.Height=core->posInit.Height;
             info="No tracker!!";
+            infolist.push_back(info);
         }
         else
         {
-
-            printf("X:%f %f\n",core->kf.x[0],core->kf.x[1]);
-            printf("P:%f %f\n",core->posTrack.X,core->posTrack.Y);
+            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
+            core->kf.UpdateModel();
+            core->posTrack.X=core->kf.x[0];
+            core->posTrack.Y=core->kf.x[1];
             rectangle.X=core->kf.x[0];
             rectangle.Y=core->kf.x[1];
             rectangle.Width=core->posTrack.Width;
             rectangle.Height=core->posTrack.Height;
             stringstream ss;
-            ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2<<"Y:"<<core->posTrack.Y+core->posTrack.Height/2;
-            ss>>info;
+            ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2<<"\nY:"<<core->posTrack.Y+core->posTrack.Height/2;
+            ss<<"\nCamera;"<<1000/delta<<"Hz";
+            for(int i=0;i<3;i++)
+            {
+                ss>>info;
+                infolist.push_back(info);
+            }
         }
+
         if(mutexPost->tryLock())
         {
             for(int i=0;i<length;++i)
@@ -69,14 +90,17 @@ void CameraThread::run()
                 inputimg[4*i+2]=rawImg[i];
                 inputimg[4*i+3]=rawImg[i];
             }
-            process.Process(inputimg,rectangle,info,core->postImg);
+            process.Process(inputimg,rectangle,infolist,core->postImg);
             core->NewPostImg=true;
             mutexPost->unlock();
         }
+        printf("End Draw Post!\n");
     }
 }
 void CameraThread::stop()
 {
     stopped = true;
+    delete[] inputimg;
+    delete[] rawImg;
 }
 

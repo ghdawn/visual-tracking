@@ -52,6 +52,20 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="/usr/myqt4/include" />
+			<Add directory="/usr/myqt4/include/QtGui" />
+			<Add directory="/usr/myqt4/include/QtCore" />
+			<Add directory="/usr/myqt4/include/QtNetwork" />
+		</Compiler>
+		<Linker>
+			<Add library="QtCore" />
+			<Add library="QtGui" />
+			<Add library="QtNetwork" />
+			<Add directory="/usr/myqt4/lib" />
+		</Linker>
+		<Unit filename="asyncbuffer.h" />
 		<Unit filename="lktracking.cpp" />
 		<Unit filename="lktracking.h" />
 		<Unit filename="trackcore.cpp" />
@@ -59,6 +73,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

@@ -3,12 +3,15 @@
 using namespace std;
 using itr_math::Vector;
 lktracking::lktracking():
-    FeatureNum(MaxFeatureNum),frame1Feature(FeatureNum),frame2Feature(FeatureNum),fbFeature(FeatureNum)
+    FeatureNum(100),frame1Feature(FeatureNum),frame2Feature(FeatureNum),fbFeature(FeatureNum)
 {
+    x=new F32[FeatureNum];
+    y=new F32[FeatureNum];
+    dist=new F32[FeatureNum];
     debugcount=1;
 }
 
-void lktracking::Init(const Matrix &current,RectangleF &rect)
+void lktracking::Init(const Matrix &current,RectangleS &rect)
 {
     tracker.Init(current);
     SelectKLTFeature select(current);
@@ -123,7 +126,7 @@ int lktracking::fb_filter()
     }
     return drop;
 }
-bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
+bool lktracking::Go(const Matrix &current,RectangleS &rect,F32 &Vx,F32 &Vy)
 {
     TimeClock clock;
     int i;
@@ -139,7 +142,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         printf("FBFilter: %d  \n",fb_filter());
         printf("NCCFilter: %d  \n",ncc_filter(tracker.last->img[0],tracker.current->img[0]));
     }
-    if(false)
+    if(true)
     {
         ///特征点匹配关系输出
         Matrix cor;
@@ -156,7 +159,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         }
         Draw::Correspond(tracker.last->img[0],tracker.current->img[0],outU,outV,count,cor);
         char file[20];
-        sprintf(file,"corr%d",debugcount++);
+        sprintf(file,"bin/Debug/corr%d",debugcount++);
         IOpnm::WritePGMFile(file,cor);
     }
     ///计算矩形框速度
@@ -175,19 +178,17 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
     }
     cout << "Points: "<<amount << endl;
     if(amount==0)
-    {
         Tracked=false;
-    }
     if(amount>0)
     {
         F32 median;
         //RANSAC
         ransac.Process(x,amount, drop);
-        //printf("%d ",drop);
+        printf("%d ",drop);
         std::sort(x, x + amount);
         Vx=x[(amount - drop) / 2];
 
-        //printf("\n");
+        printf("\n");
         itr_math::StatisticsObj->Median(x,amount-drop,median);
         if(median>10)
         {
@@ -196,16 +197,16 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
             getchar();
         }
         ransac.Process(y,amount, drop);
-        //printf("%d \n",drop);
+        printf("%d \n",drop);
         std::sort(y, y + amount);
         Vy=y[(amount - drop) / 2];
 
-        //printf("\n");
+        printf("\n");
         itr_math::StatisticsObj->Median(y,amount-drop,median);
         if(median>10)
         {
             Tracked=false;
-            //getchar();
+            getchar();
             printf("Failure!!\n");
         }
 
@@ -232,5 +233,6 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
 
 lktracking::~lktracking()
 {
-
+    delete[] x;
+    delete[] y;
 }
