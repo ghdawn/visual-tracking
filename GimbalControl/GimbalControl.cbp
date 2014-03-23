@@ -53,6 +53,8 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="serialport.cpp" />
+		<Unit filename="serialport.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
