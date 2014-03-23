@@ -7,5 +7,6 @@
 		<Project filename="GimbalControl/GimbalControl.cbp" />
 		<Project filename="SurfDetection/SurfDetection.cbp" />
 		<Project filename="trackdemo/trackdemo.cbp" />
+		<Project filename="Surfdetectiontry/Surfdetectiontry.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
