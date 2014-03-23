@@ -16,7 +16,7 @@ SerialPort::SerialPort()
 
 }                                                 //析构
 
-void SerialPort::Init(char * name, int baudrate)
+void SerialPort::Init(/*char * name,*/ int baudrate)
 {
     int BAUDRATE;
     struct termios oldtio,newtio;     //termios结构是用来保存波特率、字符大小等

@@ -1,8 +1,9 @@
 #ifndef GIMBAL_H
 #define GIMBAL_H
 #include "itrbase.h"
+#include "serialport.h"
 using itr_math::Vector;
-
+using namespace itr_protocol;
 namespace itr_tracker
 {
     /**
@@ -37,7 +38,10 @@ namespace itr_tracker
             * \param omegay y方向角速率
             */
             void Control(F32 omegax,F32 omegay);
+
         private:
+
+            StandSerialProtocol protocol;
 
     };
 }
