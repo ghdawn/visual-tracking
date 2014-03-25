@@ -1,9 +1,10 @@
 #include <iostream>
 #include "itrvision.h"
 
-#define pi2ang (180.0/3.1415926)
-#define ang2pi (3.1415926/180.0)
-
+#define pi2ang 1 //(180.0/3.1415926)
+#define ang2pi 1 //(3.1415926/180.0)
+#define PI 3.1415926
+#define min_dis_angle 0.2
 #define trust_max 100.0
 #define trust_dec 20.0
 #define trust_min 10.0
@@ -43,11 +44,16 @@ F32 _getangle(VectorFeaturePoint vec,F32 center_x,F32 center_y)
 {
     F32 result;
     if(center_x-vec.X==0)
-        return (90.0-vec.Dir*pi2ang);
+    {
+        if(center_y<vec.Y)
+            return (vec.Dir*pi2ang+PI/2);
+        else
+            return (vec.Dir*pi2ang-PI/2);
+    }
     else
     {
         itr_math::NumericalObj->Atan2((F32)(center_y-vec.Y),(F32)(center_x-vec.X),result);
-        return((result-vec.Dir)*pi2ang);
+        return((vec.Dir-result)*pi2ang);
     }
 }
 
@@ -106,6 +112,7 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
     F32 F_dir_2=FeaturePointList2[Modellist[lable[0]].ID].Dir;
     ;
 /// ///////////////////////////////////////////
+
         cof(FeaturePointList2[Modellist[lable[0]].ID], (F32*)(Modellist[lable[0]].Tag)+1,
             FeaturePointList2[Modellist[lable[1]].ID], (F32*)(Modellist[lable[1]].Tag)+1,
             norm_center);
@@ -124,7 +131,7 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
                 {
                     i++;
                 }
-                dis+=getdismis(FeaturePointList2[Modellist[i].ID],(F32*)(Modellist[i].Tag),norm_center);
+                dis+=getdismis(FeaturePointList2[Modellist[i].ID],((F32*)(Modellist[i].Tag) )+1,norm_center);
             }
             if(dis<min_dis)
             {
@@ -162,9 +169,12 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
         }
         else
         {
+
             Modellist[i].X=FeaturePointList2[Modellist[i].ID].X;
             Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y;
             Modellist[i].Dir=FeaturePointList2[Modellist[i].ID].Dir;
+
+FeaturePointList2[Modellist[i].ID].ID=1;
 
             *(F32*)(Modellist[i].Tag)+=trust_dec;
             if(*(F32*)(Modellist[i].Tag)>trust_max)
@@ -177,13 +187,19 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
     for(S32 i=0; i<size_p; i++)
     {
 
-            if(rect_result.IsInRectangle(FeaturePointList2[i].X,FeaturePointList2[i].Y))
+            if(rect_result.IsInRectangle(FeaturePointList2[i].X,FeaturePointList2[i].Y)&&FeaturePointList2[i].ID!=1)
             {
+
                 FeaturePointList2[i].Tag=new F32[2]();
                 F32* tmpp=(F32*)FeaturePointList2[i].Tag;
                 *tmpp=trust_new;
                 *(tmpp+1)=_getangle(FeaturePointList2[i], rect_result.X+rect_result.Width/2, rect_result.Y+rect_result.Height/2);
+
+                if(getdismis(FeaturePointList2[i],((F32*)(FeaturePointList2[i].Tag) )+1,best_center) >min_dis_angle)
+                    break;
+
                 Modellist.push_back(FeaturePointList2[i]);
+
             }
 
     }
@@ -206,20 +222,16 @@ S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
     surf2.Init(w2,h2,5,4,2,0.0002f);
     std::vector<VectorFeaturePoint> FeaturePointList2;
     surf2.ProcessAll(mat2, FeaturePointList2);
-    mat2.AllMul(255);
+    mat2.AllMul(255.0);
 
-    S32 size_feature =FeaturePointList2.size();
+   // S32 size_feature =FeaturePointList2.size();
 
     /// feature match
     FeatureMatch feature_matchobj;
     S32 matchnum=0;
     feature_matchobj.FeatureMatchDo( Modellist, FeaturePointList2,  matchnum);
 
-    if(matchnum>1)
-    {
-        _centercal(Modellist,FeaturePointList2,matchnum,rect_soulth,rect_result);
-
-        ///debuge draw
+    ///debuge draw////////////////////////////////////////////////
         std::vector<itr_math::Point2D> pos1(matchnum);
         std::vector<itr_math::Point2D> pos2(matchnum);
         for(S32 m=0; m<matchnum; m++)
@@ -235,6 +247,13 @@ S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
         }
 
         Draw::Correspond(mat1,mat2,pos1,pos2,matchnum,reMat);
+    ///debuge draw////////////////////////////////////////////////
+
+    if(matchnum>1)
+    {
+        _centercal(Modellist,FeaturePointList2,matchnum,rect_soulth,rect_result);
+
+
         ///
 
         itr_vision::Draw::Rectangle(mat2, rect_result, 255);
@@ -315,6 +334,7 @@ int main()
         ///
         if(track_surf(Modellist, rect, last,current,reMat,rect_result))
         {
+            last=current;
             itr_vision::Draw::Rectangle(current,rect_result,255);
 
             sprintf(file,"bin/Debug/output/%05d.pgm",i);

@@ -20,12 +20,12 @@
 					<Add directory="../../iTRLib/itrvision" />
 				</Compiler>
 				<Linker>
-					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
 					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
+					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
+					<Add library="../../iTRLib/itrdevice/asicameraapi.so" />
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
 					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
 					<Add library="../../iTRLib/3rdparty/alglib/bin/debug/libalglib.a" />
-					<Add library="../../iTRLib/itrdevice/asicameraapi.so" />
 					<Add library="usb-1.0" />
 					<Add library="swscale" />
 					<Add library="avcodec" />
