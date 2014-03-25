@@ -8,5 +8,6 @@
 		<Project filename="SurfDetection/SurfDetection.cbp" />
 		<Project filename="trackdemo/trackdemo.cbp" />
 		<Project filename="Surfdetectiontry/Surfdetectiontry.cbp" />
+		<Project filename="asivideomaker/asivideomaker.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

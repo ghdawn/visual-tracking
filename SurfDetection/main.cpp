@@ -140,7 +140,14 @@ int main()
 {
     itr_math::MathObjStandInit();
 
+    /// ///////////////////////////////////////////////////
+//    double x,y,r,e;
+//    e=200;
+//    r=170;
+//    y=1000;
+//    x=sqrt((y+r)*(y+r)-e*e)-sqrt((y-r)*(y-r)-e*e);
 
+    /// ///////////////////////////////////////////////////
     char path[50]="bin/Debug/01_david/pgm/%05d.pgm";
     char file[50]="bin/Debug/01_david/pgm/00298.pgm";
     FILE* fout=fopen("bin/Debug/result.txt","w");

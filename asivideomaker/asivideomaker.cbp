@@ -2,31 +2,38 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Surfdetectiontry" />
+		<Option title="asivideomaker" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/Surfdetectiontry" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/asivideomaker" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 					<Add directory="../../iTRLib/3rdparty/alglib" />
-					<Add directory="../../iTRLib/itrbase" />
-					<Add directory="../../iTRLib/itrvision" />
 					<Add directory="../../iTRLib/itralgorithm" />
+					<Add directory="../../iTRLib/itrbase" />
+					<Add directory="../../iTRLib/itrdevice" />
+					<Add directory="../../iTRLib/itrvision" />
 				</Compiler>
 				<Linker>
 					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
-					<Add library="../../iTRLib/3rdparty/alglib/bin/debug/libalglib.a" />
+					<Add library="../../iTRLib/itrdevice/bin/debug/libitrdevice.a" />
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
 					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
+					<Add library="../../iTRLib/3rdparty/alglib/bin/debug/libalglib.a" />
+					<Add library="../../iTRLib/itrdevice/asicameraapi.so" />
+					<Add library="usb-1.0" />
+					<Add library="swscale" />
+					<Add library="avcodec" />
+					<Add library="avutil" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/Surfdetectiontry" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/asivideomaker" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -44,11 +51,7 @@
 		</Compiler>
 		<Unit filename="main.cpp" />
 		<Extensions>
-			<code_completion>
-				<search_path add="../itrvision" />
-				<search_path add="../itrbase" />
-				<search_path add="../itralgorithm" />
-			</code_completion>
+			<code_completion />
 			<debugger />
 		</Extensions>
 	</Project>
