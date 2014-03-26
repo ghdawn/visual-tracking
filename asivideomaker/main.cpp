@@ -24,17 +24,23 @@ int main()
     image_aquaire.SetPara( AqPara);
 
     itr_device::ICamera::AquairePara* ExInfo;///NULL
-    char path[50]="bin/Debug/OUT/%05d.pgm";
+    char path[50]="bin/Debug/OUT%4/%05d.pgm";
     char file[50]="bin/Debug/OUT/00298.pgm";
     char head[40];
 //    char filename[10];
 
     sprintf(head,"P5\n%d %d\n255\n",weight,height);
-    int i=0;
+    int i=0,j=0;
     while(image_aquaire.FetchFrame(Raw,weight*height,ExInfo))
     {
+        if(i==500)
+        {
+            i=0;
+            j++;
+            printf("j: %d\n",j);
+        }
 
-        sprintf(file, path, i);
+        sprintf(file, path, j,i);
         FILE* fout=fopen(file,"w");
         fprintf(fout,head);
         for(int j=0;j<weight*height;++j)
