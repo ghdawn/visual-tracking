@@ -24,7 +24,7 @@ int main()
     image_aquaire.SetPara( AqPara);
 
     itr_device::ICamera::AquairePara* ExInfo;///NULL
-    char path[50]="bin/Debug/OUT%4/%05d.pgm";
+    char path[50]="bin/Debug/OUT%04d/%05d.pgm";
     char file[50]="bin/Debug/OUT/00298.pgm";
     char head[40];
 //    char filename[10];
