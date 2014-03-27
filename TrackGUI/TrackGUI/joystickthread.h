@@ -35,6 +35,7 @@ public:
 private:
     QString name;
     StdJoyStick joystick;
+    bool isopen;
     Gimbal gimbal;
     AsiCamera camera;
 };

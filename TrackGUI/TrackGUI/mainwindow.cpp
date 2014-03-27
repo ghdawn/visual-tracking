@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(100);
+    timer->start(30);
     setWindowTitle(tr("Capture"));
 }
 
@@ -20,7 +20,6 @@ void MainWindow::paintEvent(QPaintEvent *)
 {
     QPainter paint(this);
     QImage Mimg;
-   // while(1)
    {
        if(core->NewPostImg==true)
        {

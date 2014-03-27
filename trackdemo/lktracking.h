@@ -14,8 +14,8 @@ class lktracking
     public:
         /** Default constructor */
         lktracking();
-        void Init(const Matrix &current,RectangleS &rect);
-        bool Go(const Matrix &current,RectangleS &rect,F32 &Vx,F32 &Vy);
+        void Init(const Matrix &current,RectangleF &rect);
+        bool Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy);
         /** Default destructor */
         virtual ~lktracking();
         S32 debugcount;

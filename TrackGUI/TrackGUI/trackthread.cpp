@@ -76,10 +76,11 @@ void TrackThread::run()
             {
                 //fclose(fkf);
                 delete tracking;
+                tracking=NULL;
                 tracking=new lktracking();
                 core->TrackStatusChanged=false;
             }
-            usleep(500);
+            msleep(500);
         }
     }
 
@@ -89,4 +90,7 @@ void TrackThread::stop()
     stopped=true;
 }
 TrackThread::~TrackThread()
-{}
+{
+    if(tracking!=NULL)
+        delete tracking;
+}

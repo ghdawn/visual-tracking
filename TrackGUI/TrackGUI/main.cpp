@@ -21,23 +21,23 @@ int main(int argc, char *argv[])
     QMutex mutexCurrent;
     QMutex mutexPost;
 
-    CameraThread camera;
+    CameraThread camera("Camera");
     camera.Init(&core);
     camera.mutexCurrent=&mutexCurrent;
     camera.mutexPost=&mutexPost;
     camera.start();
 
-    TrackThread track;
+    TrackThread track("Track");
     track.Init(&core);
     track.mutexCurrent =&mutexCurrent;
     track.start();
 
-    JoyStickThread joystick;
+    JoyStickThread joystick("Joystick");
     joystick.Init(&core);
     joystick.start();
 
     MainWindow w;
-    w.resize(320,240);
+    w.resize(core.Width,core.Height);
     w.mutexPost=&mutexPost;
     w.setAttribute(Qt::WA_OpaquePaintEvent);
     w.core=&core;

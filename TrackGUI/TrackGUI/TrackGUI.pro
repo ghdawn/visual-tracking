@@ -60,13 +60,6 @@ DEPENDPATH += $$PWD/../../../iTRLib/itralgorithm
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a
 
-unix:!macx: LIBS += -L$$PWD/../../GimbalControl/ -lGimbalControl
-
-INCLUDEPATH += $$PWD/../../GimbalControl
-DEPENDPATH += $$PWD/../../GimbalControl
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../../GimbalControl/libGimbalControl.a
-
 unix:!macx: LIBS += -L$$PWD/../../../iTRLib/itrdevice/bin/debug/ -litrdevice
 
 INCLUDEPATH += $$PWD/../../../iTRLib/itrdevice
@@ -85,3 +78,10 @@ unix:!macx: LIBS += -lASICamera
 unix:!macx: LIBS += -lusb-1.0 -lswscale -lavcodec -lavutil
 INCLUDEPATH += /usr/include
 DEPENDPATH += /usr/include
+
+unix:!macx: LIBS += -L$$PWD/../../GimbalControl/ -lGimbalControl
+
+INCLUDEPATH += $$PWD/../../GimbalControl
+DEPENDPATH += $$PWD/../../GimbalControl
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../GimbalControl/libGimbalControl.a

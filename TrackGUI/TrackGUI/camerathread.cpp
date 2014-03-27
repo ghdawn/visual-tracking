@@ -4,17 +4,19 @@
 #include "itrvision.h"
 #include <QtGui>
 #include <string>
+#include <string.h>
 #include <sstream>
 using std::stringstream;
 CameraThread::CameraThread(QString name )
 {
     stopped = false;
     this->name = name;
-    camera.Open(1,320,240,2);
+
 }
 CameraThread::~CameraThread()
 {
-
+    delete[] inputimg;
+    delete[] rawImg;
 }
 void CameraThread::Init(TrackCore *core)
 {
@@ -23,22 +25,24 @@ void CameraThread::Init(TrackCore *core)
     inputimg=new U8[length*4];
     rawImg=new U8[length];
     process.Init(core->Width,core->Height);
+    camera.Open(1,core->Width,core->Height,2);
     clock.Tick();
 }
 void CameraThread::run()
 {
     int delta;
+    int img=0,dir=0;
+    char filename[20];
     while (!stopped)
     {
-        printf("Begin Fetch Frame!\n");
         infolist.clear();
-
+        memset(rawImg,0,sizeof(rawImg));
         camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
-        printf("End Fetch Frame!\n");
+
         delta=clock.Tick();
 
         core->deltaT+=delta;
-        printf("Begin Prepare Matrix!\n");
+
         if(mutexCurrent->tryLock())
         {
             for(int i=0; i < core->Width*core->Height; i++)
@@ -46,11 +50,18 @@ void CameraThread::run()
                 core->current[i] = rawImg[i];
             }
             core->NewTrackImg=true;
+            sprintf(filename,"OUT%04d/pic%04d.pgm",dir,img);
+            printf("%s\n",filename);
+            img++;
+            if(img==1000)
+            {
+                img=0;
+                dir++;
+            }
+            itr_vision::IOpnm::WritePGMFile(filename,core->current);
             mutexCurrent->unlock();
         }
-        printf("End Prepare Matrix!\n");
-        printf("Begin Draw Post!\n");
-        
+
 
         if(!core->Tracking)
         {
@@ -100,7 +111,6 @@ void CameraThread::run()
 void CameraThread::stop()
 {
     stopped = true;
-    delete[] inputimg;
-    delete[] rawImg;
+
 }
 

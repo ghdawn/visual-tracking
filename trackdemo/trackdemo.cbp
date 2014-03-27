@@ -14,15 +14,15 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="../3rdparty/alglib" />
-					<Add directory="../itrbase" />
-					<Add directory="../itrvision" />
-					<Add directory="../itralgorithm" />
+					<Add directory="../../iTRLib/3rdparty/alglib" />
+					<Add directory="../../iTRLib/itrbase" />
+					<Add directory="../../iTRLib/itralgorithm" />
+					<Add directory="../../iTRLib/itrvision" />
 				</Compiler>
 				<Linker>
-					<Add library="../itrvision/bin/debug/libitrvision.a" />
-					<Add library="../itralgorithm/bin/debug/libitralgorithm.a" />
-					<Add library="../itrbase/bin/debug/libitrbase.a" />
+					<Add library="../../iTRLib/itrvision/bin/debug/libitrvision.a" />
+					<Add library="../../iTRLib/itralgorithm/bin/debug/libitralgorithm.a" />
+					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -58,6 +58,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

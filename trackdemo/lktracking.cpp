@@ -11,7 +11,7 @@ lktracking::lktracking():
     debugcount=1;
 }
 
-void lktracking::Init(const Matrix &current,RectangleS &rect)
+void lktracking::Init(const Matrix &current,RectangleF &rect)
 {
     tracker.Init(current);
     SelectKLTFeature select(current);
@@ -126,7 +126,7 @@ int lktracking::fb_filter()
     }
     return drop;
 }
-bool lktracking::Go(const Matrix &current,RectangleS &rect,F32 &Vx,F32 &Vy)
+bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
 {
     TimeClock clock;
     int i;
@@ -159,7 +159,7 @@ bool lktracking::Go(const Matrix &current,RectangleS &rect,F32 &Vx,F32 &Vy)
         }
         Draw::Correspond(tracker.last->img[0],tracker.current->img[0],outU,outV,count,cor);
         char file[20];
-        sprintf(file,"bin/Debug/corr%d",debugcount++);
+        sprintf(file,"bin/Debug/corr/corr%d",debugcount++);
         IOpnm::WritePGMFile(file,cor);
     }
     ///计算矩形框速度

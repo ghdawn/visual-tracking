@@ -12,14 +12,9 @@ HEADERS += gimbal.h serialport.h \
 SOURCES += gimbal.cpp main.c serialport.cpp \
     SerialSend.cpp
 
+unix:!macx: LIBS += -L$$PWD/../../iTRLib/itrbase/bin/debug/ -litrbase
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../iTRLib/itrbase/bin/debug/release/ -litrbase
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../iTRLib/itrbase/bin/debug/debug/ -litrbase
-else:unix: LIBS += -L$$PWD/../../iTRLib/itrbase/bin/debug/ -litrbase
+INCLUDEPATH += $$PWD/../../iTRLib/itrbase/bin/debug
+DEPENDPATH += $$PWD/../../iTRLib/itrbase/bin/debug
 
-INCLUDEPATH += $$PWD/../../iTRLib/itrbase
-DEPENDPATH += $$PWD/../../iTRLib/itrbase
-
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../iTRLib/itrbase/bin/debug/release/itrbase.lib
-else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../iTRLib/itrbase/bin/debug/debug/itrbase.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../iTRLib/itrbase/bin/debug/libitrbase.a
+unix:!macx: PRE_TARGETDEPS += $$PWD/../../iTRLib/itrbase/bin/debug/libitrbase.a

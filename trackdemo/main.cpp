@@ -7,17 +7,17 @@ using namespace std;
 int main()
 {
     itr_math::MathObjStandInit();
-    char path[50]="bin/Debug/01_david/pgm/%05d.pgm";
-    char file[50]="bin/Debug/01_david/pgm/00001.pgm";
-    FILE* fout=fopen("bin/Debug/result.txt","w");
+    char path[50]="bin/Debug/xp/pgm/pic%04d.pgm";
+    char file[50]="bin/Debug/xp/pgm/pic0140.pgm";
+    FILE *fout=fopen("bin/Debug/result.txt","w");
     Matrix current,last;
     IOpnm::ReadPGMFile(file, current);
     IOpnm::ReadPGMFile(file, last);
 
     ///读取初始位置
-    RectangleS rect(0, 0, 0, 0);
-    FILE *InitInfo=fopen("bin/Debug/01_david/init.txt","r");
-    fscanf(InitInfo,"%d,%d,%d,%d",&rect.X,&rect.Y,&rect.Width,&rect.Height);
+    RectangleF rect(0, 0, 0, 0);
+    FILE *InitInfo=fopen("bin/Debug/xp/init.txt","r");
+    fscanf(InitInfo,"%f,%f,%f,%f",&rect.X,&rect.Y,&rect.Width,&rect.Height);
     fclose(InitInfo);
     rect.Width-=rect.X;
     rect.Height-=rect.Y;
@@ -29,7 +29,8 @@ int main()
                    0,0,1,0,
                    0,0,0,1,
                    1,0,0,0,
-                   0,1,0,0};
+                   0,1,0,0
+                  };
     kf.F_x.CopyFrom(data);
     Matrix Hx(2,4),Hv(2,4),R(2,2);
     R.SetDiag(30.012306);
@@ -42,10 +43,10 @@ int main()
     kf.x[3]=0;
 
     F32 _x,_y,_u=0,_v=0;
-    Detection detection(current,rect,20);
+
     lktracking tracking;
     tracking.Init(current,rect);
-    for(int k=2; k<1000; ++k)
+    for(int k=140; k<1000; k+=2)
     {
         sprintf(file, path, k);
         printf("%s\n\n",file);
@@ -62,24 +63,20 @@ int main()
         }
         rect.X=X[0];
         rect.Y=X[1];
+        if(true)
+        {
+            RectangleS rectout;
+            rectout.X=rect.X;
+            rectout.Y=rect.Y;
+            rectout.Width=rect.Width;
+            rectout.Height=rect.Height;
 
-//        if(detection.Go(current,rect))
-//        {
-//            z[0]=rect.X;
-//            z[1]=rect.Y;
-//            X=kf.UpdateMeasure(Hx,R,z);
-//        }
-//        else
-//        {
-//            itr_vision::Draw::Circle(current,100,100,10,255);
-//        }
-//        rect.X=X[0];
-//        rect.Y=X[1];
-        Draw::Rectangle(current,rect,255);
-        sprintf(file,"bin/Debug/output/%05d.pgm",k);
-        IOpnm::WritePGMFile(file,current);
+            Draw::Rectangle(current,rectout,255);
+            sprintf(file,"bin/Debug/output/%05d.pgm",k);
+            IOpnm::WritePGMFile(file,current);
+            fprintf(fout,"%d %d %d %d\n",rect.X,rect.Y,rect.X+rect.Width,rect.Y+rect.Height);
+        }
 
-        fprintf(fout,"%d %d %d %d\n",rect.X,rect.Y,rect.X+rect.Width,rect.Y+rect.Height);
     }
     fclose(fout);
     return 0;

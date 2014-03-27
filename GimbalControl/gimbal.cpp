@@ -30,8 +30,8 @@ namespace itr_tracker
         ASF32(&buffer[1]) = omegax;
         ASF32(&buffer[2]) = omegay;
         //StandDataSendFun fun=SerialSendForSSP;
-        protocol.Init(0xA5,0x5A, SerialSendForSSP);
-        protocol.SSPSendPackage(0,buffer,8);
+//        protocol.Init(0xA5,0x5A, SerialSendForSSP);
+//        protocol.SSPSendPackage(0,buffer,8);
 
     }
 }

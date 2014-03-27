@@ -1,10 +1,10 @@
 #ifndef SERIALPORT_H
 #define SERIALPORT_H
-#include<QThread>
 
-class SerialPort:public QThread
+
+class SerialPort
 {
-    Q_OBJECT
+
 public:
     SerialPort();
     int fd;
