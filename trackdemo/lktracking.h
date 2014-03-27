@@ -54,6 +54,7 @@ class DataOper:public Ransac<T,T>::Operator
 
     F32 *x,*y,*dist;
     LKTracker tracker;
+    SelectKLTFeature* _select_pointer;
 };
 
 #endif // LKTRACKING_H
