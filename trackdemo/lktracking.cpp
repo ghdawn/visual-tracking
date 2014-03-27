@@ -14,13 +14,13 @@ lktracking::lktracking():
 void lktracking::Init(const Matrix &current,RectangleF &rect)
 {
     tracker.Init(current);
-    SelectKLTFeature select_tmp(current);//SelectKLTFeature select(current);
-    _select_pointer =&select_tmp;
+   // SelectKLTFeature select_tmp(current);//SelectKLTFeature select(current);
+    _select_pointer =new SelectKLTFeature(current);
 
-    (*_select_pointer).mindist=7;
+    _select_pointer->mindist=7;
 
     ransac.Init(&oper);
-    FeatureNum= (*_select_pointer).SelectGoodFeature(rect,frame1Feature);
+
 }
 
 void lktracking::pairdistance(const vector<Point2D> &feature,vector<F32> &dist)
@@ -131,6 +131,9 @@ int lktracking::fb_filter()
 }
 bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
 {
+    FeatureNum= _select_pointer->SelectGoodFeature(rect,frame1Feature);
+    delete _select_pointer;
+
     TimeClock clock;
     int i;
     bool Tracked=true;
@@ -225,9 +228,10 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         rect.Height*=boxScale;
     }
     //选择下一帧图像中的特征点
-    //SelectKLTFeature select(current);
-    //select.mindist = 7;
-    FeatureNum= (*_select_pointer).SelectGoodFeature(rect, frame1Feature,amount);
+   // SelectKLTFeature select(current);
+    _select_pointer=new SelectKLTFeature(current);
+    _select_pointer->mindist = 7;
+    FeatureNum= _select_pointer->SelectGoodFeature(rect, frame1Feature,amount);
     printf("Feature: %d\n",FeatureNum);
     printf("Track Time: %d",clock.Tick());
     printf("\n*****End  Track !*****\n\n");
