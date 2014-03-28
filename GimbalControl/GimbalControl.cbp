@@ -48,6 +48,8 @@
 				</Linker>
 			</Target>
 		</Build>
+		<Unit filename="Commeder.cpp" />
+		<Unit filename="Commeder.h" />
 		<Unit filename="SerialSend.cpp" />
 		<Unit filename="SerialSend.h" />
 		<Unit filename="gimbal.cpp" />
