@@ -32,7 +32,7 @@ class DataOper:public Ransac<T,T>::Operator
     public:
         F32 GetError(T a, T b)
         {
-            return fabs(a-b);
+            return (a-b)*(a-b);
         }
         T GetValue(T *data, S32 N)
         {
@@ -41,7 +41,7 @@ class DataOper:public Ransac<T,T>::Operator
         }
         bool Remain(T a,T b)
         {
-            return (fabs(a-b)<1.5);
+            return (fabs(a-b)<3);
         }
 };
     S32 FeatureNum;
@@ -51,8 +51,8 @@ class DataOper:public Ransac<T,T>::Operator
     DataOper<F32> oper;
     Ransac<F32,F32> ransac;
     ConvoluteSquare conv;
-
-    F32 *x,*y,*dist;
+    S32 trackedPoints;
+    F32 *x,*y,*indexNo,*dist;
     LKTracker tracker;
     SelectKLTFeature* _select_pointer;
 };

@@ -2,6 +2,8 @@
 #include "trackthread.h"
 #include "trackcore.h"
 #include <stdio.h>
+#include <iostream>
+using std::cout;
 using namespace itr_tracker;
 
 TrackThread::TrackThread(QString name)
@@ -88,6 +90,7 @@ void TrackThread::run()
 void TrackThread::stop()
 {
     stopped=true;
+    cout<<name.toStdString()<<" Stopped!\n";
 }
 TrackThread::~TrackThread()
 {

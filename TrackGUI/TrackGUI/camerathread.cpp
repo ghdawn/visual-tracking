@@ -6,6 +6,8 @@
 #include <string>
 #include <string.h>
 #include <sstream>
+#include <iostream>
+using std::cout;
 using std::stringstream;
 CameraThread::CameraThread(QString name )
 {
@@ -25,7 +27,7 @@ void CameraThread::Init(TrackCore *core)
     inputimg=new U8[length*4];
     rawImg=new U8[length];
     process.Init(core->Width,core->Height);
-    camera.Open(1,core->Width,core->Height,2);
+    camera.Open(0,core->Width,core->Height,0);
     clock.Tick();
 }
 void CameraThread::run()
@@ -50,7 +52,7 @@ void CameraThread::run()
                 core->current[i] = rawImg[i];
             }
             core->NewTrackImg=true;
-            sprintf(filename,"OUT%04d/pic%04d.pgm",dir,img);
+            /*sprintf(filename,"OUT%04d/pic%04d.pgm",dir,img);
             printf("%s\n",filename);
             img++;
             if(img==1000)
@@ -58,7 +60,7 @@ void CameraThread::run()
                 img=0;
                 dir++;
             }
-            itr_vision::IOpnm::WritePGMFile(filename,core->current);
+            itr_vision::IOpnm::WritePGMFile(filename,core->current);*/
             mutexCurrent->unlock();
         }
 
@@ -83,7 +85,7 @@ void CameraThread::run()
             rectangle.Width=core->posTrack.Width;
             rectangle.Height=core->posTrack.Height;
             stringstream ss;
-            ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2<<"\nY:"<<core->posTrack.Y+core->posTrack.Height/2;
+            ss<<"X:"<<core->posTrack.X<<"\nY:"<<core->posTrack.Y;
             ss<<"\nCamera;"<<1000/delta<<"Hz";
             for(int i=0;i<3;i++)
             {
@@ -111,6 +113,6 @@ void CameraThread::run()
 void CameraThread::stop()
 {
     stopped = true;
-
+    cout<<name.toStdString()<<" Stopped!\n";
 }
 

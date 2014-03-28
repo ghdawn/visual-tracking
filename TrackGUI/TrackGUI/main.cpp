@@ -6,6 +6,7 @@
 #include "joystickthread.h"
 #include <QApplication>
 #include <QtCore>
+#include <QObject>
 #include <QtGui>
 #include "processimage.h"
 int main(int argc, char *argv[])
@@ -42,5 +43,10 @@ int main(int argc, char *argv[])
     w.setAttribute(Qt::WA_OpaquePaintEvent);
     w.core=&core;
     w.show();
+a.
+    QObject::connect( &w,SIGNAL(close()), &camera, SLOT(stop()));
+    QObject::connect( &w,SIGNAL(close()), &track, SLOT(stop()));
+    QObject::connect( &w,SIGNAL(close()), &joystick, SLOT(stop()));
+    //QObject::connect( &a,SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
     return a.exec();
 }

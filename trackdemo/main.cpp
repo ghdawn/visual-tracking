@@ -7,20 +7,28 @@ using namespace std;
 int main()
 {
     itr_math::MathObjStandInit();
-    char path[50]="bin/Debug/xp/pgm/pic%04d.pgm";
-    char file[50]="bin/Debug/xp/pgm/pic0140.pgm";
-    FILE *fout=fopen("bin/Debug/result.txt","w");
-    Matrix current,last;
-    IOpnm::ReadPGMFile(file, current);
-    IOpnm::ReadPGMFile(file, last);
+    char dir[50]="bin/Debug/328";
+    char path[50]="%s/pgm/%05d.pgm";
+
+    char file[50];
+
 
     ///读取初始位置
     RectangleF rect(0, 0, 0, 0);
-    FILE *InitInfo=fopen("bin/Debug/xp/init.txt","r");
+    sprintf(file,"%s/%s",dir,"init.txt");
+    FILE *InitInfo=fopen(file,"r");
     fscanf(InitInfo,"%f,%f,%f,%f",&rect.X,&rect.Y,&rect.Width,&rect.Height);
     fclose(InitInfo);
     rect.Width-=rect.X;
     rect.Height-=rect.Y;
+
+    ///读取初始图像
+    FILE *fout=fopen("bin/Debug/result.txt","w");
+    Matrix current,last;
+    sprintf(file,path,dir,1);
+    IOpnm::ReadPGMFile(file, current);
+    IOpnm::ReadPGMFile(file, last);
+
     ///卡尔曼滤波用
     KalmanFilter kf;
     kf.Init(4);
@@ -33,7 +41,7 @@ int main()
                   };
     kf.F_x.CopyFrom(data);
     Matrix Hx(2,4),Hv(2,4),R(2,2);
-    R.SetDiag(30.012306);
+    R.SetDiag(1.012306);
     Hx.CopyFrom(data+16);
     Hv.CopyFrom(data+8);
     Vector z(2),X(4),v(2);
@@ -46,9 +54,9 @@ int main()
 
     lktracking tracking;
     tracking.Init(current,rect);
-    for(int k=140; k<1000; k+=2)
+    for(int k=1; k<1000; k+=1)
     {
-        sprintf(file, path, k);
+        sprintf(file, path,dir, k);
         printf("%s\n\n",file);
         last=current;
         IOpnm::ReadPGMFile(file, current);
@@ -74,7 +82,7 @@ int main()
             Draw::Rectangle(current,rectout,255);
             sprintf(file,"bin/Debug/output/%05d.pgm",k);
             IOpnm::WritePGMFile(file,current);
-            fprintf(fout,"%d %d %d %d\n",rect.X,rect.Y,rect.X+rect.Width,rect.Y+rect.Height);
+            fprintf(fout,"%f %f %f %f\n",rect.X,rect.Y,rect.X+rect.Width,rect.Y+rect.Height);
         }
 
     }

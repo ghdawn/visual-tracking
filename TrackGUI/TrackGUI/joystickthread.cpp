@@ -1,6 +1,8 @@
 #include <QtGui/QApplication>
 #include "trackcore.h"
 #include "joystickthread.h"
+#include <iostream>
+using std::cout;
 using namespace itr_tracker;
 JoyStickThread::JoyStickThread(QString name )
 {
@@ -45,4 +47,5 @@ void JoyStickThread::run()
 void JoyStickThread::stop()
 {
     stopped = true;
+    cout<<name.toStdString()<<" Stopped!\n";
 }
