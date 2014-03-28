@@ -39,7 +39,8 @@ void CameraThread::run()
     {
         infolist.clear();
         memset(rawImg,0,sizeof(rawImg));
-        camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
+        //for(int j=0;j<3;++j)
+            camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
 
         delta=clock.Tick();
 
@@ -52,15 +53,6 @@ void CameraThread::run()
                 core->current[i] = rawImg[i];
             }
             core->NewTrackImg=true;
-            /*sprintf(filename,"OUT%04d/pic%04d.pgm",dir,img);
-            printf("%s\n",filename);
-            img++;
-            if(img==1000)
-            {
-                img=0;
-                dir++;
-            }
-            itr_vision::IOpnm::WritePGMFile(filename,core->current);*/
             mutexCurrent->unlock();
         }
 
@@ -75,13 +67,9 @@ void CameraThread::run()
             infolist.push_back(info);
         }
         else
-        {
-            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
-            core->kf.UpdateModel();
-            core->posTrack.X=core->kf.x[0];
-            core->posTrack.Y=core->kf.x[1];
-            rectangle.X=core->kf.x[0];
-            rectangle.Y=core->kf.x[1];
+        {                       
+            rectangle.X=core->posTrack.X;
+            rectangle.Y=core->posTrack.Y;
             rectangle.Width=core->posTrack.Width;
             rectangle.Height=core->posTrack.Height;
             stringstream ss;
@@ -107,7 +95,7 @@ void CameraThread::run()
             core->NewPostImg=true;
             mutexPost->unlock();
         }
-        printf("End Draw Post!\n");
+        //printf("End Draw Post!\n");
     }
 }
 void CameraThread::stop()

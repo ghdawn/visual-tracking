@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(30);
+    timer->start(20);
     setWindowTitle(tr("Capture"));
 }
 
@@ -23,14 +23,14 @@ void MainWindow::paintEvent(QPaintEvent *)
    {
        if(core->NewPostImg==true)
        {
-           printf("Begin Display!\n");
+           //printf("Begin Display!\n");
            mutexPost->lock();
            Mimg=QImage(core->postImg, 320, 240, QImage::Format_RGB32);
            paint.drawImage(QPoint(0, 0), Mimg);
            paint.end();
            mutexPost->unlock();
            core->NewPostImg=false;
-           printf("End Display!\n");
+           //printf("End Display!\n");
        }
    }
 }

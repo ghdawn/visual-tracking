@@ -65,9 +65,9 @@
 			<Add library="QtNetwork" />
 			<Add directory="/usr/myqt4/lib" />
 		</Linker>
+		<Unit filename="../trackdemo/lktracking.cpp" />
+		<Unit filename="../trackdemo/lktracking.h" />
 		<Unit filename="asyncbuffer.h" />
-		<Unit filename="lktracking.cpp" />
-		<Unit filename="lktracking.h" />
 		<Unit filename="trackcore.cpp" />
 		<Unit filename="trackcore.h" />
 		<Extensions>

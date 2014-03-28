@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
     TrackThread track("Track");
     track.Init(&core);
     track.mutexCurrent =&mutexCurrent;
+    track.mutexPost=&mutexPost;
     track.start();
 
     JoyStickThread joystick("Joystick");
@@ -43,10 +44,10 @@ int main(int argc, char *argv[])
     w.setAttribute(Qt::WA_OpaquePaintEvent);
     w.core=&core;
     w.show();
-a.
-    QObject::connect( &w,SIGNAL(close()), &camera, SLOT(stop()));
+
+    /*QObject::connect( &w,SIGNAL(close()), &camera, SLOT(stop()));
     QObject::connect( &w,SIGNAL(close()), &track, SLOT(stop()));
     QObject::connect( &w,SIGNAL(close()), &joystick, SLOT(stop()));
-    //QObject::connect( &a,SIGNAL(lastWindowClosed()), &a, SLOT(quit()));
+    QObject::connect( &a,SIGNAL(lastWindowClosed()), &camera, SLOT(stop()));*/
     return a.exec();
 }

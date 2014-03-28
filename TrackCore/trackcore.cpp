@@ -12,7 +12,7 @@ namespace itr_tracker
                       };
         kf.F_x.CopyFrom(data);
         postImg=NULL;
-        posInit.Init(144,108,32,24);
+        posInit.Init(144,108,36,27);
         int missedImg=0;
         NewTrackImg=false;
         NewPostImg=false;

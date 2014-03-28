@@ -229,7 +229,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         rect.Width*=boxScale;
         rect.Height*=boxScale;
     }
-    if(true)
+    if(false)
     {
         ///特征点匹配关系输出
         Matrix cor;
@@ -265,11 +265,11 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
     }
     // SelectKLTFeature select(current);
     _select_pointer=new SelectKLTFeature(current);
-    _select_pointer->mindist = 7;
+    _select_pointer->mindist = 5;
     //FeatureNum= _select_pointer->SelectGoodFeature(rect, frame1Feature,amount);
     printf("Track Time: %d",clock.Tick());
     printf("\n*****End  Track !*****\n\n");
-    printf("\033[12A");
+    //printf("\033[12A");
     return (Tracked);
 }
 

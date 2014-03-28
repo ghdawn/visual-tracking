@@ -166,10 +166,6 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
     }
 
     cout << "Points: "<<trackedPoints << endl;
-    if(trackedPoints==0)
-    {
-        Tracked=false;
-    }
 
     ///如果有跟踪到的点,则对x方向和y方向做RANSAC过滤,把速度不相符的点过滤掉
     if(trackedPoints>0)
@@ -187,9 +183,9 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
                     frame2Feature[i].Quality=-LKTracker::LARGE_RESIDUE;
                 }
             }
-
-        itr_math::StatisticsObj->Median(x,trackedPoints-dropx,Vx);
-        if(Vx>10)
+        std::sort(x,x+trackedPoints);
+        Vx=x[(trackedPoints-dropx)/2];
+        if(fabs(Vx)>10)
         {
             Tracked=false;
             //printf("Failure!!\n");
@@ -208,15 +204,20 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
                 }
             }
 
-        itr_math::StatisticsObj->Median(y,trackedPoints-dropy,Vy);
-
-        if(Vy>10)
+        std::sort(y,y+trackedPoints);
+        Vy=y[(trackedPoints-dropy)/2];
+        if(fabs(Vy)>10)
         {
             Tracked=false;
             //printf("Failure!!\n");
         }
         printf("vx=%f vy=%f\n",Vx,Vy);
         trackedPoints-=drop;
+    }
+
+    if(trackedPoints==0)
+    {
+        Tracked=false;
     }
 
     if(Tracked)
@@ -265,11 +266,11 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
     }
     // SelectKLTFeature select(current);
     _select_pointer=new SelectKLTFeature(current);
-    _select_pointer->mindist = 7;
+    _select_pointer->mindist = 5;
     //FeatureNum= _select_pointer->SelectGoodFeature(rect, frame1Feature,amount);
     printf("Track Time: %d",clock.Tick());
     printf("\n*****End  Track !*****\n\n");
-    printf("\033[12A");
+    //printf("\033[12A");
     return (Tracked);
 }
 

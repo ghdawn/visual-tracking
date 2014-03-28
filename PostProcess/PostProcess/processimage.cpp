@@ -1,5 +1,5 @@
 #include <QtGui>
-#include <cstdio>
+#include <stdio.h>
 #include <QPainter>
 #include "processimage.h"
 
@@ -20,8 +20,10 @@ void ProcessImage::Init(int Width,int Height)
 void ProcessImage::Process(U8* inputimg,RectangleS rect,std::vector<string> InfoList,U8* outputimg)
 {
     int i;
+    static int pic=0;
     int ViewX = 10;
     int ViewY = 10;
+    char filename[50];
     QImage image = QImage(inputimg, width, height, QImage::Format_RGB32);
     QPainter p;
     p.begin(&image);
@@ -44,7 +46,8 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,std::vector<string> Info
     }
   // p.drawText(QPoint(ViewX, ViewY), Info.c_str());
     p.end();
-    //image.save("lm2.png");
+    sprintf(filename,"bin/Debug/output/%05d.png",pic++);
+    image.save(filename);
     unsigned char * p_bits=image.bits();
     for(i=0; i < width*height*4; i++)
     {

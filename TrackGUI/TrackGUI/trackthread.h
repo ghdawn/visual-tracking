@@ -4,6 +4,7 @@
 #include <QString>
 #include "trackcore.h"
 #include <QMutex>
+#include "processimage.h"
 using namespace itr_tracker;
 class TrackThread : public QThread
 {
@@ -28,6 +29,7 @@ public:
     ~TrackThread();
     QMutex* mutextrack;
     QMutex* mutexCurrent;
+    QMutex* mutexPost;
 private:
     volatile bool stopped;
     QString name;
@@ -35,4 +37,5 @@ private:
     lktracking *tracking;
     Matrix Hv,R;
     Vector z;
+    ProcessImage process;
 };

@@ -16,7 +16,7 @@ TrackThread::TrackThread(QString name)
     Hv.Init(2,4);
     Hv.CopyFrom(data);
     R.Init(2,2);
-    R.SetDiag(15.012306);
+    R.SetDiag(1.012306);
     z.Init(2);
     tracking=new lktracking();
 }
@@ -46,29 +46,29 @@ void TrackThread::run()
                 else
                 {
                     tracking->Go(core->current,core->posTrack,z[0],z[1]);\
-                    //printf("Go:%d\n",core->missedImg);
-                    //Hv(0,2)=Hv(1,3)=core->missedImg;
-                    core->missedImg=0;
 
+                    core->kf.F_x(0,2)=core->kf.F_x(1,3)=core->deltaT;
                     Hv(0,2)=Hv(1,3)=core->deltaT;
-                    core->deltaT=0;
+                    core->kf.UpdateModel();
                     core->kf.UpdateMeasure(Hv,R,z);
-                    if(false)
+                    if(true)
                     {
                         printf("Delta T:%d\n",core->deltaT);
                         printf("X:%f %f\n",core->kf.x[0],core->kf.x[1]);
                         printf("P:%f %f\n",core->posTrack.X,core->posTrack.Y);
                     }
-                    if(true)
+                    if(false)
                     {
                         fprintf(fkf,"%f %f %f %f\n",core->kf.x[0],core->kf.x[1],core->posTrack.X,core->posTrack.Y);
                     }
+                    core->deltaT=0;
                     core->posTrack.X=core->kf.x[0];
                     core->posTrack.Y=core->kf.x[1];
+
+
                 }
                 core->NewTrackImg=false;
                 //mutexCurrent->unlock();
-                printf("End Track!\n");
             }
 
         }
