@@ -7,10 +7,7 @@ class Commeder
     public:
         Commeder();
         virtual ~Commeder();
-        //mo
-        //pa
-        //bg
-        //bg stop jv
+
         S32 com_MO(U8* buffer,S32 para);
         S32 com_PA(U8* buffer,F32 angle);
         S32 com_BG(U8* buffer);
