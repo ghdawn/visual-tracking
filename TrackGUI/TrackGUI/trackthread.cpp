@@ -16,7 +16,7 @@ TrackThread::TrackThread(QString name)
     Hv.Init(2,4);
     Hv.CopyFrom(data);
     R.Init(2,2);
-    R.SetDiag(1.012306);
+    R.SetDiag(5.012306);
     z.Init(2);
     tracking=new lktracking();
 }
@@ -61,8 +61,8 @@ void TrackThread::run()
                         fprintf(fkf,"%f %f %f %f\n",core->kf.x[0],core->kf.x[1],core->posTrack.X,core->posTrack.Y);
                     }
                     core->deltaT=0;
-                    //core->posTrack.X=core->kf.x[0];
-                    //core->posTrack.Y=core->kf.x[1];
+                    core->posTrack.X=core->kf.x[0];
+                    core->posTrack.Y=core->kf.x[1];
                 }
                 core->NewTrackImg=false;
                 mutexCurrent->unlock();

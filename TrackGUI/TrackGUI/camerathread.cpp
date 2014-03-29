@@ -69,8 +69,8 @@ void CameraThread::run()
         {
             core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
             core->kf.UpdateModel();
-//            core->posTrack.X=core->kf.x[0];
-//            core->posTrack.Y=core->kf.x[1];
+            core->posTrack.X=core->kf.x[0];
+            core->posTrack.Y=core->kf.x[1];
             rectangle.X=core->posTrack.X;
             rectangle.Y=core->posTrack.Y;
             rectangle.Width=core->posTrack.Width;
@@ -85,8 +85,6 @@ void CameraThread::run()
             }
         }
 
-        mutexCurrent->lock();
-        mutexCurrent->unlock();
         if(mutexPost->tryLock())
         {
             for(int i=0;i<length;++i)
