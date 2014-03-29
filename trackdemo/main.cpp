@@ -25,7 +25,7 @@ int main()
     ///读取初始图像
     FILE *fout=fopen("bin/Debug/result.txt","w");
     Matrix current,last;
-    sprintf(file,path,dir,1);
+    sprintf(file,path,dir,406);
     IOpnm::ReadPGMFile(file, current);
     IOpnm::ReadPGMFile(file, last);
 
@@ -54,7 +54,7 @@ int main()
 
     lktracking tracking;
     tracking.Init(current,rect);
-    for(int k=1; k<1000; k+=1)
+    for(int k=406; k<1000; k+=1)
     {
         sprintf(file, path,dir, k);
         printf("%s\n\n",file);
@@ -69,8 +69,8 @@ int main()
             X=kf.UpdateMeasure(Hv,R,z);
 
         }
-        rect.X=X[0];
-        rect.Y=X[1];
+        //rect.X=X[0];
+        //rect.Y=X[1];
         if(true)
         {
             RectangleS rectout;
@@ -80,7 +80,7 @@ int main()
             rectout.Height=rect.Height;
 
             Draw::Rectangle(current,rectout,255);
-            sprintf(file,"bin/Debug/output/%05d.pgm",k);
+            sprintf(file,"bin/Debug/output/%05d.pgm",k-405);
             IOpnm::WritePGMFile(file,current);
             fprintf(fout,"%f %f %f %f\n",rect.X,rect.Y,rect.X+rect.Width,rect.Y+rect.Height);
         }

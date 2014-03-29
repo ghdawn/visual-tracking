@@ -39,8 +39,7 @@ void CameraThread::run()
     {
         infolist.clear();
         memset(rawImg,0,sizeof(rawImg));
-        //for(int j=0;j<3;++j)
-            camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
+        camera.FetchFrame(rawImg,core->Width*core->Height,exinfo);
 
         delta=clock.Tick();
 
@@ -67,7 +66,11 @@ void CameraThread::run()
             infolist.push_back(info);
         }
         else
-        {                       
+        {
+            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
+            core->kf.UpdateModel();
+//            core->posTrack.X=core->kf.x[0];
+//            core->posTrack.Y=core->kf.x[1];
             rectangle.X=core->posTrack.X;
             rectangle.Y=core->posTrack.Y;
             rectangle.Width=core->posTrack.Width;
@@ -82,6 +85,8 @@ void CameraThread::run()
             }
         }
 
+        mutexCurrent->lock();
+        mutexCurrent->unlock();
         if(mutexPost->tryLock())
         {
             for(int i=0;i<length;++i)
@@ -94,6 +99,7 @@ void CameraThread::run()
             process.Process(inputimg,rectangle,infolist,core->postImg);
             core->NewPostImg=true;
             mutexPost->unlock();
+
         }
         //printf("End Draw Post!\n");
     }

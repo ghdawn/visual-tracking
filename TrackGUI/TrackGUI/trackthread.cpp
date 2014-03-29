@@ -35,7 +35,7 @@ void TrackThread::run()
         {
             if(core->NewTrackImg)
             {
-                //mutexCurrent->lock();
+                mutexCurrent->lock();
                 printf("Begin Track!\n");
                 if(core->TrackStatusChanged)
                 {
@@ -47,9 +47,8 @@ void TrackThread::run()
                 {
                     tracking->Go(core->current,core->posTrack,z[0],z[1]);\
 
-                    core->kf.F_x(0,2)=core->kf.F_x(1,3)=core->deltaT;
+
                     Hv(0,2)=Hv(1,3)=core->deltaT;
-                    core->kf.UpdateModel();
                     core->kf.UpdateMeasure(Hv,R,z);
                     if(true)
                     {
@@ -62,13 +61,11 @@ void TrackThread::run()
                         fprintf(fkf,"%f %f %f %f\n",core->kf.x[0],core->kf.x[1],core->posTrack.X,core->posTrack.Y);
                     }
                     core->deltaT=0;
-                    core->posTrack.X=core->kf.x[0];
-                    core->posTrack.Y=core->kf.x[1];
-
-
+                    //core->posTrack.X=core->kf.x[0];
+                    //core->posTrack.Y=core->kf.x[1];
                 }
                 core->NewTrackImg=false;
-                //mutexCurrent->unlock();
+                mutexCurrent->unlock();
             }
 
         }

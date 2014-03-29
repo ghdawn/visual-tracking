@@ -215,7 +215,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         trackedPoints-=drop;
     }
 
-    if(trackedPoints==0)
+    if(trackedPoints<=0)
     {
         Tracked=false;
     }
