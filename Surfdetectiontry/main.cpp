@@ -5,10 +5,12 @@
 #define ang2pi 1 //(3.1415926/180.0)
 #define min_dis_angle 0.2
 
-#define trust_max 100.0
-#define trust_dec 20.0
-#define trust_min 10.0
-#define trust_new 30.0
+#define trust_max 100
+#define trust_dec 5
+#define trust_dec_out 5
+#define trust_new 49
+#define trust_min 50
+#define trust_clear -10000
 
 using namespace std;
 using namespace itr_vision;
@@ -94,19 +96,20 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
     S32 *tmp_model=new S32[matched_num]();
 
     S32 size_of_model=Modellist.size();
-
+    S32 size_p=FeaturePointList2.size();
+    S32 cal_size=0;
     S32 model_match_index=0;
-    for(S32 i=0; i<matched_num; i++)
-    {
-        while(Modellist[model_match_index].ID==-1)
-        {
-            model_match_index++;
-        }
-        tmp_model[i]=model_match_index;
-        model_match_index++;
-    }
 
-    if(matched_num>4)
+for(S32 i=0; i<size_of_model; i++)
+{
+    if((Modellist[i].ID!=-1&&*((F32*)(Modellist[model_match_index].Tag))>=trust_min))
+    {
+        tmp_model[cal_size]=i;
+        cal_size++;
+    }
+}
+printf("cal_size:%d\t",cal_size);
+    if(cal_size>2)
     {
         do          /// RANSAC begin:
         {
@@ -114,8 +117,8 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
             for(S32 i=0; i<2; i++)
             {
                 itr_math::NumericalObj->Rand(p);
-                itr_math::NumericalObj->Floor(p*matched_num,q);
-                if(q==matched_num)
+                itr_math::NumericalObj->Floor(p*cal_size,q);
+                if(q==cal_size)
                 {
                     q=-1;
                     i--;
@@ -164,25 +167,35 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
             }
             j++;
         }
-        while(j<100);
+        while(j<10);
 
         rect_result.X=best_center[0]-rect_soulth.Width/2;
         rect_result.Y=best_center[1]-rect_soulth.Height/2;
     }
     else
     {
-        F32*dX=new F32[matched_num]();
-        F32*dY=new F32[matched_num]();
-        for(S32 i=0; i<matched_num; i++)
+        if(cal_size>0)
         {
-            dX[i]=FeaturePointList2[Modellist[tmp_model[i]].ID].X-Modellist[tmp_model[i]].X;
-            dY[i]=FeaturePointList2[Modellist[tmp_model[i]].ID].Y-Modellist[tmp_model[i]].Y;
+            F32*dX=new F32[cal_size]();
+            F32*dY=new F32[cal_size]();
+            for(S32 i=0; i<cal_size; i++)
+            {
+                dX[i]=FeaturePointList2[Modellist[tmp_model[i]].ID].X-Modellist[tmp_model[i]].X;
+                dY[i]=FeaturePointList2[Modellist[tmp_model[i]].ID].Y-Modellist[tmp_model[i]].Y;
+            }
+            F32 tmp_F32;
+            itr_math::StatisticsObj->Median(dX,cal_size,tmp_F32);
+            rect_result.X =rect_soulth.X+tmp_F32;
+            itr_math::StatisticsObj->Median(dY,cal_size,tmp_F32);
+            rect_result.Y =rect_soulth.Y+tmp_F32;
         }
-        F32 tmp_F32;
-        itr_math::StatisticsObj->Median(dX,matched_num,tmp_F32);
-        rect_result.X =rect_soulth.X+tmp_F32;
-        itr_math::StatisticsObj->Median(dY,matched_num,tmp_F32);
-        rect_result.Y =rect_soulth.Y+tmp_F32;
+        else
+        {
+
+            printf("\nno valid point!###########################\n");
+            rect_result.X=rect_soulth.X;
+            rect_result.Y=rect_soulth.Y;
+        }
     }
     rect_result.Height=rect_soulth.Height;
     rect_result.Width=rect_soulth.Width;
@@ -193,19 +206,31 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
     if(fabs(dx)>100||fabs(dy)>100)
     {
         printf("fatal errer!***********************************\n");
-        rect_result.X=rect_soulth.X;
-        rect_result.Y=rect_soulth.Y;
+//        rect_result.X=rect_soulth.X;
+//        rect_result.Y=rect_soulth.Y;
     }
 
     ///更新模板
 
     for(S32 i=0; i<size_of_model; i++)
     {
+        if(!rect_result.IsInRectangle(Modellist[i].X,Modellist[i].Y))
+        {
+            F32* tmp_F32=(F32*)(Modellist[i].Tag);
+            tmp_F32[0] -= trust_dec_out;
+            if(tmp_F32[0]<trust_clear)
+            {
+                Modellist.erase(Modellist.begin()+i);
+                size_of_model--;
+                i--;
+                continue;
+            }
+        }
         if(Modellist[i].ID==-1)
         {
             F32* tmp_F32=(F32*)(Modellist[i].Tag);
             tmp_F32[0] -= trust_dec;
-            if(tmp_F32[0]<trust_min)
+            if(tmp_F32[0]<trust_clear)
             {
                 Modellist.erase(Modellist.begin()+i);
                 size_of_model--;
@@ -214,6 +239,9 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
         }
         else
         {
+            Modellist[i].X=FeaturePointList2[Modellist[i].ID].X;
+            Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y;
+
             Modellist[i].Dir=FeaturePointList2[Modellist[i].ID].Dir;
             F32 *tmp_F32=(F32*)(Modellist[i].Tag);
             tmp_F32[1]=_getangle(FeaturePointList2[Modellist[i].ID],best_center[0],best_center[1]);
@@ -226,11 +254,12 @@ void _centercal(     std::vector<VectorFeaturePoint> &Modellist,
     }
 
     ///增加新点
-    S32 size_p=FeaturePointList2.size();
+
     for(S32 i=0; i<size_p; i++)
     {
         if(rect_result.IsInRectangle(FeaturePointList2[i].X,FeaturePointList2[i].Y)&&FeaturePointList2[i].ID!=1)
         {
+            FeaturePointList2[i].ID=-2;
             FeaturePointList2[i].Tag=new F32[2]();
             F32* tmp_F32=(F32*)FeaturePointList2[i].Tag;
             tmp_F32[0]=trust_new;
@@ -299,7 +328,7 @@ S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
         F32 dx=rect_result.X-rect_soulth.X;
         F32 dy=rect_result.Y-rect_soulth.Y;
 
-        printf("rect offset:dX=%5f\tdY=%5f\n",dx,dy);
+        printf("rect offset:dX=%.2f\tdY=%.2f\n",dx,dy);
         return 1;
     }
     else
@@ -369,16 +398,16 @@ int main()
 
     RectangleS rect_result(0,0,0,0);
     //循环
-    for(S32 i=202; i<800; i++)
+    for(S32 i=202; i<762; i++)
     {
         sprintf(file, path, i);
         IOpnm::ReadPGMFile(file, current);
         /// debuge
         Matrix reMat;
         ///
-        if(i==218)
+        if(i==434)
         {
-            i=218;
+            i=434;
         }
         if(i==350)
         {
@@ -390,6 +419,31 @@ int main()
             last=current;
             itr_vision::Draw::Rectangle(current,rect_result,255);
 
+            for(S32 i=0; i<Modellist.size(); i++)
+            {
+                if(Modellist[i].ID==-2)
+                {
+                    Modellist[i].ID=-1;
+                    rectpoint.X=Modellist[i].X;
+                    rectpoint.Y=Modellist[i].Y;
+                    itr_vision::Draw::Circle(current,rectpoint.X,rectpoint.Y,3,255);
+                }
+                else
+                {
+                    if(Modellist[i].ID==-1)
+                    {
+                        rectpoint.X=Modellist[i].X;
+                        rectpoint.Y=Modellist[i].Y;
+                        itr_vision::Draw::Rectangle(current,rectpoint,0);
+                    }
+                    else
+                    {
+                        rectpoint.X=Modellist[i].X;
+                        rectpoint.Y=Modellist[i].Y;
+                        itr_vision::Draw::Rectangle(current,rectpoint,255);
+                    }
+                }
+            }
             sprintf(file,"bin/Debug/output/%05d.pgm",i);
             itr_vision::IOpnm::WritePGMFile(file,current);
             ///debuge
