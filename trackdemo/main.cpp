@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     itr_math::MathObjStandInit();
-    char dir[50]="bin/Debug/328";
+    char dir[50]="bin/Debug/09_carchase";
     char path[50]="%s/pgm/%05d.pgm";
 
     char file[50];
@@ -23,9 +23,10 @@ int main()
     rect.Height-=rect.Y;
 
     ///读取初始图像
+    int beginindex=1;
     FILE *fout=fopen("bin/Debug/result.txt","w");
     Matrix current,last;
-    sprintf(file,path,dir,406);
+    sprintf(file,path,dir,beginindex);
     IOpnm::ReadPGMFile(file, current);
     IOpnm::ReadPGMFile(file, last);
 
@@ -40,6 +41,8 @@ int main()
                    0,1,0,0
                   };
     kf.F_x.CopyFrom(data);
+    kf.F_n.SetDiag(1);
+    kf.F_n(0,0)=kf.F_n(1,1)=0.5;
     Matrix Hx(2,4),Hv(2,4),R(2,2);
     R.SetDiag(1.012306);
     Hx.CopyFrom(data+16);
@@ -54,7 +57,14 @@ int main()
 
     lktracking tracking;
     tracking.Init(current,rect);
-    for(int k=406; k<1000; k+=1)
+    RectangleS rectout;
+    rectout.X=rect.X;
+        rectout.Y=rect.Y;
+        rectout.Width=rect.Width;
+        rectout.Height=rect.Height;
+    Detection detect(current,rectout,15);
+
+    for(int k=beginindex; k<1000; k+=1)
     {
         sprintf(file, path,dir, k);
         printf("%s\n\n",file);
@@ -69,8 +79,18 @@ int main()
             X=kf.UpdateMeasure(Hv,R,z);
 
         }
-        //rect.X=X[0];
-        //rect.Y=X[1];
+        rectout.X=rect.X;
+        rectout.Y=rect.Y;
+
+        if(detect.Go(current,rectout))
+        {
+            z[0]=rectout.X;
+            z[1]=rectout.Y;
+            X=kf.UpdateMeasure(Hx,R,z);
+
+        }
+        rect.X=X[0];
+        rect.Y=X[1];
         if(true)
         {
             RectangleS rectout;
@@ -80,7 +100,7 @@ int main()
             rectout.Height=rect.Height;
 
             Draw::Rectangle(current,rectout,255);
-            sprintf(file,"bin/Debug/output/%05d.pgm",k-405);
+            sprintf(file,"bin/Debug/output/%05d.pgm",k);
             IOpnm::WritePGMFile(file,current);
             fprintf(fout,"%f %f %f %f\n",rect.X,rect.Y,rect.X+rect.Width,rect.Y+rect.Height);
         }

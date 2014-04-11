@@ -41,7 +41,7 @@ class DataOper:public Ransac<T,T>::Operator
         }
         bool Remain(T a,T b)
         {
-            return (fabs(a-b)<3);
+            return (fabs(a-b)<1.2);
         }
 };
     S32 FeatureNum;

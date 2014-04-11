@@ -19,7 +19,7 @@ void lktracking::Init(const Matrix &current,RectangleF &rect)
     // SelectKLTFeature select_tmp(current);//SelectKLTFeature select(current);
     _select_pointer =new SelectKLTFeature(current);
 
-    _select_pointer->mindist=7;
+    _select_pointer->mindist=5;
 
     ransac.Init(&oper);
 
