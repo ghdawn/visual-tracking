@@ -10,5 +10,6 @@
 		<Project filename="Surfdetectiontry/Surfdetectiontry.cbp" />
 		<Project filename="asivideomaker/asivideomaker.cbp" />
 		<Project filename="PicProcess/PicProcess.cbp" />
+		<Project filename="../iTRLib/itrvision/itrvision.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
