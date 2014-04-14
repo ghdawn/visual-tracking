@@ -27,20 +27,14 @@ void JoyStickThread::run()
         if(joystick.GetButtonStatus(0))
         {
             core->Manual();
+            core->posInit.Height = core->posInit.Height + 0.2*joystick.GetAxisValue(2);
+            core->posInit.Width = core->posInit.Width + 0.2*joystick.GetAxisValue(3);
+            gimbal.Control(joystick.GetAxisValue(0),joystick.GetAxisValue(1));
         }
         else if(joystick.GetButtonStatus(1))
         {
-            core->BeginTrack();
+            core->BeginTrack();            
         }
-        if(core->Tracking==false)
-        {
-            //gimbal.Control(joystick.GetAxisValue(0),joystick.GetAxisValue(1));
-        }
-        /*if(core->Tracking==false)
-        {
-            core->posInit.Height = 1.1*joystick.GetAxisValue(2);
-            core->posInit.Width = 1.1*joystick.GetAxisValue(3);
-        }*/
         msleep(100);
     }
 }
