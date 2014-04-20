@@ -12,7 +12,7 @@
 using namespace std;
 using namespace itr_vision;
 
-#define sim
+//#define sim
 
 
 using namespace std;
@@ -54,13 +54,15 @@ void cof(F32 pos1X,F32 pos1Y,F32 angle1,F32 pos2X,F32 pos2Y,F32 angle2,F32& re_c
             }
             else
             {
-//                itr_math::NumericalObj->Tan(pos1.Dir-*angle1,tana1);
-//                itr_math::NumericalObj->Tan(pos2.Dir-*angle2,tana2);
                 itr_math::NumericalObj->Tan(angle1,tana1);
                 itr_math::NumericalObj->Tan(angle2,tana2);
                 re_center_x=(pos1Y-pos2Y+pos2X*tana2-pos1X*tana1)/(tana2-tana1);
                 re_center_y=(pos1X-pos2X+pos2Y/tana2-pos1Y/tana1)/(1/tana2-1/tana1);
             }
+        }
+        if(re_center_x<1||re_center_x>320||re_center_y<1||re_center_y>240)
+        {
+            printf("cof errer!\n");
         }
     }
 }
@@ -113,11 +115,28 @@ void sim_cof(F32 Model_pos1X,F32 Model_pos1Y,F32 Model_pos2X,F32 Model_pos2Y,
     ///debug
     if(fabs(norm_center_x-model_center_x)>50||fabs(norm_center_y-model_center_y)>50)
     {
-        printf("fatal errer!\n");
-
+        // printf("sim_cof errer!\n");
     }
 }
+F32 sim_getdis(F32 x1,F32 y1,itr_math::RectangleS rect)
+{
+    if(rect.IsInRectangle(x1,y1))
+        return(sqrt((x1-rect.X)*(x1-rect.X)+(y1-rect.Y)*(y1-rect.Y)));
+    else
+        return(200);
+}
+#else
+F32 dir_getdis(VectorFeaturePoint vec,itr_math::RectangleS rect)
+{
+    F32 *p_f32=(F32*)(vec.Tag);
+    F32 tmp=fabs(getangle(vec.X,vec.Y,rect.X,rect.Y)-vec.Dir-p_f32[1]);
+    while(tmp>PI)
+    {
+        tmp-=PI;
+    }
+    return(tmp);
 
+}
 #endif
 
 void centercal(     std::vector<VectorFeaturePoint> &Modellist,
@@ -134,7 +153,7 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
     S32 lable[2],q;
     F32 best_center[2];
     F32 norm_center[2];
-    F32 min_dis,dis;
+    F32 min_dis,dis,dis_c,min_disc;
     S32 *tmp_model=new S32[matched_num]();
 
     S32 size_of_model=Modellist.size();
@@ -163,16 +182,22 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
         S32 *bucket=new S32 [9*cal_size]();
         F32* tempvalue_u=new F32[cal_size]();
         F32* tempvalue_v=new F32[cal_size]();
+
+
         for(S32 i=0; i<cal_size; i++)
         {
             tempvalue_u[i]=Modellist[tmp_model[i]].X;
             tempvalue_v[i]=Modellist[tmp_model[i]].Y;
         }
-
-        F32 U3=rect_source.X+rect_source.Width/3;
-        F32 V3=rect_source.Y+rect_source.Height/3;
-        F32 U23=rect_source.X+rect_source.Width/3*2;
-        F32 V23=rect_source.Y+rect_source.Height/3*2;
+        F32 maxu,maxv,minu,minv;
+        itr_math::CalculateObj->Max(tempvalue_u,cal_size,maxu);
+        itr_math::CalculateObj->Min(tempvalue_u,cal_size,minu);
+        itr_math::CalculateObj->Max(tempvalue_v,cal_size,maxv);
+        itr_math::CalculateObj->Min(tempvalue_v,cal_size,minv);
+        F32 U3=minu*2/3+maxu/3;
+        F32 V3=minv*2/3+maxv/3;
+        F32 U23=minu/3+maxu/3*2;
+        F32 V23=minv/3+maxv/3*2;
 
         /// bucket for 9 bucket
         for(S32 i=0; i<cal_size; i++)
@@ -253,6 +278,7 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
 
         S16 b[2]= {0};
         S32 tmp_k;
+        jj=0;
         do          /// RANSAC begin:
         {
             //pick 2 bucket
@@ -328,18 +354,41 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
             {
                 best_center[0]=norm_center[0];
                 best_center[1]=norm_center[1];
-                min_dis=0;
+                min_dis=1000000;
+                min_disc=0;
             }
             else
             {
                 dis=0;
+                dis_c=0;
                 rect_result.X=norm_center[0]-rect_source.Width/2;
                 rect_result.Y=norm_center[1]-rect_source.Height/2;
+#ifdef sim
                 for(S32 i=0; i<size_of_model; i++)
                 {
-                    dis+=1;
+                    dis+=sim_getdis(Modellist[i].X,Modellist[i].Y,rect_result);
                 }
-                if((dis)>(min_dis))
+#else
+                for(S32 i=0; i<size_of_model; i++)
+                {
+                    //dis+=dir_getdis(Modellist[i],rect_result);
+                    if(rect_result.IsInRectangle(Modellist[i].X,Modellist[i].Y))
+                    {
+                        dis_c++;
+                    }
+                }
+                dis=(rect_source.X-rect_result.X)*(rect_source.X-rect_result.X);
+                dis+=(rect_source.Y-rect_result.Y)*(rect_source.Y-rect_result.Y);
+#endif
+                if(dis_c>min_disc)
+                {
+                    min_dis=dis;
+                    min_disc=dis_c;
+                    best_center[0]=norm_center[0];
+                    best_center[1]=norm_center[1];
+                }
+                else
+                if(dis_c==min_disc&&(dis)<(min_dis))
                 {
                     min_dis=dis;
                     best_center[0]=norm_center[0];
@@ -352,6 +401,10 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
 
         rect_result.X=best_center[0]-rect_source.Width/2;
         rect_result.Y=best_center[1]-rect_source.Height/2;
+
+        delete[] bucket;
+        delete[] tempvalue_u;
+        delete[] tempvalue_v;
     }
     else
     {
@@ -410,16 +463,22 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
 //                continue;
 //            }
 //        }
+        //F32 tmp_change_x=0,
+#ifdef sim
+        F32 tmp_c_x,tmp_c_y;
+        tmp_c_x=best_center[0]-(rect_source.X+rect_source.Width/2);
+        tmp_c_y=best_center[1]-(rect_source.Y+rect_source.Height/2);
+#endif
         if(Modellist[i].ID==-1)     /// 未匹配上的 降低信任度
         {
             F32* tmp_F32=(F32*)(Modellist[i].Tag);
             tmp_F32[0] -= trust_dec;
 #ifdef sim
             /// updata X Y;
-            Modellist[i].X +=best_center[0]-(rect_source.X+rect_source.Width/2);
-            Modellist[i].Y +=best_center[1]-(rect_source.Y+rect_source.Height/2);
+            Modellist[i].X +=tmp_c_x;
+            Modellist[i].Y +=tmp_c_y;
 #else
-            tmp_F32[1]=Modellist[i].Dir - getangle( Modellist[i].X, Modellist[i].Y,best_center[0],best_center[1]);
+            //tmp_F32[1]=Modellist[i].Dir - getangle( Modellist[i].X, Modellist[i].Y,best_center[0],best_center[1]);
 #endif
             if(tmp_F32[0]<trust_clear)
             {
@@ -431,15 +490,33 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
         else
         {
             ///匹配上的模板特征点增加信任度
-            Modellist[i].X=FeaturePointList2[Modellist[i].ID].X;
-            Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y;
             F32 *tmp_F32=(F32*)(Modellist[i].Tag);
             tmp_F32[0] +=trust_dec;
             if(tmp_F32[0]>trust_max)
                 tmp_F32[0]=trust_max;
-#ifndef sim
-            Modellist[i].Dir=FeaturePointList2[Modellist[i].ID].Dir;
-
+#ifdef sim
+//            tmp_c_x=fabs( Modellist[i].X-FeaturePointList2[Modellist[i].ID].X);
+//            tmp_change_x+=tmp_c_x;
+//
+//            tmp_c_y=fabs( Modellist[i].Y-FeaturePointList2[Modellist[i].ID].Y);
+//            tmp_change_y+=tmp_c_y;
+//
+//            tmp_change_c++;
+            if(fabs(Modellist[i].X-FeaturePointList2[Modellist[i].ID].X)<1.5*tmp_c_x&&
+                    fabs( Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y)<1.5*tmp_c_y)
+            {
+                Modellist[i].X=FeaturePointList2[Modellist[i].ID].X;
+                Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y;
+            }
+            else
+            {
+                Modellist[i].X +=tmp_c_x;
+                Modellist[i].Y +=tmp_c_y;
+            }
+#else
+            Modellist[i].X=FeaturePointList2[Modellist[i].ID].X;
+            Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y;
+            //Modellist[i].Dir=FeaturePointList2[Modellist[i].ID].Dir;
             tmp_F32[1]= Modellist[i].Dir - getangle( Modellist[i].X, Modellist[i].Y,best_center[0],best_center[1]);
 #endif
             FeaturePointList2[Modellist[i].ID].ID=1;///已经匹配上的不再添加进模板。
@@ -452,6 +529,15 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
     {
         if(rect_result.IsInRectangle(FeaturePointList2[i].X,FeaturePointList2[i].Y)&&FeaturePointList2[i].ID!=1)
         {
+            ///debug
+            ///////////////////////////////////
+            F32 tmp_f32=FeaturePointList2[i].X-best_center[0];
+            if(fabs(tmp_f32)>60)
+            {
+                i=i;
+                i=i;
+            }
+
             FeaturePointList2[i].ID=-2;
 #ifdef sim
             FeaturePointList2[i].Tag=new F32[1]();
@@ -465,7 +551,7 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
             Modellist.push_back(FeaturePointList2[i]);
         }
     }
-
+    delete[] tmp_model;
 }
 
 S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
@@ -619,9 +705,9 @@ int main()
         /// debuge
         Matrix reMat;
 
-        if(i==434)
+        if(i==219)
         {
-            i=434;
+            i=219;
         }
         if(i==350)
         {
@@ -637,26 +723,35 @@ int main()
 
             for(S32 ii=0; ii<Modellist.size(); ii++)
             {
-                if(Modellist[ii].ID==-2)
+                if(*((F32*)(Modellist[ii].Tag))>trust_min)
                 {
-                    Modellist[ii].ID=-1;
-                    rectpoint.X=Modellist[ii].X;
-                    rectpoint.Y=Modellist[ii].Y;
-                    itr_vision::Draw::Circle(current,rectpoint.X,rectpoint.Y,3,255);
-                }
-                else
-                {
-                    if(Modellist[ii].ID==-1)
+                    if(Modellist[ii].ID==-2)
                     {
+                        Modellist[ii].ID=-1;
                         rectpoint.X=Modellist[ii].X;
                         rectpoint.Y=Modellist[ii].Y;
-                        itr_vision::Draw::Rectangle(current,rectpoint,0);
+                        itr_vision::Draw::Circle(current,rectpoint.X,rectpoint.Y,3,255);
                     }
                     else
                     {
-                        rectpoint.X=Modellist[ii].X;
-                        rectpoint.Y=Modellist[ii].Y;
-                        itr_vision::Draw::Rectangle(current,rectpoint,255);
+                        if(Modellist[ii].ID==-1)
+                        {
+                            rectpoint.X=Modellist[ii].X;
+                            rectpoint.Y=Modellist[ii].Y;
+                            itr_vision::Draw::Rectangle(current,rectpoint,0);
+                        }
+                        else
+                        {
+                            rectpoint.X=Modellist[ii].X;
+                            rectpoint.Y=Modellist[ii].Y;
+
+                            if(rectpoint.X-rect_result.X>rect_result.Width)
+                            {
+                               // printf("out!\n");
+                            }
+
+                            itr_vision::Draw::Rectangle(current,rectpoint,255);
+                        }
                     }
                 }
             }
