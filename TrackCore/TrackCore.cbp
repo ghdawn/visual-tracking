@@ -21,6 +21,7 @@
 					<Add directory="../../iTRLib/itralgorithm" />
 					<Add directory="../../iTRLib/3rdparty/alglib" />
 					<Add directory="../GimbalControl" />
+					<Add directory="../../iTRLib/itrdevice" />
 				</Compiler>
 				<Linker>
 					<Add library="../../iTRLib/itrbase/bin/debug/libitrbase.a" />

@@ -41,6 +41,8 @@ void JoyStickThread::run()
 
         if(!core->Tracking)
         {
+            core->posTrack.X = core->Width*0.5 - core->posTrack.Width*0.5;
+            core->posTrack.Y = core->Height*0.5 - core->posTrack.Height*0.5;
             for(S32 i=0; i<axiscount; i++)
             {
                 axisvalue[i]=joystick.GetAxisValue(i);
