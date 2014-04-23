@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <strings.h>
 
-#define RS_DEVICE "/dev/ttyACM0"       //串口0
+//#define RS_DEVICE "/dev/ttyACM0"       //串口0
 //#define RS_DEVICE "/dev/ttySAC1"       //串口1
 
 SerialPort::SerialPort()
@@ -16,13 +16,25 @@ SerialPort::SerialPort()
 
 }                                                 //析构
 
-void SerialPort::Init(/*char * name,*/ int baudrate)
+void SerialPort::Init(char * name, int baudrate)
 {
     int BAUDRATE;
+    name = "/dev/ttyACM0";
     struct termios oldtio,newtio;     //termios结构是用来保存波特率、字符大小等
+    fd=open(name,O_RDWR|O_NOCTTY);     //以读写方式打开串口。不控制TTY
+    if(fd<0)
+
+    {
+
+    perror("error");
+
+    exit(1);                             //失败退出
+
+    }
 
     tcgetattr(fd,&oldtio);             //保存当前设置到oldtio
     bzero(&newtio,sizeof(newtio));     //清除newtio结构，并重新对它的成员设置如下
+
     if (baudrate = 115200)
         BAUDRATE = B115200;
     else if (baudrate = 9600)
