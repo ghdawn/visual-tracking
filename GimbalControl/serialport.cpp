@@ -8,8 +8,9 @@
 #include <unistd.h>
 #include <strings.h>
 
+
 //#define RS_DEVICE "/dev/ttyACM0"       //串口0
-//#define RS_DEVICE "/dev/ttySAC1"       //串口1
+
 
 SerialPort::SerialPort()
 {

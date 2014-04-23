@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 
     TrackCore core;
     core.Init(320,240);
+    core.Manual();
     core.Tracking=false;
     core.TrackStatusChanged=false;
 

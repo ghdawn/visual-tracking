@@ -35,19 +35,21 @@ namespace itr_tracker
     {
         TrackStatusChanged=true;
         Tracking=true;
-        kf.x[0]=posInit.X;
-        kf.x[1]=posInit.Y;
+        kf.x[0]=posTrack.X;
+        kf.x[1]=posTrack.Y;
         kf.x[2]=kf.x[3]=0;
 
-        posTrack.X=posInit.X;
-        posTrack.Y=posInit.Y;
-        posTrack.Width=posInit.Width;
-        posTrack.Height=posInit.Height;
+
     }
 
     void TrackCore::Manual()
     {
         TrackStatusChanged=true;
         Tracking=false;
+
+        posTrack.X=posInit.X;
+        posTrack.Y=posInit.Y;
+        posTrack.Width=posInit.Width;
+        posTrack.Height=posInit.Height;
     }
 }
