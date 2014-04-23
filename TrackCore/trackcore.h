@@ -5,7 +5,7 @@
 #include "itrvision.h"
 #include "lktracking.h"
 #include "gimbal.h"
-#include "asyncbuffer.h"
+
 
 using itr_math::RectangleF;
 using itr_math::RectangleS;

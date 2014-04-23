@@ -3,6 +3,7 @@
 #include "joystickthread.h"
 #include <iostream>
 using std::cout;
+using std::endl;
 using namespace itr_tracker;
 JoyStickThread::JoyStickThread(QString name )
 {
@@ -23,7 +24,7 @@ void JoyStickThread::run()
 {
     while (isopen&&!stopped)
     {
-        U8 *buffer;
+        U8 buffer[10];
         joystick.Update();
         S32 axiscount=0;
         axiscount=joystick.GetAxisCount();
@@ -44,15 +45,14 @@ void JoyStickThread::run()
             {
                 axisvalue[i]=joystick.GetAxisValue(i);
             }
-
-            if(axisvalue[4]>0.5||axisvalue[4]<-0.5)
+            if( (axisvalue[4]>0.5)||(axisvalue[4]<-0.5))
             {
-                core->posInit.Height = core->posInit.Height*(1-axisvalue[4]*0.001);
+                core->posTrack.Height = core->posTrack.Height*(1-axisvalue[4]*0.01);
             }
 
-            if(axisvalue[3]>0.5||axisvalue[3]<-0.5)
+            if( (axisvalue[3]>0.5)||(axisvalue[3]<-0.5))
             {
-                core->posInit.Width = core->posInit.Width*(1+axisvalue[3]*0.001);
+                core->posTrack.Width = core->posTrack.Width*(1+axisvalue[3]*0.01);
             }
 
             if(axisvalue[0]>0.5||axisvalue[0]<-0.5)

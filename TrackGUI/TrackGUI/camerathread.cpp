@@ -55,26 +55,21 @@ void CameraThread::run()
             mutexCurrent->unlock();
         }
 
-
+        rectangle.X=core->posTrack.X;
+        rectangle.Y=core->posTrack.Y;
+        rectangle.Width=core->posTrack.Width;
+        rectangle.Height=core->posTrack.Height;
         if(!core->Tracking)
         {
-            rectangle.X=core->posInit.X;
-            rectangle.Y=core->posInit.Y;
-            rectangle.Width=core->posInit.Width;
-            rectangle.Height=core->posInit.Height;
             info="No tracker!!";
             infolist.push_back(info);
         }
         else
         {
-            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
-            core->kf.UpdateModel();
-            core->posTrack.X=core->kf.x[0];
-            core->posTrack.Y=core->kf.x[1];
-            rectangle.X=core->posTrack.X;
-            rectangle.Y=core->posTrack.Y;
-            rectangle.Width=core->posTrack.Width;
-            rectangle.Height=core->posTrack.Height;
+//            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
+//            core->kf.UpdateModel();
+//            core->posTrack.X=core->kf.x[0];
+//            core->posTrack.Y=core->kf.x[1];
             stringstream ss;
             ss<<"X:"<<core->posTrack.X<<"\nY:"<<core->posTrack.Y;
             ss<<"\nCamera;"<<1000/delta<<"Hz";
@@ -97,7 +92,6 @@ void CameraThread::run()
             process.Process(inputimg,rectangle,infolist,core->postImg);
             core->NewPostImg=true;
             mutexPost->unlock();
-
         }
         //printf("End Draw Post!\n");
     }

@@ -26,7 +26,7 @@ namespace itr_tracker
 
     void Gimbal::Control(F32 omegax,F32 omegay)
     {
-        U8 *buffer;
+        U8 buffer[10];
         ASF32(&buffer[1]) = omegax;
         ASF32(&buffer[2]) = omegay;
         //StandDataSendFun fun=SerialSendForSSP;
@@ -37,7 +37,7 @@ namespace itr_tracker
 
     void Gimbal::Control()
     {
-        S32 axiscount;
+       /* S32 axiscount;
         F32 axisvalue[30]={0};
         while(1)
         {
@@ -55,6 +55,6 @@ namespace itr_tracker
             {
                 ASF32(&buffer[2]) = axisvalue[1];
             }
-        }
+        }*/
     }
 }

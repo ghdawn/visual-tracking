@@ -230,7 +230,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         rect.Width*=boxScale;
         rect.Height*=boxScale;
     }
-    if(true)
+    if(false)
     {
         ///特征点匹配关系输出
         Matrix cor;
