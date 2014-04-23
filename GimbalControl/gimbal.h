@@ -2,7 +2,9 @@
 #define GIMBAL_H
 #include "itrbase.h"
 #include "serialport.h"
+#include "itrdevice.h"
 using itr_math::Vector;
+using namespace itr_device;
 using namespace itr_protocol;
 namespace itr_tracker
 {
@@ -39,9 +41,12 @@ namespace itr_tracker
             */
             void Control(F32 omegax,F32 omegay);
 
+            void Control();
+
         private:
 
             StandSerialProtocol protocol;
+            StdJoyStick joystick;
 
     };
 }

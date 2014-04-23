@@ -34,4 +34,27 @@ namespace itr_tracker
 //        protocol.SSPSendPackage(0,buffer,8);
 
     }
+
+    void Gimbal::Control()
+    {
+        S32 axiscount;
+        F32 axisvalue[30]={0};
+        while(1)
+        {
+            joystick.Update();
+            axiscount=joystick.GetAxisCount();
+            for(S32 i=0; i<axiscount; i++)
+            {
+                axisvalue[i]=joystick.GetAxisValue(i);
+            }
+            if(axisvalue[0]>0.5||axisvalue[0]<-0.5)
+            {
+                ASF32(&buffer[1]) = axisvalue[0];
+            }
+            if(axisvalue[1]>0.5||axisvalue[1]<-0.5)
+            {
+                ASF32(&buffer[2]) = axisvalue[1];
+            }
+        }
+    }
 }
