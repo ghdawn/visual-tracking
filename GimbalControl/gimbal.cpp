@@ -34,18 +34,23 @@ void Gimbal::Control(Vector X)
     float omegay;
     omegax = (X[0]-U0)*k1 + X[2]*k2;
     omegay = (X[1]-V0)*k3 + X[3]*k4;
-    ASF32(&buffer[1]) = omegax;
-    ASF32(&buffer[2]) = omegay;
-    protocol.SSPSendPackage(0,buffer,8);
+
+    ASS32(&buffer[0]) = 0x11;
+    ASU8(&buffer[4]) = 1;
+    ASF32(&buffer[5]) = omegay;
+    ASF32(&buffer[9]) = omegax;
+    protocol.SSPSendPackage(0,buffer,13);
 
 }
 
 
 void Gimbal::Control(F32 omegax,F32 omegay)
 {
-    ASF32(&buffer[1]) = omegax;
-    ASF32(&buffer[2]) = omegay;
-    protocol.SSPSendPackage(0,buffer,8);
+    ASS32(&buffer[0]) = 0x11;
+    ASU8(&buffer[4]) = 1;
+    ASF32(&buffer[5]) = omegay;
+    ASF32(&buffer[9]) = omegax;
+    protocol.SSPSendPackage(0,buffer,13);
 }
 
 }
