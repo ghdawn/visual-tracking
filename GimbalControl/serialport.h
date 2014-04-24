@@ -9,9 +9,9 @@ public:
     SerialPort();
     int fd;
     void Init(char * name, int baudrate);
-    void StopSSP();
-    int send(unsigned char *Data, int length);
-    int receive(unsigned char *Data, int length);
+    void Close();
+    int Send(unsigned char *Data, int length);
+    int Receive(unsigned char *Data, int length);
 //protected:
     //virtual void run();
 };

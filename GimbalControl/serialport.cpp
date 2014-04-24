@@ -54,19 +54,17 @@ void SerialPort::Init(char *name, int baudrate)
     tcsetattr(fd,TCSANOW,&newtio);           //把我们的设置写入termios
 }
 
-void SerialPort::StopSSP()
+void SerialPort::Close()
 {
     close(fd);
 }
 
-int SerialPort::send(unsigned char *Data, int length)
+int SerialPort::Send(unsigned char *Data, int length)
 {
-    write(fd,Data,length);
-    return 0;
+    return write(fd,Data,length);
 }
 
-int SerialPort::receive(unsigned char *Data, int length)
+int SerialPort::Receive(unsigned char *Data, int length)
 {
-    read(fd,Data,length);
-        return 0;
+   return read(fd,Data,length);
 }
