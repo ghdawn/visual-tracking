@@ -45,9 +45,7 @@ void TrackThread::run()
                 }
                 else
                 {
-                    tracking->Go(core->current,core->posTrack,z[0],z[1]);\
-                    core->kf.F_x(0,2)=core->kf.F_x(1,3)=core->deltaT;
-                    core->kf.UpdateModel();
+                    tracking->Go(core->current,core->posTrack,z[0],z[1]);
                     Hv(0,2)=Hv(1,3)=core->deltaT;
                     core->kf.UpdateMeasure(Hv,R,z);
                     if(true)
@@ -61,8 +59,8 @@ void TrackThread::run()
                         fprintf(fkf,"%f %f %f %f\n",core->kf.x[0],core->kf.x[1],core->posTrack.X,core->posTrack.Y);
                     }
                     core->deltaT=0;
-//                    core->posTrack.X=core->kf.x[0];
-//                    core->posTrack.Y=core->kf.x[1];
+                    core->posTrack.X=core->kf.x[0];
+                    core->posTrack.Y=core->kf.x[1];
                 }
                 core->NewTrackImg=false;
                 mutexCurrent->unlock();
