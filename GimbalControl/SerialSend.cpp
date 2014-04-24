@@ -8,6 +8,6 @@ void InitSerialPort()
 
 S32 SerialSendForSSP(U8* Buffer,S32 Length)
 {
-    serialport.send(Buffer,Length);
+    serialport.Send(Buffer,Length);
     return Length;
 }
