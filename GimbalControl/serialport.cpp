@@ -53,12 +53,20 @@ void SerialPort::Init(char *name, int baudrate)
     tcflush(fd,TCIFLUSH);                    //清除所有队列在串口的输入与输出；
     tcsetattr(fd,TCSANOW,&newtio);           //把我们的设置写入termios
 }
-void SerialPort::send(unsigned char *Data, int length)
+
+void SerialPort::StopSSP()
 {
-    write(fd,Data,length);
+    close(fd);
 }
 
-void SerialPort::receive(unsigned char *Data, int length)
+int SerialPort::send(unsigned char *Data, int length)
+{
+    write(fd,Data,length);
+    return 0;
+}
+
+int SerialPort::receive(unsigned char *Data, int length)
 {
     read(fd,Data,length);
+        return 0;
 }
