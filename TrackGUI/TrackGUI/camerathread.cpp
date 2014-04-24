@@ -66,10 +66,10 @@ void CameraThread::run()
         }
         else
         {
-//            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
-//            core->kf.UpdateModel();
-//            core->posTrack.X=core->kf.x[0];
-//            core->posTrack.Y=core->kf.x[1];
+            core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
+            core->kf.UpdateModel();
+            core->posTrack.X=core->kf.x[0];
+            core->posTrack.Y=core->kf.x[1];
             stringstream ss;
             ss<<"X:"<<core->posTrack.X<<"\nY:"<<core->posTrack.Y;
             ss<<"\nCamera;"<<1000/delta<<"Hz";

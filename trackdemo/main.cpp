@@ -43,6 +43,7 @@ int main()
     kf.F_x.CopyFrom(data);
     kf.F_n.SetDiag(1);
     kf.F_n(0,0)=kf.F_n(1,1)=0.5;
+
     Matrix Hx(2,4),Hv(2,4),R(2,2);
     R.SetDiag(1.012306);
     Hx.CopyFrom(data+16);
@@ -59,9 +60,9 @@ int main()
     tracking.Init(current,rect);
     RectangleS rectout;
     rectout.X=rect.X;
-        rectout.Y=rect.Y;
-        rectout.Width=rect.Width;
-        rectout.Height=rect.Height;
+    rectout.Y=rect.Y;
+    rectout.Width=rect.Width;
+    rectout.Height=rect.Height;
     Detection detect(current,rectout,15);
 
     for(int k=beginindex; k<1000; k+=1)

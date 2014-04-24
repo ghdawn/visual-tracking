@@ -11,6 +11,9 @@ namespace itr_tracker
                        0,0,0,1
                       };
         kf.F_x.CopyFrom(data);
+        kf.Init_noise(0,0.1);
+        kf.F_n.SetDiag(1);
+        kf.F_n(0,0)=kf.F_n(1,1)=0.5;
         postImg=NULL;
         posInit.Init(144,108,36,27);
         int missedImg=0;
