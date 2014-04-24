@@ -1,6 +1,8 @@
 #include <iostream>
 #include"itrvision.h"
 #include "itrbase.h"
+#include "serialport.h"
+#include "gimbal.h"
 
 using namespace std;
 void GetData(S32* buffer,S32 &length)
@@ -43,6 +45,20 @@ int main()
     itr_math::MathObjStandInit();
     S32 buffer[100];
     S32 length=0;
+//    U8 buf[15];
+//    SerialPort sp;
+//    sp.Init("/dev/ttyUSB0",115200);
+//    for(int i=0;i<10;i++)
+//        buf[i]=i+'0';
+//    sp.send(buf,10);
+//    sp.receive(buf,5);
+//    printf("%s\n",buf);
+//    sp.receive(buf,10);
+//    printf("%s\n",buf);
+
+    itr_tracker::Gimbal gimbal;
+    gimbal.Init(1,1,1,1);
+    gimbal.Control(1,2);
     while(1)
     {
     GetData(buffer,length);

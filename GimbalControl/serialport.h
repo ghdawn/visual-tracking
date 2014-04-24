@@ -8,9 +8,6 @@ class SerialPort
 public:
     SerialPort();
     int fd;
-    volatile bool stopped;
-    volatile bool write_rs;
-    volatile bool read_rs;
     void Init(char * name, int baudrate);
     void send(unsigned char *Data, int length);
     void receive(unsigned char *Data, int length);
