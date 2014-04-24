@@ -43,6 +43,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="main.cpp" />
+		<Unit filename="surfdetection.cpp" />
+		<Unit filename="surfdetection.h" />
 		<Extensions>
 			<code_completion>
 				<search_path add="../itrvision" />

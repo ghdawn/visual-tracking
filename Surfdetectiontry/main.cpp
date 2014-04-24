@@ -1,6 +1,11 @@
 #include <iostream>
 #include "itrvision.h"
+#include "surfdetection.h"
 
+using namespace std;
+using namespace itr_vision;
+
+#ifdef f
 #define min_dis_angle 0.2
 #define min_angle 0.00005     //根据角度值计算中心点坐标时，所能识别的分辨率——针对tan(pi/2)和cot(0)
 #define trust_max 100       //信任最大值，防止溢出的可能
@@ -9,14 +14,9 @@
 #define trust_new 5         //新矩形区域出现新点的信任度
 #define trust_min 20        //参与计算的最小置信度
 #define trust_clear -10000
-using namespace std;
-using namespace itr_vision;
+
 
 //#define sim
-
-
-using namespace std;
-using namespace itr_vision;
 
 void cof(F32 pos1X,F32 pos1Y,F32 angle1,F32 pos2X,F32 pos2Y,F32 angle2,F32& re_center_x,F32& re_center_y)
 {
@@ -129,13 +129,30 @@ F32 sim_getdis(F32 x1,F32 y1,itr_math::RectangleS rect)
 F32 dir_getdis(VectorFeaturePoint vec,itr_math::RectangleS rect)
 {
     F32 *p_f32=(F32*)(vec.Tag);
-    F32 tmp=fabs(getangle(vec.X,vec.Y,rect.X,rect.Y)-vec.Dir-p_f32[1]);
+    F32 tmp=fabs(getangle(vec.X,vec.Y,rect.X+rect.Width/2,rect.Y+rect.Height/2)-vec.Dir-p_f32[1]);
     while(tmp>PI)
     {
         tmp-=PI;
     }
     return(tmp);
 
+}
+F32 dir_getdis3(VectorFeaturePoint vec,itr_math::RectangleS rect)
+{
+    F32 *p_f32=(F32*)(vec.Tag);
+    if(rect.IsInRectangle(vec.X,vec.Y))
+    {
+        F32 tmp=fabs(getangle(vec.X,vec.Y,rect.X+rect.Width/2,rect.Y+rect.Height/2)-vec.Dir-p_f32[1]);
+        while(tmp>PI)
+        {
+            tmp-=PI;
+        }
+        return(tmp);
+    }
+    else
+    {
+        return(100);
+    }
 }
 #endif
 
@@ -159,11 +176,11 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
     S32 size_of_model=Modellist.size();
     S32 size_p=FeaturePointList2.size();
     S32 cal_size=0;
-    S32 model_match_index=0;
+    //S32 model_match_index=0;
 
     for(S32 i=0; i<size_of_model; i++)
     {
-        if((Modellist[i].ID!=-1&&*((F32*)(Modellist[model_match_index].Tag))>=trust_min))
+        if((Modellist[i].ID!=-1&&*((F32*)(Modellist[i].Tag))>=trust_min))
         {
             tmp_model[cal_size]=i;
             cal_size++;
@@ -291,7 +308,7 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
                     {
                         if(p<ratio_bucket[0])
                         {
-                            q=1;
+                            q=0;
                             break;
                         }
                     }
@@ -369,16 +386,36 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
                     dis+=sim_getdis(Modellist[i].X,Modellist[i].Y,rect_result);
                 }
 #else
-                for(S32 i=0; i<size_of_model; i++)
+//                { //version 1
+//                    for(S32 i=0; i<size_of_model; i++)
+//                {
+//                    dis+=dir_getdis(Modellist[i],rect_result);
+//                }
+
+//                }
+//                {   //version 2
+//                for(S32 i=0; i<size_of_model; i++)
+//                {
+//                    if(rect_result.IsInRectangle(Modellist[i].X,Modellist[i].Y))
+//                    {
+//                        dis_c++;
+//                    }
+//                }
+//                dis=(rect_source.X-rect_result.X)*(rect_source.X-rect_result.X);
+//                dis+=(rect_source.Y-rect_result.Y)*(rect_source.Y-rect_result.Y);
+//                }
                 {
-                    //dis+=dir_getdis(Modellist[i],rect_result);
-                    if(rect_result.IsInRectangle(Modellist[i].X,Modellist[i].Y))
+                    //version 3
+                    for(S32 i=0; i<size_of_model; i++)
                     {
-                        dis_c++;
+                        if((Modellist[i].ID!=-1&&*((F32*)(Modellist[i].Tag))>=trust_min))
+                        {
+                           dis+=dir_getdis3(Modellist[i],rect_result);
+                        }
+
                     }
+
                 }
-                dis=(rect_source.X-rect_result.X)*(rect_source.X-rect_result.X);
-                dis+=(rect_source.Y-rect_result.Y)*(rect_source.Y-rect_result.Y);
 #endif
                 if(dis_c>min_disc)
                 {
@@ -387,8 +424,7 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
                     best_center[0]=norm_center[0];
                     best_center[1]=norm_center[1];
                 }
-                else
-                if(dis_c==min_disc&&(dis)<(min_dis))
+                else if(dis_c==min_disc&&(dis)<(min_dis))
                 {
                     min_dis=dis;
                     best_center[0]=norm_center[0];
@@ -448,6 +484,9 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
     }
 
     ///更新模板
+    F32 tmp_c_x,tmp_c_y;
+    tmp_c_x=best_center[0]-(rect_source.X+rect_source.Width/2);
+    tmp_c_y=best_center[1]-(rect_source.Y+rect_source.Height/2);
 
     for(S32 i=0; i<size_of_model; i++)
     {
@@ -464,11 +503,8 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
 //            }
 //        }
         //F32 tmp_change_x=0,
-#ifdef sim
-        F32 tmp_c_x,tmp_c_y;
-        tmp_c_x=best_center[0]-(rect_source.X+rect_source.Width/2);
-        tmp_c_y=best_center[1]-(rect_source.Y+rect_source.Height/2);
-#endif
+
+
         if(Modellist[i].ID==-1)     /// 未匹配上的 降低信任度
         {
             F32* tmp_F32=(F32*)(Modellist[i].Tag);
@@ -478,6 +514,8 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
             Modellist[i].X +=tmp_c_x;
             Modellist[i].Y +=tmp_c_y;
 #else
+//            Modellist[i].X +=tmp_c_x;
+//            Modellist[i].Y +=tmp_c_y;
             //tmp_F32[1]=Modellist[i].Dir - getangle( Modellist[i].X, Modellist[i].Y,best_center[0],best_center[1]);
 #endif
             if(tmp_F32[0]<trust_clear)
@@ -514,8 +552,16 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
                 Modellist[i].Y +=tmp_c_y;
             }
 #else
-            Modellist[i].X=FeaturePointList2[Modellist[i].ID].X;
-            Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y;
+//            if(rect_result.IsInRectangle(FeaturePointList2[Modellist[i].ID].X,FeaturePointList2[Modellist[i].ID].Y))
+//            {
+//                Modellist[i].X=FeaturePointList2[Modellist[i].ID].X;
+//                Modellist[i].Y=FeaturePointList2[Modellist[i].ID].Y;
+//            }
+//            else
+//            {
+//                Modellist[i].X +=tmp_c_x;
+//                Modellist[i].Y +=tmp_c_y;
+//            }
             //Modellist[i].Dir=FeaturePointList2[Modellist[i].ID].Dir;
             tmp_F32[1]= Modellist[i].Dir - getangle( Modellist[i].X, Modellist[i].Y,best_center[0],best_center[1]);
 #endif
@@ -524,7 +570,7 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
     }
 
     ///增加新点
-
+/*
     for(S32 i=0; i<size_p; i++)
     {
         if(rect_result.IsInRectangle(FeaturePointList2[i].X,FeaturePointList2[i].Y)&&FeaturePointList2[i].ID!=1)
@@ -550,7 +596,7 @@ void centercal(     std::vector<VectorFeaturePoint> &Modellist,
 #endif
             Modellist.push_back(FeaturePointList2[i]);
         }
-    }
+    }*/
     delete[] tmp_model;
 }
 
@@ -574,7 +620,7 @@ S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
     mat2.AllMul(255.0);
 
     //S32 size_feature =FeaturePointList2.size();
-    //S32 size_modl =Modellist.size();
+//    S32 size_modl =Modellist.size();
     /// feature match
     FeatureMatch feature_matchobj;
     S32 matchnum=0;
@@ -594,7 +640,7 @@ S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
 //            pos1[m].Y=Modellist[m].Y;
 //        }
 //    }
-
+//
 //    Draw::Correspond(mat1,mat2,pos1,pos2,matchnum,reMat);
     ///debuge draw////////////////////////////////////////////////
 
@@ -617,12 +663,8 @@ S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
         return 0;
     }
 }
-
-
-int main()
+int f_main()
 {
-    itr_math::MathObjStandInit();
-
     char path[50]="bin/Debug/01_david/pgm/%05d.pgm";
     char file[50]="bin/Debug/01_david/pgm/00201.pgm";
     FILE* fout=fopen("bin/Debug/result.txt","w");
@@ -709,9 +751,9 @@ int main()
         {
             i=219;
         }
-        if(i==350)
+        if(i==206)
         {
-            i=350;
+            i=206;
         }
         printf("%d\n",i);
         /// ///////////////////////
@@ -747,7 +789,7 @@ int main()
 
                             if(rectpoint.X-rect_result.X>rect_result.Width)
                             {
-                               // printf("out!\n");
+                                // printf("out!\n");
                             }
 
                             itr_vision::Draw::Rectangle(current,rectpoint,255);
@@ -771,4 +813,15 @@ int main()
     }
     fclose(fout);
     return 0;
+}
+#endif
+int main()
+{
+    itr_math::MathObjStandInit();
+    //fore
+#ifdef f
+    f_main();
+#endif
+    //later
+    last_main();
 }
