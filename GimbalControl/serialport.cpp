@@ -74,12 +74,20 @@ void SerialPort::Init(char * name, int baudrate)
     close(fd);
     quit();*/
 }
-void SerialPort::send(unsigned char *Data, int length)
+
+void SerialPort::StopSSP()
 {
-    write(fd,Data,length);
+    close(fd);
 }
 
-void SerialPort::receive(unsigned char *Data, int length)
+int SerialPort::send(unsigned char *Data, int length)
+{
+    write(fd,Data,length);
+    return 0;
+}
+
+int SerialPort::receive(unsigned char *Data, int length)
 {
     read(fd,Data,length);
+        return 0;
 }
