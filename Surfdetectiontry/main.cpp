@@ -620,29 +620,11 @@ S32 track_surf( std::vector<VectorFeaturePoint> &Modellist,///已知条件
     mat2.AllMul(255.0);
 
     //S32 size_feature =FeaturePointList2.size();
-//    S32 size_modl =Modellist.size();
+    S32 size_modl =Modellist.size();
     /// feature match
     FeatureMatch feature_matchobj;
     S32 matchnum=0;
     feature_matchobj.FeatureMatchDo( Modellist, FeaturePointList2,  matchnum);
-
-    ///debuge draw////////////////////////////////////////////////
-//    std::vector<itr_math::Point2D> pos1(matchnum);
-//    std::vector<itr_math::Point2D> pos2(matchnum);
-//    for(S32 m=0; m<size_modl; m++)
-//    {
-//    ;
-//        if(Modellist[m].ID!=-1)//&&Modellist[m].Quality
-//        {
-//            pos2[m].X=FeaturePointList2[Modellist[m].ID].X;
-//            pos2[m].Y=FeaturePointList2[Modellist[m].ID].Y;
-//            pos1[m].X=Modellist[m].X;
-//            pos1[m].Y=Modellist[m].Y;
-//        }
-//    }
-//
-//    Draw::Correspond(mat1,mat2,pos1,pos2,matchnum,reMat);
-    ///debuge draw////////////////////////////////////////////////
 
     if(matchnum>0)
     {
@@ -712,31 +694,7 @@ int f_main()
             Modellist.push_back(FeaturePointList[i]);
         }
     }
-/// //////////////////////////////////////////////////////////////////////debug
-    S32 size_ofm=Modellist.size();                                      /// ////
-    RectangleS rectpoint(0, 0, 5, 5);                                   /// ////
-    for(S32 i=0; i<size_ofm; i++)                                       /// ////
-    {
-        /// ////
-        rectpoint.X=Modellist[i].X;                                     /// ////
-        rectpoint.Y=Modellist[i].Y;                                     /// ////
-        itr_vision::Draw::Rectangle(last,rectpoint,255);                /// ////
-    }                                                                   /// ////
-    itr_vision::Draw::Rectangle(last,rect,255);                         /// ////
-    sprintf(file,"bin/Debug/output/model.pgm");                         /// ////
-    itr_vision::IOpnm::WritePGMFile(file,last);                         /// ////
 
-//    VectorFeaturePoint pos1,pos2;
-//    pos1.X=180;
-//    pos1.Y=60;
-//    pos2.X=188;
-//    pos2.Y=88;
-//    F32 angle1=1.6688;
-//    F32 angle2=3.0265;
-//    F32 center[2]={0};
-//    cof(pos1,&angle1,pos2,&angle2,center);
-//    ;
-/// ////////////////////////////////////////////////////////////////////////////
 
     RectangleS rect_result(0,0,0,0);
     //循环
