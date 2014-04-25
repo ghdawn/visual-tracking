@@ -27,6 +27,7 @@ void TrackThread::Init(TrackCore *core)
 void TrackThread::run()
 {
     FILE* fkf=fopen("kf.txt","w");
+    Vector X(4);
     while(!stopped)
     {
         ///TODO: lock
@@ -48,6 +49,10 @@ void TrackThread::run()
                     tracking->Go(core->current,core->posTrack,z[0],z[1]);
                     Hv(0,2)=Hv(1,3)=core->deltaT;
                     core->kf.UpdateMeasure(Hv,R,z);
+                    X=core->kf.x;
+                    X[0]+=core->posTrack.Width/2;
+                    X[1]+=core->posTrack.Height/2;
+                    core->gimbalControl.Control(X);
                     if(true)
                     {
                         printf("Delta T:%d\n",core->deltaT);

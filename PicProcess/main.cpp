@@ -59,6 +59,7 @@ int main()
     itr_tracker::Gimbal gimbal;
     gimbal.Init(1,1,1,1);
     gimbal.Control(1,2);
+    getchar();
     while(1)
     {
     GetData(buffer,length);

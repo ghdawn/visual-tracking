@@ -24,7 +24,8 @@ void JoyStickThread::run()
 {
     while (isopen&&!stopped)
     {
-        U8 buffer[10];
+        F32 x;
+        F32 y;
         joystick.Update();
         S32 axiscount=0;
         axiscount=joystick.GetAxisCount();
@@ -56,20 +57,28 @@ void JoyStickThread::run()
             {
                 core->posTrack.Width = core->posTrack.Width*(1+axisvalue[3]*0.01);
             }
-
-            if(axisvalue[0]>0.5||axisvalue[0]<-0.5)
+            float dead=0.2f;
+            if(axisvalue[0]>dead||axisvalue[0]<-dead)
             {
-                ASF32(&buffer[1]) = axisvalue[0];
+                x = axisvalue[0];
+            }
+            else
+            {
+                x = 0.0;
+            }
+            if(axisvalue[1]>dead||axisvalue[1]<-dead)
+            {
+                y = axisvalue[1];
+            }
+            else
+            {
+                y = 0.0;
             }
 
-            if(axisvalue[1]>0.5||axisvalue[1]<-0.5)
-            {
-                ASF32(&buffer[2]) = axisvalue[1];
-            }
+            core->gimbalControl.Control( x*100.0,y*100.0);
 
-            gimbal.Control( ASF32(&buffer[1]), ASF32(&buffer[2]));
         }
-        msleep(100);
+        msleep(50);
     }
 }
 void JoyStickThread::stop()

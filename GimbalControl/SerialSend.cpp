@@ -9,8 +9,8 @@ void InitSerialPort()
 S32 SerialSendForSSP(U8* Buffer,S32 Length)
 {
     serialport.Send(Buffer,Length);
-    serialport.Receive(Buffer,Length);
-    for(int i=0;i<Length;i++)
-        printf("%x ",Buffer[i]);
+//    serialport.Receive(Buffer,Length);
+//    for(int i=0;i<Length;i++)
+//        printf("%x ",Buffer[i]);
     return Length;
 }

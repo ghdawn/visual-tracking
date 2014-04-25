@@ -48,11 +48,13 @@ private:
     string info;
     vector<string> infolist;
     TrackCore *core;
-    //itr_device::AsiCamera camera;
+    Matrix imgBuffer;
+//    itr_device::AsiCamera camera;
     itr_device::v4linux camera;
     ProcessImage process;
     int length;
     U8* inputimg;
     U8* rawImg;
+    int Width,Height;
     TimeClock clock;
 };

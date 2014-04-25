@@ -24,16 +24,16 @@ void Gimbal::Init(F32 degX,F32 degY,F32 u0,F32 v0)
 
 void Gimbal::Control(Vector X)
 {
-    float k1 = 1;
-    float k2 = 1;
-    float k3 = 1;
-    float k4 = 1;
-    float U0 = 1;
-    float V0 = 1;
+    float kpx = 0.5;
+    float kdx = 0.1;
+    float kpy = 0.5;
+    float kdy = 0.1;
+    float U0 = 160;
+    float V0 = 120;
     float omegax;
     float omegay;
-    omegax = (X[0]-U0)*k1 + X[2]*k2;
-    omegay = (X[1]-V0)*k3 + X[3]*k4;
+    omegax = (X[0]-U0)*kpx + X[2]*kdx;
+    omegay = (X[1]-V0)*kpy + X[3]*kdy;
 
     ASU8(&buffer[0]) = 0x30;
     ASU8(&buffer[1]) = 1;

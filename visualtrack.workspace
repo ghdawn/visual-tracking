@@ -3,13 +3,11 @@
 	<Workspace title="Workspace">
 		<Project filename="TrackGUI/TrackGUI.cbp" />
 		<Project filename="TrackCore/TrackCore.cbp" />
-		<Project filename="PostProcess/PostProcess.cbp" />
 		<Project filename="GimbalControl/GimbalControl.cbp" />
 		<Project filename="SurfDetection/SurfDetection.cbp" />
 		<Project filename="trackdemo/trackdemo.cbp" />
 		<Project filename="Surfdetectiontry/Surfdetectiontry.cbp" />
 		<Project filename="asivideomaker/asivideomaker.cbp" />
 		<Project filename="PicProcess/PicProcess.cbp" />
-		<Project filename="../iTRLib/itrvision/itrvision.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

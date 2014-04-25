@@ -11,7 +11,6 @@ namespace itr_tracker
                        0,0,0,1
                       };
         kf.F_x.CopyFrom(data);
-        kf.Init_noise(0,0.1);
         kf.F_n.SetDiag(1);
         kf.F_n(0,0)=kf.F_n(1,1)=0.5;
         postImg=NULL;
@@ -19,6 +18,7 @@ namespace itr_tracker
         int missedImg=0;
         NewTrackImg=false;
         NewPostImg=false;
+        gimbalControl.Init(1,1,1,1);
     }
 
     TrackCore::~TrackCore()
@@ -41,8 +41,6 @@ namespace itr_tracker
         kf.x[0]=posTrack.X;
         kf.x[1]=posTrack.Y;
         kf.x[2]=kf.x[3]=0;
-
-
     }
 
     void TrackCore::Manual()
