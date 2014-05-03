@@ -44,11 +44,12 @@ int main()
     kf.F_n.SetDiag(1);
     kf.F_n(0,0)=kf.F_n(1,1)=0.5;
 
-    Matrix Hx(2,4),Hv(2,4),R(2,2);
+    Matrix Hx(2,4),Hv(2,4),R(2,2),Q(4,4);
     R.SetDiag(1.012306);
     Hx.CopyFrom(data+16);
     Hv.CopyFrom(data+8);
-    Vector z(2),X(4),v(2);
+    Q.SetDiag(0.0);
+    Vector z(2),X(4),v(2),n(4);
     kf.x[0]=rect.X;
     kf.x[1]=rect.Y;
     kf.x[2]=0;
@@ -71,7 +72,7 @@ int main()
         printf("%s\n\n",file);
         last=current;
         IOpnm::ReadPGMFile(file, current);
-        X=kf.UpdateModel();
+        X=kf.UpdateModel(Q,n);
 
         if(tracking.Go(current,rect,_u,_v))
         {
@@ -83,15 +84,6 @@ int main()
         rectout.X=rect.X;
         rectout.Y=rect.Y;
 
-        if(detect.Go(current,rectout))
-        {
-            z[0]=rectout.X;
-            z[1]=rectout.Y;
-            X=kf.UpdateMeasure(Hx,R,z);
-
-        }
-        rect.X=X[0];
-        rect.Y=X[1];
         if(true)
         {
             RectangleS rectout;

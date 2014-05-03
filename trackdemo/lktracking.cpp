@@ -172,6 +172,7 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
     {
         S32 drop=0,dropx,dropy;
         //RANSAC
+        ransac.Number=trackedPoints/2+1;
         ransac.Process(x,trackedPoints, dropx);
         printf("drop: %d ",dropx);
         for(i=0; i<trackedPoints; ++i)
@@ -225,10 +226,17 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         F32 boxScale=1.0f;
         boxScale=getScale(trackedPoints);
         printf("scale:%f\n",boxScale);
+        if(boxScale>1.5)
+        {
+            Tracked=false;
+        }
+        else
+        {
         rect.X+=Vx-rect.Width*(boxScale-1.0f)/2.0f;
         rect.Y+=Vy-rect.Height*(boxScale-1.0f)/2.0f;
         rect.Width*=boxScale;
         rect.Height*=boxScale;
+        }
     }
     if(false)
     {

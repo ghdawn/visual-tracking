@@ -53,8 +53,6 @@
 		<Unit filename="lktracking.cpp" />
 		<Unit filename="lktracking.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="tracker.cpp" />
-		<Unit filename="tracker.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

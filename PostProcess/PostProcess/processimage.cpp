@@ -24,12 +24,18 @@ void ProcessImage::Process(U8* inputimg,RectangleS rect,std::vector<string> Info
     int ViewX = 10;
     int ViewY = 10;
     char filename[50];
-    QImage image = QImage(inputimg, width, height, QImage::Format_RGB32);
+    QImage imagex = QImage(inputimg, width, height, QImage::Format_RGB32);
+
     QPainter p;
+    p.begin(&imagex);
+    p.setBrush(Qt::NoBrush);
+    p.setPen(Qt::green);
+    p.drawRect(rect.X,rect.Y,rect.Width,rect.Height);
+    p.end();
+    QImage image = imagex.mirrored(false, false);
     p.begin(&image);
     p.setBrush(Qt::NoBrush);
-    p.setPen(Qt::red);
-    p.drawRect(rect.X,rect.Y,rect.Width,rect.Height);
+    p.setPen(Qt::green);
     for(i=0;i<InfoList.size();i++)
     {         
          if(i==2)

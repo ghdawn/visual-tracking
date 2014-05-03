@@ -25,9 +25,9 @@ void Gimbal::Init(F32 degX,F32 degY,F32 u0,F32 v0)
 void Gimbal::Control(Vector X)
 {
     float kpx = 0.5;
-    float kdx = 0.1;
+    float kdx = 0;
     float kpy = 0.5;
-    float kdy = 0.1;
+    float kdy = 0;
     float U0 = 160;
     float V0 = 120;
     float omegax;
@@ -48,8 +48,8 @@ void Gimbal::Control(F32 omegax,F32 omegay)
 {
     ASU8(&buffer[0]) = 0x30;
     ASU8(&buffer[1]) = 1;
-    ASS16(&buffer[2]) = S16(omegax*10);
-    ASS16(&buffer[4]) = S16(omegay*10);
+    ASS16(&buffer[2]) = S16(omegax*5);
+    ASS16(&buffer[4]) = S16(omegay*5);
     protocol.SSPSendPackage(0,buffer,6);
 }
 

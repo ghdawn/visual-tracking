@@ -38,7 +38,9 @@ void CameraThread::run()
     int img=0,dir=0;
     char filename[20];
     Matrix Q(4,4);
-    Q.SetDiag(1);
+    float sigma=0.0001;
+    Q.SetDiag(sigma);
+    Q(0,0)=Q(1,1)=0;
     Vector n(4),X(4);
     while (!stopped)
     {
@@ -58,7 +60,6 @@ void CameraThread::run()
             mutexCurrent->unlock();
         }
 
-
         if(!core->Tracking)
         {
             info="No tracker!!";
@@ -67,6 +68,12 @@ void CameraThread::run()
         else
         {
             core->kf.F_x(0,2)=core->kf.F_x(1,3)=delta;
+            core->kf.F_n(2,2)=delta;
+            core->kf.F_n(3,3)=delta;
+            itr_math::NumericalObj->RandGaussian(n[1]);
+            itr_math::NumericalObj->RandGaussian(n[3]);
+            n[1]*=sigma;
+            n[3]*=sigma;
             core->kf.UpdateModel(Q,n);
             core->posTrack.X=core->kf.x[0];
             core->posTrack.Y=core->kf.x[1];
@@ -77,7 +84,7 @@ void CameraThread::run()
             stringstream ss;
             ss<<"X:"<<core->posTrack.X+core->posTrack.Width/2
                     <<"\nY:"<<core->posTrack.Y+core->posTrack.Height/2;
-            ss<<"\nCamera;"<<1000/delta<<"Hz";
+            ss<<"\nCamera:"<<1000/delta<<"Hz";
             for(int i=0;i<3;i++)
             {
                 ss>>info;
