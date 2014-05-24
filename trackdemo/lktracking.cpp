@@ -3,7 +3,7 @@
 using namespace std;
 using itr_math::Vector;
 lktracking::lktracking():
-    FeatureNum(100),frame1Feature(FeatureNum),frame2Feature(FeatureNum),fbFeature(FeatureNum)
+    FeatureNum(150),frame1Feature(FeatureNum),frame2Feature(FeatureNum),fbFeature(FeatureNum)
 {
     x=new F32[FeatureNum];
     y=new F32[FeatureNum];
@@ -22,6 +22,7 @@ void lktracking::Init(const Matrix &current,RectangleF &rect)
     _select_pointer->mindist=5;
 
     ransac.Init(&oper);
+    ransac.Times=10;
 
 }
 
@@ -72,7 +73,7 @@ F32 lktracking::getScale(S32 pointcount)
 int lktracking::ncc_filter(const Matrix  &input1,const Matrix  &input2)
 {
     RectangleS rect;
-    rect.Width=rect.Height=9;
+    rect.Width=rect.Height=3;
     int i,length=rect.Width*rect.Height;
     F32 mean1,mean2;
     int drop=0;
@@ -81,11 +82,11 @@ int lktracking::ncc_filter(const Matrix  &input1,const Matrix  &input2)
     Vector v2(length,patch2.GetData());
     for (i = 0; i <FeatureNum; ++i)
     {
-        rect.X=frame1Feature[i].X-4;
-        rect.Y=frame1Feature[i].Y-4;
+        rect.X=frame1Feature[i].X-rect.Width/2;
+        rect.Y=frame1Feature[i].Y-rect.Height/2;
         Pick::Rectangle(input1,rect,patch1);
-        rect.X=frame2Feature[i].X-4;
-        rect.Y=frame2Feature[i].Y-4;
+        rect.X=frame2Feature[i].X-rect.Width/2;
+        rect.Y=frame2Feature[i].Y-rect.Height/2;
         Pick::Rectangle(input2,rect,patch2);
         assert(v1.GetData()==patch1.GetData());
         itr_math::StatisticsObj->Mean(patch1.GetData(),length,mean1);
@@ -129,9 +130,52 @@ int lktracking::fb_filter()
     }
     return drop;
 }
+
+void lktracking::Debug_Info()
+{
+    ///特征点匹配关系输出
+    Matrix cor;
+    vector<Point2D> outU(FeatureNum),outV(FeatureNum);
+    int count=0;
+    for(int i=0; i<FeatureNum; ++i)
+    {
+        if(frame2Feature[i].Quality>=0)
+        {
+            outU[count]=frame1Feature[i];
+            outV[count]=frame2Feature[i];
+            count++;
+        }
+    }
+    Draw::Correspond(tracker.last->img[0],tracker.current->img[0],outU,outV,count,cor);
+    char file[20];
+    sprintf(file,"bin/Debug/corr/corr%d",debugcount++);
+    IOpnm::WritePGMFile(file,cor);
+}
+
+bool lktracking::InSide(const Point2D &point,const RectangleF &rect)const
+{
+    if(point.X>rect.X+rect.Width)
+    {
+        return false;
+    }
+    if(point.X<rect.X)
+    {
+        return false;
+    }
+    if(point.Y>rect.Y+rect.Height)
+    {
+        return false;
+    }
+    if(point.Y<rect.Y)
+    {
+        return false;
+    }
+    return true;
+}
 bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
 {
-    FeatureNum= _select_pointer->SelectGoodFeature(rect,frame1Feature,trackedPoints/2);
+#define DEBUG 0
+    FeatureNum= _select_pointer->SelectGoodFeature(rect,frame1Feature,trackedPoints);
     delete _select_pointer;
     _select_pointer=NULL;
     printf("Feature: %d\n",FeatureNum);
@@ -143,11 +187,23 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
     tracker.Compute(frame1Feature,frame2Feature,FeatureNum,true);
     tracker.Compute(frame2Feature,fbFeature,FeatureNum,false);
 
+    trackedPoints=0;
+    for (i = 0; i < FeatureNum; ++i)
+    {
+        if (frame2Feature[i].Quality == 0)
+        {
+            ++trackedPoints;
+        }
+    }
+    printf("Tracked:%d\n",trackedPoints);
     ///Filter
     if(FeatureNum>0)
     {
+        // Debug_Info();
         printf("FBFilter: %d  \n",fb_filter());
+        // Debug_Info();
         printf("NCCFilter: %d  \n",ncc_filter(tracker.last->img[0],tracker.current->img[0]));
+        //Debug_Info();
     }
 
     ///计算光流速度速度
@@ -161,10 +217,21 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
             y[trackedPoints] = frame2Feature[i].Y - frame1Feature[i].Y;
             indexNo[trackedPoints]=i;
             ++trackedPoints;
-
         }
     }
-
+    if(DEBUG)
+    {
+        for(int i=0; i<trackedPoints; i++)
+        {
+            printf("%f ",x[i]);
+        }
+        printf("\n");
+        for(int i=0; i<trackedPoints; i++)
+        {
+            printf("%f ",y[i]);
+        }
+        printf("\n");
+    }
     cout << "Points: "<<trackedPoints << endl;
 
     ///如果有跟踪到的点,则对x方向和y方向做RANSAC过滤,把速度不相符的点过滤掉
@@ -178,19 +245,19 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         for(i=0; i<trackedPoints; ++i)
             if(x[i]==Ransac<F32,F32>::INF)
             {
-                if(frame2Feature[i].Quality==0)
+                if(frame2Feature[indexNo[i]].Quality==0)
                 {
                     ++drop;
-                    frame2Feature[i].Quality=-LKTracker::LARGE_RESIDUE;
+                    frame2Feature[indexNo[i]].Quality=-LKTracker::LARGE_RESIDUE;
                 }
             }
         std::sort(x,x+trackedPoints);
         Vx=x[(trackedPoints-dropx)/2];
-        if(fabs(Vx)>10)
-        {
-            Tracked=false;
-            //printf("Failure!!\n");
-        }
+//        if(fabs(Vx)>25)
+//        {
+//            Tracked=false;
+//            //printf("Failure!!\n");
+//        }
 
         ransac.Process(y,trackedPoints, dropy);
         printf("%d \n",dropy);
@@ -198,20 +265,20 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         for(i=0; i<trackedPoints; ++i)
             if(y[i]==Ransac<F32,F32>::INF)
             {
-                if(frame2Feature[i].Quality==0)
+                if(frame2Feature[indexNo[i]].Quality==0)
                 {
                     ++drop;
-                     frame2Feature[i].Quality=-LKTracker::LARGE_RESIDUE;
+                    frame2Feature[indexNo[i]].Quality=-LKTracker::LARGE_RESIDUE;
                 }
             }
 
         std::sort(y,y+trackedPoints);
         Vy=y[(trackedPoints-dropy)/2];
-        if(fabs(Vy)>10)
-        {
-            Tracked=false;
-            //printf("Failure!!\n");
-        }
+//        if(fabs(Vy)>25)
+//        {
+//            Tracked=false;
+//            printf("Failure!!\n");
+//        }
         printf("vx=%f vy=%f\n",Vx,Vy);
         trackedPoints-=drop;
     }
@@ -226,40 +293,25 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
         F32 boxScale=1.0f;
         boxScale=getScale(trackedPoints);
         printf("scale:%f\n",boxScale);
-        if(boxScale>1.5)
+        if(boxScale>1.05)
         {
             Tracked=false;
         }
         else
         {
-        rect.X+=Vx-rect.Width*(boxScale-1.0f)/2.0f;
-        rect.Y+=Vy-rect.Height*(boxScale-1.0f)/2.0f;
-        rect.Width*=boxScale;
-        rect.Height*=boxScale;
+            rect.X+=Vx-rect.Width*(boxScale-1.0f)/2.0f;
+            rect.Y+=Vy-rect.Height*(boxScale-1.0f)/2.0f;
+            rect.Width*=boxScale;
+            rect.Height*=boxScale;
         }
     }
-    if(false)
+    if(true)
     {
-        ///特征点匹配关系输出
-        Matrix cor;
-        vector<Point2D> outU(FeatureNum),outV(FeatureNum);
-        int count=0;
-        for(i=0; i<FeatureNum; ++i)
-        {
-            if(frame2Feature[i].Quality>=0)
-            {
-                outU[count]=frame1Feature[i];
-                outV[count]=frame2Feature[i];
-                count++;
-            }
-        }
-        Draw::Correspond(tracker.last->img[0],tracker.current->img[0],outU,outV,count,cor);
-        char file[20];
-        sprintf(file,"bin/Debug/corr/corr%d",debugcount++);
-        IOpnm::WritePGMFile(file,cor);
+        Debug_Info();
     }
 
     ///选择下一帧图像中的特征点
+
     trackedPoints=0;
     for (i = 0; i < FeatureNum; ++i)
     {
@@ -272,10 +324,10 @@ bool lktracking::Go(const Matrix &current,RectangleF &rect,F32 &Vx,F32 &Vy)
 
         }
     }
-    // SelectKLTFeature select(current);
+
     _select_pointer=new SelectKLTFeature(current);
-    _select_pointer->mindist = 5;
-    //FeatureNum= _select_pointer->SelectGoodFeature(rect, frame1Feature,amount);
+    _select_pointer->mindist = 6;
+
     printf("Track Time: %d",clock.Tick());
     printf("\n*****End  Track !*****\n\n");
     //printf("\033[12A");

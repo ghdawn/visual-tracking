@@ -22,6 +22,8 @@ class lktracking
     protected:
     private:
     F32 getScale(S32 count);
+    bool InSide(const Point2D& point,const RectangleF& rect) const;
+    void Debug_Info();
     int fb_filter();
     void pairdistance(const vector<Point2D>& feature,vector<F32>& dist);
     int ncc_filter(const Matrix  &input1,const Matrix  &input2);
@@ -32,7 +34,7 @@ class DataOper:public Ransac<T,T>::Operator
     public:
         F32 GetError(T a, T b)
         {
-            return (a-b)*(a-b);
+            return (1+a-b)*(1+a-b);
         }
         T GetValue(T *data, S32 N)
         {

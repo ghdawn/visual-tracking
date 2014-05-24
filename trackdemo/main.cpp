@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     itr_math::MathObjStandInit();
-    char dir[50]="bin/Debug/09_carchase";
+    char dir[50]="bin/Debug/08_Volkswagen";
     char path[50]="%s/pgm/%05d.pgm";
 
     char file[50];
@@ -42,10 +42,9 @@ int main()
                   };
     kf.F_x.CopyFrom(data);
     kf.F_n.SetDiag(1);
-    kf.F_n(0,0)=kf.F_n(1,1)=0.5;
 
     Matrix Hx(2,4),Hv(2,4),R(2,2),Q(4,4);
-    R.SetDiag(1.012306);
+    R.SetDiag(0.306);
     Hx.CopyFrom(data+16);
     Hv.CopyFrom(data+8);
     Q.SetDiag(0.0);
@@ -64,9 +63,8 @@ int main()
     rectout.Y=rect.Y;
     rectout.Width=rect.Width;
     rectout.Height=rect.Height;
-    Detection detect(current,rectout,15);
 
-    for(int k=beginindex; k<1000; k+=1)
+    for(int k=beginindex+1; k<1000; k+=1)
     {
         sprintf(file, path,dir, k);
         printf("%s\n\n",file);
@@ -81,8 +79,8 @@ int main()
             X=kf.UpdateMeasure(Hv,R,z);
 
         }
-        rectout.X=rect.X;
-        rectout.Y=rect.Y;
+        rect.X=X[0];
+        rect.Y=X[1];
 
         if(true)
         {
